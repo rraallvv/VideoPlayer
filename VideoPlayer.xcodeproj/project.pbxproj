@@ -12,11 +12,12 @@
 		6D094BA014BCF4C70097E75B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6D094B9E14BCF4C70097E75B /* InfoPlist.strings */; };
 		6D094BA214BCF4C70097E75B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D094BA114BCF4C70097E75B /* main.m */; };
 		6D094BA614BCF4C70097E75B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D094BA514BCF4C70097E75B /* AppDelegate.m */; };
-		6D094BB614BCF7B10097E75B /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D094BB514BCF7B00097E75B /* MainViewController.m */; };
+		6D094BB614BCF7B10097E75B /* MyVideoPlayerDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D094BB514BCF7B00097E75B /* MyVideoPlayerDemoViewController.m */; };
 		6D094BBC14BCF8750097E75B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D094BBB14BCF8750097E75B /* AVFoundation.framework */; };
+		E44BBE631B5DA25700C97F89 /* playlist.m3u in Resources */ = {isa = PBXBuildFile; fileRef = E44BBE621B5DA25700C97F89 /* playlist.m3u */; };
 		E4558F0A1B52A328000D9688 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4558F091B52A328000D9688 /* Storyboard.storyboard */; };
-		E4558F0C1B52AC73000D9688 /* video_2.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = E4558F0B1B52AC73000D9688 /* video_2.mp4 */; };
-		E4558F0E1B530148000D9688 /* video_1.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = E4558F0D1B530148000D9688 /* video_1.mp4 */; };
+		E4558F0C1B52AC73000D9688 /* video1.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = E4558F0B1B52AC73000D9688 /* video1.mp4 */; };
+		E4558F0E1B530148000D9688 /* video2.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = E4558F0D1B530148000D9688 /* video2.mp4 */; };
 		E4558F431B55B947000D9688 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4558F421B55B947000D9688 /* MediaPlayer.framework */; };
 		E48255891B55E23000B6A183 /* VideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = E48255861B55E23000B6A183 /* VideoPlayerView.m */; };
 		E482558A1B55E23000B6A183 /* VideoPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E48255881B55E23000B6A183 /* VideoPlayerViewController.m */; };
@@ -26,6 +27,11 @@
 		E48255971B571A2D00B6A183 /* VolumeView.m in Sources */ = {isa = PBXBuildFile; fileRef = E48255951B571A2D00B6A183 /* VolumeView.m */; };
 		E48255AB1B5845B900B6A183 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E48255AA1B5845B900B6A183 /* CoreGraphics.framework */; };
 		E48255AD1B5845CD00B6A183 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E48255AC1B5845CD00B6A183 /* CoreMedia.framework */; };
+		E4B43A271B58CBA300463EB1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4B43A261B58CBA300463EB1 /* QuartzCore.framework */; };
+		E4B43A291B5D871500463EB1 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4B43A281B5D871500463EB1 /* AVKit.framework */; };
+		E4FCAF751B61D19B00274DC8 /* AVPlayerDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FCAF741B61D19B00274DC8 /* AVPlayerDemoViewController.m */; };
+		E4FCAF781B61D1A400274DC8 /* MPMoviwPlayerDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FCAF771B61D1A400274DC8 /* MPMoviwPlayerDemoViewController.m */; };
+		E4FCAF7A1B61D41000274DC8 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E4FCAF791B61D41000274DC8 /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,12 +44,13 @@
 		6D094BA314BCF4C70097E75B /* VideoPlayer-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VideoPlayer-Prefix.pch"; sourceTree = "<group>"; };
 		6D094BA414BCF4C70097E75B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		6D094BA514BCF4C70097E75B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		6D094BB414BCF7B00097E75B /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
-		6D094BB514BCF7B00097E75B /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		6D094BB414BCF7B00097E75B /* MyVideoPlayerDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyVideoPlayerDemoViewController.h; sourceTree = "<group>"; };
+		6D094BB514BCF7B00097E75B /* MyVideoPlayerDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyVideoPlayerDemoViewController.m; sourceTree = "<group>"; };
 		6D094BBB14BCF8750097E75B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		E44BBE621B5DA25700C97F89 /* playlist.m3u */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = playlist.m3u; sourceTree = "<group>"; };
 		E4558F091B52A328000D9688 /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
-		E4558F0B1B52AC73000D9688 /* video_2.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = video_2.mp4; sourceTree = "<group>"; };
-		E4558F0D1B530148000D9688 /* video_1.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = video_1.mp4; sourceTree = "<group>"; };
+		E4558F0B1B52AC73000D9688 /* video1.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = video1.mp4; sourceTree = "<group>"; };
+		E4558F0D1B530148000D9688 /* video2.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = video2.mp4; sourceTree = "<group>"; };
 		E4558F421B55B947000D9688 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		E48255851B55E23000B6A183 /* VideoPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPlayerView.h; sourceTree = "<group>"; };
 		E48255861B55E23000B6A183 /* VideoPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayerView.m; sourceTree = "<group>"; };
@@ -57,6 +64,13 @@
 		E48255951B571A2D00B6A183 /* VolumeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VolumeView.m; sourceTree = "<group>"; };
 		E48255AA1B5845B900B6A183 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		E48255AC1B5845CD00B6A183 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		E4B43A261B58CBA300463EB1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		E4B43A281B5D871500463EB1 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
+		E4FCAF731B61D19B00274DC8 /* AVPlayerDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVPlayerDemoViewController.h; sourceTree = "<group>"; };
+		E4FCAF741B61D19B00274DC8 /* AVPlayerDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVPlayerDemoViewController.m; sourceTree = "<group>"; };
+		E4FCAF761B61D1A300274DC8 /* MPMoviePlayerDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPMoviePlayerDemoViewController.h; sourceTree = "<group>"; };
+		E4FCAF771B61D1A400274DC8 /* MPMoviwPlayerDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPMoviwPlayerDemoViewController.m; sourceTree = "<group>"; };
+		E4FCAF791B61D41000274DC8 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +78,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4B43A291B5D871500463EB1 /* AVKit.framework in Frameworks */,
+				E4B43A271B58CBA300463EB1 /* QuartzCore.framework in Frameworks */,
 				E48255AD1B5845CD00B6A183 /* CoreMedia.framework in Frameworks */,
 				E48255AB1B5845B900B6A183 /* CoreGraphics.framework in Frameworks */,
 				E4558F431B55B947000D9688 /* MediaPlayer.framework in Frameworks */,
@@ -96,6 +112,8 @@
 		6D094B9414BCF4C70097E75B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E4B43A281B5D871500463EB1 /* AVKit.framework */,
+				E4B43A261B58CBA300463EB1 /* QuartzCore.framework */,
 				E48255AC1B5845CD00B6A183 /* CoreMedia.framework */,
 				E48255AA1B5845B900B6A183 /* CoreGraphics.framework */,
 				E4558F421B55B947000D9688 /* MediaPlayer.framework */,
@@ -112,11 +130,11 @@
 				E48255841B55E23000B6A183 /* VideoPlayer */,
 				6D094BA414BCF4C70097E75B /* AppDelegate.h */,
 				6D094BA514BCF4C70097E75B /* AppDelegate.m */,
-				6D094BB414BCF7B00097E75B /* MainViewController.h */,
-				6D094BB514BCF7B00097E75B /* MainViewController.m */,
+				E4FCAF7B1B61D68F00274DC8 /* DemoViewControllers */,
 				E4558F091B52A328000D9688 /* Storyboard.storyboard */,
-				E4558F0D1B530148000D9688 /* video_1.mp4 */,
-				E4558F0B1B52AC73000D9688 /* video_2.mp4 */,
+				E44BBE621B5DA25700C97F89 /* playlist.m3u */,
+				E4558F0B1B52AC73000D9688 /* video1.mp4 */,
+				E4558F0D1B530148000D9688 /* video2.mp4 */,
 				6D094B9C14BCF4C70097E75B /* Supporting Files */,
 			);
 			path = VideoPlayer;
@@ -125,6 +143,7 @@
 		6D094B9C14BCF4C70097E75B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				E4FCAF791B61D41000274DC8 /* Default-568h@2x.png */,
 				6D094B9D14BCF4C70097E75B /* VideoPlayer-Info.plist */,
 				6D094B9E14BCF4C70097E75B /* InfoPlist.strings */,
 				6D094BA114BCF4C70097E75B /* main.m */,
@@ -156,6 +175,19 @@
 				E48255951B571A2D00B6A183 /* VolumeView.m */,
 			);
 			path = CustomControls;
+			sourceTree = "<group>";
+		};
+		E4FCAF7B1B61D68F00274DC8 /* DemoViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				6D094BB414BCF7B00097E75B /* MyVideoPlayerDemoViewController.h */,
+				6D094BB514BCF7B00097E75B /* MyVideoPlayerDemoViewController.m */,
+				E4FCAF731B61D19B00274DC8 /* AVPlayerDemoViewController.h */,
+				E4FCAF741B61D19B00274DC8 /* AVPlayerDemoViewController.m */,
+				E4FCAF761B61D1A300274DC8 /* MPMoviePlayerDemoViewController.h */,
+				E4FCAF771B61D1A400274DC8 /* MPMoviwPlayerDemoViewController.m */,
+			);
+			name = DemoViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -211,9 +243,11 @@
 				E482558E1B55E3AE00B6A183 /* VideoPlayer.xcassets in Resources */,
 				6D094BA014BCF4C70097E75B /* InfoPlist.strings in Resources */,
 				E482558C1B55E25000B6A183 /* VideoPlayerView.xib in Resources */,
-				E4558F0C1B52AC73000D9688 /* video_2.mp4 in Resources */,
+				E4558F0C1B52AC73000D9688 /* video1.mp4 in Resources */,
 				E4558F0A1B52A328000D9688 /* Storyboard.storyboard in Resources */,
-				E4558F0E1B530148000D9688 /* video_1.mp4 in Resources */,
+				E4FCAF7A1B61D41000274DC8 /* Default-568h@2x.png in Resources */,
+				E4558F0E1B530148000D9688 /* video2.mp4 in Resources */,
+				E44BBE631B5DA25700C97F89 /* playlist.m3u in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,9 +262,11 @@
 				6D094BA214BCF4C70097E75B /* main.m in Sources */,
 				6D094BA614BCF4C70097E75B /* AppDelegate.m in Sources */,
 				E48255961B571A2D00B6A183 /* Scrubber.m in Sources */,
+				E4FCAF781B61D1A400274DC8 /* MPMoviwPlayerDemoViewController.m in Sources */,
 				E48255971B571A2D00B6A183 /* VolumeView.m in Sources */,
-				6D094BB614BCF7B10097E75B /* MainViewController.m in Sources */,
+				6D094BB614BCF7B10097E75B /* MyVideoPlayerDemoViewController.m in Sources */,
 				E48255891B55E23000B6A183 /* VideoPlayerView.m in Sources */,
+				E4FCAF751B61D19B00274DC8 /* AVPlayerDemoViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -327,6 +363,7 @@
 				GCC_PREFIX_HEADER = "VideoPlayer/VideoPlayer-Prefix.pch";
 				INFOPLIST_FILE = "VideoPlayer/VideoPlayer-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -338,6 +375,7 @@
 				GCC_PREFIX_HEADER = "VideoPlayer/VideoPlayer-Prefix.pch";
 				INFOPLIST_FILE = "VideoPlayer/VideoPlayer-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

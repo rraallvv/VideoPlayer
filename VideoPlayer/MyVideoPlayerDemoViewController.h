@@ -1,5 +1,5 @@
 //
-//  MainViewController.h
+//  MyVideoPlayerDemoViewController.h
 //  VideoPlayer
 //
 //  Created by Rhody Lugo.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MainViewController : UIViewController
+@interface MyVideoPlayerDemoViewController : UIViewController
 
 @end

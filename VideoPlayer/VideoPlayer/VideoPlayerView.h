@@ -27,16 +27,18 @@
 
 @protocol VideoPlayerViewDelegate
 
-- (void)presentInFullscreen;
+- (BOOL)shouldShowPlaybackControls;
 
 @end
 
 
-@class AVPlayer;
+@class AVPlayer, AVPlayerLayer;
 
 @interface VideoPlayerView : UIView
 
 @property (strong, nonatomic) AVPlayer *player;
-@property (weak, nonatomic) id <VideoPlayerViewDelegate> delegate;
+@property (strong, nonatomic, readonly) AVPlayerLayer *playerLayer;
+@property (weak, nonatomic) UIViewController <VideoPlayerViewDelegate> *delegate;
+@property (weak, nonatomic) IBOutlet UIView *contentOverlayView;
 
 @end

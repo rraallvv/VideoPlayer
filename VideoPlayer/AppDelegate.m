@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "MainViewController.h"
+#import "MyVideoPlayerDemoViewController.h"
 
 @implementation AppDelegate
 

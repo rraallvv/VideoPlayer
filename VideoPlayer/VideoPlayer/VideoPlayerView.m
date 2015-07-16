@@ -30,16 +30,15 @@
 
 /* Animation parameters */
 static const CGFloat FullscreenTransitionDuration = 0.375;//0.25//0.5
-static const CGFloat PanBorderSpringFactor = 0.625;//0.5;//0.75;
-static const CGFloat PanBorderSpringRestitutionDuration = 0.1;
-static const CGFloat FadeDuration = 0.2;//0.1;
+static const CGFloat BoundsElasticity = 0.625;//0.5;//0.75;
+static const CGFloat BoundsRestitutionDuration = 0.1;
+static const CGFloat SwipeFadeDuration = 0.2;//0.1;
+static const CGFloat ControlsFadeDuration = 0.5;
 
 /* Key-Value Observation keys */
-NSString * const PlayerRateObservationKeypath	= @"player.rate";
-NSString * const PlayerCurrentItemObservationKeypath	= @"player.currentItem";
+static NSString * const PlayerCurrentItemObservationKeypath	= @"player.currentItem";
 
 /* Key-Value Observation contexts */
-static void *PlayerRateObservationContext = &PlayerRateObservationContext;
 static void *PlayerCurrentItemObservationContext = &PlayerCurrentItemObservationContext;
 
 static NSString *stringFromCMTime(CMTime time) {
@@ -54,6 +53,7 @@ static NSString *stringFromCMTime(CMTime time) {
 
 @interface VideoPlayerView ()
 
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UISlider *scrubber;
 @property (weak, nonatomic) IBOutlet UILabel *playBackTimeLabel;
 @property (weak, nonatomic) IBOutlet UIButton *zoomButton;
@@ -66,19 +66,24 @@ static NSString *stringFromCMTime(CMTime time) {
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *tapGestureRcognizer;
 @property (strong, nonatomic) IBOutlet UIPanGestureRecognizer *panGestureRecognizer;
 @property (strong, nonatomic) IBOutlet UISwipeGestureRecognizer *swipeGestureRecognizer;
-@property (assign, nonatomic) BOOL fullscreen;
-@property (assign, nonatomic) BOOL controlsHidden;
-@property (assign, nonatomic) BOOL showBorders;
+@property (strong, nonatomic) IBOutlet UIPinchGestureRecognizer *pinchGestureRecognizer;
+@property (nonatomic) BOOL fullscreen;
+@property (nonatomic) BOOL controlsHidden;
+@property (nonatomic) BOOL showBorders;
+@property (nonatomic) BOOL wantsToPlay;
+@property (nonatomic, getter=isPlaying) BOOL playing;
+@property (nonatomic) BOOL stalled;
 
 @end
 
 
 @implementation VideoPlayerView {
 	NSTimer *_hideControlsTimer;
-	BOOL _shouldPlayAfterScrubbing;
 	CGPoint _initialPanPosition;
 	BOOL _swipeGestureRecognized;
 	CGPoint _swipeVelocity;
+	id _periodicTimeObserver;
+	BOOL _canToggleFullscreen;
 }
 
 
@@ -86,6 +91,12 @@ static NSString *stringFromCMTime(CMTime time) {
 
 + (Class)layerClass {
 	return [AVPlayerLayer class];
+}
+
+- (void)awakeFromNib {
+	self.scrubber.hidden = YES;
+	self.activityIndicator.hidesWhenStopped = YES;
+	_canToggleFullscreen = YES;
 }
 
 - (void)didMoveToSuperview {
@@ -100,7 +111,6 @@ static NSString *stringFromCMTime(CMTime time) {
 
 - (void)dealloc {
 	[self.layer removeObserver:self forKeyPath:PlayerCurrentItemObservationKeypath];
-	[self.layer removeObserver:self forKeyPath:PlayerRateObservationKeypath];
 }
 
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
@@ -121,7 +131,7 @@ static NSString *stringFromCMTime(CMTime time) {
 }
 
 - (AVPlayer*)player {
-	return [(AVPlayerLayer *)[self layer] player];
+	return self.playerLayer.player;
 }
 
 - (void)setPlayer:(AVPlayer *)player {
@@ -129,9 +139,13 @@ static NSString *stringFromCMTime(CMTime time) {
 		[self.layer removeObserver:self
 						forKeyPath:PlayerCurrentItemObservationKeypath
 						   context:PlayerCurrentItemObservationContext];
+		if (_periodicTimeObserver) {
+			[self.player removeTimeObserver:_periodicTimeObserver];
+			_periodicTimeObserver = nil;
+		}
 	}
 
-	[(AVPlayerLayer*)[self layer] setPlayer:player];
+	self.playerLayer.player = player;
 
 	if (!player) {
 		return;
@@ -142,13 +156,25 @@ static NSString *stringFromCMTime(CMTime time) {
 	__weak AVPlayer *weakPlayerRef = player;
 
 	CMTime interval = CMTimeMake(33, 1000);
-	[player addPeriodicTimeObserverForInterval:interval queue:dispatch_get_main_queue() usingBlock: ^(CMTime time) {
-		CMTime endTime = CMTimeConvertScale(weakPlayerRef.currentItem.asset.duration, weakPlayerRef.currentTime.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
+	__block BOOL swithToFullscreenWhenPlaybackStarts = YES;
+	__block CMTime lastTime = self.player.currentTime;
+	_periodicTimeObserver = [player addPeriodicTimeObserverForInterval:interval queue:NULL usingBlock: ^(CMTime time) {
+		if (self.player.rate != 0 && CMTimeCompare(time, lastTime) != 0) {
+			if (swithToFullscreenWhenPlaybackStarts) {
+				[self performSelector:@selector(setFullscreen:) withObject:@YES afterDelay:CMTimeGetSeconds(interval)];
+				swithToFullscreenWhenPlaybackStarts = NO;
+			}
+			if (self.stalled) {
+				self.stalled = NO;
+			}
+		}
+		CMTime endTime = CMTimeConvertScale(weakPlayerRef.currentItem.asset.duration, time.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
 		if (CMTimeCompare(endTime, kCMTimeZero) != 0) {
-			double normalizedTime = (double) player.currentTime.value / (double) endTime.value;
+			double normalizedTime = (double) time.value / (double) endTime.value;
 			self.scrubber.value = normalizedTime;
 		}
-		self.playBackTimeLabel.text = stringFromCMTime(weakPlayerRef.currentTime);
+		self.playBackTimeLabel.text = stringFromCMTime(time);
+		lastTime = time;
 	}];
 
 	[self.layer addObserver:self
@@ -157,20 +183,28 @@ static NSString *stringFromCMTime(CMTime time) {
 					context:PlayerCurrentItemObservationContext];
 }
 
+- (AVPlayerLayer *)playerLayer {
+	return (AVPlayerLayer *)self.layer;
+}
+
 - (BOOL)fullscreen {
 	return self.containerView != self.superview;
 }
 
 - (void)setFullscreen:(BOOL)fullscreen {
-	if (fullscreen == self.fullscreen) {
+	if (!_canToggleFullscreen || fullscreen == self.fullscreen) {
 		return;
 	}
+
+	_canToggleFullscreen = NO;
 
 	static CGRect theRect;
 
 	if (CGRectIsEmpty(theRect)) {
 		theRect = self.containerView.frame;
 	}
+
+	[self setShowsActivityIndicator:NO];
 
 	if (fullscreen) {
 		[UIView animateWithDuration:FullscreenTransitionDuration animations:^{
@@ -180,17 +214,23 @@ static NSString *stringFromCMTime(CMTime time) {
 			[self.zoomButton setImage:[UIImage imageNamed:@"ZoomOut"] forState:UIControlStateNormal];
 
 		} completion:^(BOOL finished) {
-			[self.delegate presentInFullscreen];
+			if (self.delegate.parentViewController) {
+				[self.delegate removeFromParentViewController];
+			}
+			[UIApplication.sharedApplication.keyWindow.rootViewController presentViewController:self.delegate animated:NO completion:nil];
 			self.controlsHidden = NO;
-
 			self.showBorders = NO;
+			if (_stalled) {
+				[self setShowsActivityIndicator:YES];
+			}
+			_canToggleFullscreen = YES;
 		}];
 
 	} else {
 		self.topControlsView.hidden = YES;
 		self.bottomControlsView.hidden = YES;
 
-		UIViewController *presentingViewController = [(id)self.delegate presentingViewController];
+		UIViewController *presentingViewController = [self.delegate presentingViewController];
 
 		if (!presentingViewController) {
 			self.containerView.frame = theRect;
@@ -208,14 +248,15 @@ static NSString *stringFromCMTime(CMTime time) {
 				[UIView animateWithDuration:FullscreenTransitionDuration animations:^{
 					self.containerView.frame = theRect;
 					[self.zoomButton setImage:[UIImage imageNamed:@"ZoomIn"] forState:UIControlStateNormal];
+				} completion:^(BOOL finished) {
+					if (_stalled) {
+						[self setShowsActivityIndicator:YES];
+					}
+					_canToggleFullscreen = YES;
 				}];
 			}];
 		}
 	}
-}
-
-- (BOOL)isPlaying {
-	return self.player.rate > 0 && !self.player.error;
 }
 
 - (BOOL)controlsHidden {
@@ -226,7 +267,7 @@ static NSString *stringFromCMTime(CMTime time) {
 	if (controlsHidden) {
 		[_hideControlsTimer invalidate];
 
-		[UIView animateWithDuration:0.5 animations:^{
+		[UIView animateWithDuration:ControlsFadeDuration animations:^{
 			self.topControlsView.alpha = 0.0;
 			self.bottomControlsView.alpha = 0.0;
 		} completion:^(BOOL finished) {
@@ -234,7 +275,7 @@ static NSString *stringFromCMTime(CMTime time) {
 			self.bottomControlsView.hidden = YES;
 		}];
 
-	} else {
+	} else if ([self.delegate shouldShowPlaybackControls]) {
 		self.topControlsView.hidden = NO;
 		self.bottomControlsView.hidden = NO;
 		self.topControlsView.alpha = 1.0;
@@ -247,20 +288,56 @@ static NSString *stringFromCMTime(CMTime time) {
 	}
 }
 
+- (void)setWantsToPlay:(BOOL)wantsToPlay {
+	if (!self.player.currentItem) {
+		return;
+	}
+	self.playing = wantsToPlay;
+	if (wantsToPlay) {
+		[self.player play];
+	} else {
+		[self.player pause];
+	}
+	_wantsToPlay = wantsToPlay;
+}
+
+- (void)setPlaying:(BOOL)playing {
+	if (playing) {
+		[self.playButton setImage:[UIImage imageNamed:@"Pause"] forState:UIControlStateNormal];
+	} else {
+		[self.playButton setImage:[UIImage imageNamed:@"Play"] forState:UIControlStateNormal];
+	}
+	_playing = playing;
+}
+
+- (void)setShowsActivityIndicator:(BOOL)showsActivityIndicator {
+	if (showsActivityIndicator) {
+		if (!self.activityIndicator.isAnimating) {
+			[self.activityIndicator startAnimating];
+		}
+	} else {
+		if (self.activityIndicator.isAnimating) {
+			[self.activityIndicator stopAnimating];
+		}
+	}
+}
+
+- (void)setStalled:(BOOL)stalled {
+	[self setShowsActivityIndicator:stalled];
+	_stalled = stalled;
+}
+
 
 #pragma mark Actions
 
 - (IBAction)scrubberTouchDown:(id)sender {
 	[_hideControlsTimer invalidate];
-	_shouldPlayAfterScrubbing = [self isPlaying];
-	if (_shouldPlayAfterScrubbing) {
-		[self.player pause];
-	}
+	[self.player pause];
 }
 
 - (IBAction)scrubberTouchUp:(id)sender {
 	self.controlsHidden = NO;
-	if (_shouldPlayAfterScrubbing) {
+	if (self.wantsToPlay) {
 		[self.player play];
 	}
 }
@@ -277,15 +354,10 @@ static NSString *stringFromCMTime(CMTime time) {
 }
 
 - (IBAction)playButtonTouchUpInside:(UIButton *)sender {
-	if (self.isPlaying) {
-		[self.player pause];
-	} else {
-		[self.player play];
-		//self.controlsHidden = YES;
-	}
+	self.wantsToPlay = !self.isPlaying;
 }
 
-- (IBAction)handleTapGestureRecognizer:(UITapGestureRecognizer *)sender {
+- (IBAction)tapGestureRecognizer:(UITapGestureRecognizer *)sender {
 	if (!self.fullscreen) {
 		self.fullscreen = YES;
 	} else {
@@ -293,59 +365,37 @@ static NSString *stringFromCMTime(CMTime time) {
 	}
 }
 
-- (IBAction)handlePanGestureRecognizer:(UIPanGestureRecognizer *)sender {
+- (IBAction)panGestureRecognizer:(UIPanGestureRecognizer *)sender {
 	if (!self.fullscreen) {
 
 		CGPoint locationInView = [sender locationInView:self.containerView.superview];
 		CGPoint center = self.containerView.center;
-
-		CGRect screenRect = UIScreen.mainScreen.bounds;
-		CGRect viewFrame = self.containerView.frame;
-
-		CGFloat minX = CGRectGetWidth(viewFrame)/2;
-		CGFloat maxX = CGRectGetMaxX(screenRect) - CGRectGetWidth(viewFrame)/2;
-		CGFloat minY = CGRectGetHeight(viewFrame)/2;
-		CGFloat maxY = CGRectGetMaxY(screenRect) - CGRectGetHeight(viewFrame)/2;
 
 		if (sender.state == UIGestureRecognizerStateBegan) {
 			_swipeVelocity = CGPointZero;
 			_initialPanPosition = CGPointMake(locationInView.x - center.x, locationInView.y - center.y);
 			_swipeGestureRecognized = NO;
 
-		} else if (sender.state == UIGestureRecognizerStateChanged) {
-			center = CGPointMake(locationInView.x - _initialPanPosition.x, locationInView.y - _initialPanPosition.y);
-
-			if (center.x < minX) {
-				center.x = minX - PanBorderSpringFactor * (minX - center.x);
-			} else if (center.x > maxX) {
-				center.x = maxX + PanBorderSpringFactor * (center.x - maxX);
-			}
-
-			if (center.y < minY) {
-				center.y = minY - PanBorderSpringFactor * (minY - center.y);
-			} else if (center.y > maxY) {
-				center.y = maxY + PanBorderSpringFactor * (center.y - maxY);
-			}
-
-			self.containerView.center = center;
-
 		} else if (!_swipeGestureRecognized) {
-			center = CGPointMake(locationInView.x - _initialPanPosition.x, locationInView.y - _initialPanPosition.y);
-			CGRect limitsRect = CGRectMake(minX, minY, maxX - minX, maxY - minY);
-
-			if (CGRectContainsPoint(limitsRect, center)) {
-				self.containerView.center = center;
+			if (sender.state == UIGestureRecognizerStateChanged) {
+				center = CGPointMake(locationInView.x - _initialPanPosition.x, locationInView.y - _initialPanPosition.y);
+				self.containerView.center = [self capCenterToBounds:center withElasticity:BoundsElasticity];
 
 			} else {
-				/* Spring effect */
-				[UIView animateWithDuration:PanBorderSpringRestitutionDuration animations:^{
-					self.containerView.center = CGPointMake(MAX(minX, MIN(center.x, maxX)),
-															MAX(minY, MIN(center.y, maxY)));
-				}];
-			}
-		}
+				center = CGPointMake(locationInView.x - _initialPanPosition.x, locationInView.y - _initialPanPosition.y);
+				CGRect boundsLimit = [self boundsLimit];
 
-		if (!_swipeGestureRecognized) {
+				if (CGRectContainsPoint(boundsLimit, center)) {
+					self.containerView.center = center;
+
+				} else {
+					/* Spring effect */
+					[UIView animateWithDuration:BoundsRestitutionDuration animations:^{
+						self.containerView.center = [self capCenterToBounds:center withElasticity:0.0];
+					}];
+				}
+			}
+
 			CGPoint velocity = [sender velocityInView:self.containerView.superview];
 			_swipeVelocity = CGPointMake(_swipeVelocity.x * 0.9 + velocity.x * 0.1,
 										 _swipeVelocity.y * 0.9 + velocity.y * 0.1);
@@ -358,30 +408,28 @@ static NSString *stringFromCMTime(CMTime time) {
 		_swipeGestureRecognized = YES;
 
 		dispatch_async(dispatch_get_main_queue(), ^{
-			CGRect screenRect = UIScreen.mainScreen.bounds;
-			CGRect viewFrame = self.containerView.frame;
-
-			CGFloat minX = CGRectGetWidth(viewFrame)/2;
-			CGFloat maxX = CGRectGetMaxX(screenRect) - CGRectGetWidth(viewFrame)/2;
-			CGFloat minY = CGRectGetHeight(viewFrame)/2;
-			CGFloat maxY = CGRectGetMaxY(screenRect) - CGRectGetHeight(viewFrame)/2;
-
 			CGPoint center = self.containerView.center;
-			CGPoint endPosition = CGPointMake(center.x + FadeDuration * _swipeVelocity.x,
-											  center.y + FadeDuration * _swipeVelocity.y);
-			[UIView animateWithDuration:FadeDuration
+			CGPoint endPosition = CGPointMake(center.x + SwipeFadeDuration * _swipeVelocity.x,
+											  center.y + SwipeFadeDuration * _swipeVelocity.y);
+			[UIView animateWithDuration:SwipeFadeDuration
 								  delay:0
 								options:UIViewAnimationOptionCurveLinear
 							 animations:^{
 								 self.containerView.center = endPosition;
 								 self.containerView.alpha = 0.0;
 							 } completion:^(BOOL finished) {
-								 self.containerView.center = CGPointMake(MAX(minX, MIN(endPosition.x, maxX)),
-																		 MAX(minY, MIN(endPosition.y, maxY)));
+								 self.containerView.center = [self capCenterToBounds:endPosition withElasticity:0.0];
+								 self.containerView.hidden = YES;
 								 self.containerView.alpha = 1.0;
 								 [self closePlayer];
 							 }];
 		});
+	}
+}
+
+- (IBAction)pinchGestureRecognizer:(UIPinchGestureRecognizer *)sender {
+	if (self.fullscreen) {
+		self.fullscreen = NO;
 	}
 }
 
@@ -393,21 +441,60 @@ static NSString *stringFromCMTime(CMTime time) {
 #pragma mark Helper methods
 
 - (void)closePlayer {
-	[self.player pause];
-	self.player = nil;
-	//if (self.fullscreen)
-	{
-		self.containerView.hidden = YES;
-		[(id)self.delegate setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-		[[(id)self.delegate presentingViewController] dismissViewControllerAnimated:YES completion:^{
-			self.fullscreen = NO;
-			[self.containerView addSubview:self];
-		}];
+	if ([self.player isKindOfClass:[AVQueuePlayer class]]) {
+		[(AVQueuePlayer *)self.player removeAllItems];
+	} else {
+		[self.player replaceCurrentItemWithPlayerItem:nil];
 	}
+	self.fullscreen = NO;
 }
 
 - (void)hideControlsTimer {
 	self.controlsHidden = YES;
+}
+
+- (CGRect)boundsLimit {
+	CGRect screenRect = UIScreen.mainScreen.bounds;
+	CGRect viewFrame = self.containerView.frame;
+	return CGRectInset(screenRect, CGRectGetWidth(viewFrame)/2, CGRectGetHeight(viewFrame)/2);
+}
+
+- (CGPoint)capCenterToBounds:(CGPoint)center withElasticity:(CGFloat)elasticity {
+	CGRect boundsLimit = [self boundsLimit];
+
+	CGFloat minX = CGRectGetMinX(boundsLimit);
+	CGFloat maxX = CGRectGetMaxX(boundsLimit);
+	CGFloat minY = CGRectGetMinY(boundsLimit);
+	CGFloat maxY = CGRectGetMaxY(boundsLimit);
+
+	if (center.x < minX) {
+		center.x = minX - elasticity * (minX - center.x);
+	} else if (center.x > maxX) {
+		center.x = maxX + elasticity * (center.x - maxX);
+	}
+
+	if (center.y < minY) {
+		center.y = minY - elasticity * (minY - center.y);
+	} else if (center.y > maxY) {
+		center.y = maxY + elasticity * (center.y - maxY);
+	}
+
+	return center;
+}
+
+
+#pragma mark Notification handlers
+
+- (void)playerItemDidStalled:(NSNotification *)notification {
+	self.stalled = YES;
+	self.playing = NO;
+}
+
+- (void)playerItemDidPlayToEndTime:(NSNotification *)notification {
+	self.stalled = NO;
+	if (![self.player isKindOfClass:[AVQueuePlayer class]] || [(AVQueuePlayer *)self.player items].count <= 1) {
+		self.wantsToPlay = NO;
+	}
 }
 
 
@@ -420,26 +507,33 @@ static NSString *stringFromCMTime(CMTime time) {
 
 	if (context == PlayerCurrentItemObservationContext) {
 		AVPlayerItem *oldItem = [change objectForKey:@"old"];
-		if (oldItem) {
-			[self.layer removeObserver:self
-							forKeyPath:PlayerRateObservationKeypath
-							   context:PlayerRateObservationContext];
+		if (oldItem && oldItem != (id)[NSNull null]) {
+			[[NSNotificationCenter defaultCenter] removeObserver:self
+															name:AVPlayerItemPlaybackStalledNotification
+														  object:oldItem];
+			[[NSNotificationCenter defaultCenter] removeObserver:self
+															name:AVPlayerItemDidPlayToEndTimeNotification
+														  object:oldItem];
 		}
 
 		AVPlayerItem *newItem = [change objectForKey:@"new"];
-		if (newItem) {
-			[self.layer addObserver:self
-						 forKeyPath:PlayerRateObservationKeypath
-							options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
-							context:PlayerRateObservationContext];
-		}
-
-	} else if (context == PlayerRateObservationContext) {
-		if (self.isPlaying) {
-			[self.playButton setImage:[UIImage imageNamed:@"Pause"] forState:UIControlStateNormal];
+		if (newItem && newItem != (id)[NSNull null]) {
+			[[NSNotificationCenter defaultCenter] addObserver:self
+													 selector:@selector(playerItemDidStalled:)
+														 name:AVPlayerItemPlaybackStalledNotification
+													   object:newItem];
+			[[NSNotificationCenter defaultCenter] addObserver:self
+													 selector:@selector(playerItemDidPlayToEndTime:)
+														 name:AVPlayerItemDidPlayToEndTimeNotification
+													   object:newItem];
+			self.scrubber.hidden = NO;
+			if (self.player.rate != 0) {
+				self.wantsToPlay = YES;
+			}
 		} else {
-			[self.playButton setImage:[UIImage imageNamed:@"Play"] forState:UIControlStateNormal];
+			self.scrubber.hidden = YES;
 		}
+		self.stalled = YES;
 
 	} else {
 		[super observeValueForKeyPath:path ofObject:object change:change context:context];

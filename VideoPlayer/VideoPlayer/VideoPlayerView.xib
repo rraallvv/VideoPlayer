@@ -12,6 +12,10 @@
             <rect key="frame" x="0.0" y="-3" width="447" height="307"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jy3-JM-ZsZ">
+                    <rect key="frame" x="0.0" y="0.0" width="447" height="307"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </view>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bky-sR-vcB">
                     <rect key="frame" x="0.0" y="0.0" width="447" height="46"/>
                     <subviews>
@@ -30,7 +34,7 @@
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="IUS-7G-DCe" customClass="Scrubber">
+                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="IUS-7G-DCe" customClass="Scrubber">
                             <rect key="frame" x="112" y="8" width="289" height="31"/>
                             <connections>
                                 <action selector="scrubberTouchDown:" destination="7EQ-Zj-Nco" eventType="touchDown" id="ULT-Pf-IL6"/>
@@ -49,12 +53,9 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="a97-X3-kvP" firstAttribute="leading" secondItem="bky-sR-vcB" secondAttribute="leading" constant="8" id="BEu-2N-cbS"/>
                         <constraint firstItem="bDo-V9-GpF" firstAttribute="leading" secondItem="bky-sR-vcB" secondAttribute="leading" constant="8" id="EKg-0v-84x"/>
                         <constraint firstAttribute="centerY" secondItem="IUS-7G-DCe" secondAttribute="centerY" id="IQW-m6-JoX"/>
-                        <constraint firstItem="IUS-7G-DCe" firstAttribute="leading" secondItem="a97-X3-kvP" secondAttribute="trailing" constant="41" id="QNt-EG-acY"/>
                         <constraint firstItem="GeM-fE-cJD" firstAttribute="leading" secondItem="IUS-7G-DCe" secondAttribute="trailing" constant="8" id="aEv-o2-qgb"/>
-                        <constraint firstItem="bDo-V9-GpF" firstAttribute="leading" secondItem="a97-X3-kvP" secondAttribute="trailing" constant="60" id="aQN-NG-t5k"/>
                         <constraint firstAttribute="trailing" secondItem="GeM-fE-cJD" secondAttribute="trailing" constant="8" id="bOW-BU-GDr"/>
                         <constraint firstAttribute="centerY" secondItem="a97-X3-kvP" secondAttribute="centerY" id="bof-P5-3pd"/>
                         <constraint firstAttribute="centerY" secondItem="GeM-fE-cJD" secondAttribute="centerY" id="esP-UH-trk"/>
@@ -62,16 +63,7 @@
                         <constraint firstItem="a97-X3-kvP" firstAttribute="leading" secondItem="bDo-V9-GpF" secondAttribute="trailing" constant="8" id="hFV-25-sM6"/>
                         <constraint firstAttribute="centerY" secondItem="bDo-V9-GpF" secondAttribute="centerY" id="pQY-KE-IAA"/>
                         <constraint firstItem="IUS-7G-DCe" firstAttribute="leading" secondItem="a97-X3-kvP" secondAttribute="trailing" constant="8" id="sjc-GC-wQP"/>
-                        <constraint firstItem="IUS-7G-DCe" firstAttribute="leading" secondItem="a97-X3-kvP" secondAttribute="trailing" constant="8" id="yZX-Os-FMk"/>
                     </constraints>
-                    <variation key="default">
-                        <mask key="constraints">
-                            <exclude reference="aQN-NG-t5k"/>
-                            <exclude reference="BEu-2N-cbS"/>
-                            <exclude reference="QNt-EG-acY"/>
-                            <exclude reference="yZX-Os-FMk"/>
-                        </mask>
-                    </variation>
                 </view>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K8m-17-7on">
                     <rect key="frame" x="0.0" y="261" width="447" height="46"/>
@@ -103,17 +95,26 @@
                         <constraint firstAttribute="height" constant="46" id="xQe-8i-Oku"/>
                     </constraints>
                 </view>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="wnt-gD-qVl">
+                    <rect key="frame" x="213" y="144" width="20" height="20"/>
+                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <gestureRecognizers/>
             <constraints>
+                <constraint firstItem="Jy3-JM-ZsZ" firstAttribute="leading" secondItem="7EQ-Zj-Nco" secondAttribute="leading" id="37O-tQ-AO3"/>
                 <constraint firstAttribute="bottom" secondItem="K8m-17-7on" secondAttribute="bottom" id="5cz-9j-9b4"/>
                 <constraint firstAttribute="bottom" secondItem="bky-sR-vcB" secondAttribute="bottom" id="GZZ-sN-lOl"/>
+                <constraint firstAttribute="trailing" secondItem="Jy3-JM-ZsZ" secondAttribute="trailing" id="RnC-Da-FaF"/>
                 <constraint firstAttribute="trailing" secondItem="K8m-17-7on" secondAttribute="trailing" id="UWa-za-4Gb"/>
                 <constraint firstItem="bky-sR-vcB" firstAttribute="top" secondItem="7EQ-Zj-Nco" secondAttribute="top" id="bge-AZ-0Jc"/>
+                <constraint firstItem="Jy3-JM-ZsZ" firstAttribute="top" secondItem="7EQ-Zj-Nco" secondAttribute="top" id="dSU-fr-Scl"/>
                 <constraint firstItem="bky-sR-vcB" firstAttribute="leading" secondItem="7EQ-Zj-Nco" secondAttribute="leading" id="e2C-eP-d7f"/>
+                <constraint firstAttribute="bottom" secondItem="Jy3-JM-ZsZ" secondAttribute="bottom" id="j3Q-lw-Ut5"/>
                 <constraint firstItem="K8m-17-7on" firstAttribute="leading" secondItem="7EQ-Zj-Nco" secondAttribute="leading" id="pi7-9h-J9X"/>
+                <constraint firstAttribute="centerY" secondItem="wnt-gD-qVl" secondAttribute="centerY" id="uJA-DL-vzk"/>
                 <constraint firstAttribute="trailing" secondItem="bky-sR-vcB" secondAttribute="trailing" id="x12-TW-4MQ"/>
+                <constraint firstAttribute="centerX" secondItem="wnt-gD-qVl" secondAttribute="centerX" id="xiS-ps-hTK"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -123,9 +124,12 @@
                 </mask>
             </variation>
             <connections>
+                <outlet property="activityIndicator" destination="wnt-gD-qVl" id="a6m-bi-N5Z"/>
                 <outlet property="bottomControlsView" destination="K8m-17-7on" id="m8r-kU-SLX"/>
                 <outlet property="closeButton" destination="bDo-V9-GpF" id="Wxe-S1-diS"/>
+                <outlet property="contentOverlayView" destination="Jy3-JM-ZsZ" id="B8d-F4-0ha"/>
                 <outlet property="panGestureRecognizer" destination="RA6-hx-P5G" id="dhy-nE-vBz"/>
+                <outlet property="pinchGestureRecognizer" destination="pcZ-5T-G41" id="6gE-Bo-4cz"/>
                 <outlet property="playBackTimeLabel" destination="a97-X3-kvP" id="2mN-te-t22"/>
                 <outlet property="playButton" destination="ZeX-Br-69W" id="X2z-kF-9OB"/>
                 <outlet property="scrubber" destination="IUS-7G-DCe" id="ecZ-rX-Jgu"/>
@@ -137,18 +141,19 @@
                 <outletCollection property="gestureRecognizers" destination="fan-uj-Zp0" appends="YES" id="iE1-t2-DzF"/>
                 <outletCollection property="gestureRecognizers" destination="RA6-hx-P5G" appends="YES" id="jh6-5u-fEX"/>
                 <outletCollection property="gestureRecognizers" destination="gJl-gW-dSF" appends="YES" id="8Sl-R1-Gy6"/>
+                <outletCollection property="gestureRecognizers" destination="pcZ-5T-G41" appends="YES" id="aA5-7F-typ"/>
             </connections>
-            <point key="canvasLocation" x="410.5" y="618.5"/>
+            <point key="canvasLocation" x="579.5" y="474.5"/>
         </view>
         <tapGestureRecognizer id="fan-uj-Zp0">
             <connections>
-                <action selector="handleTapGestureRecognizer:" destination="7EQ-Zj-Nco" id="wTw-ZE-MxJ"/>
+                <action selector="tapGestureRecognizer:" destination="7EQ-Zj-Nco" id="wTw-ZE-MxJ"/>
                 <outlet property="delegate" destination="7EQ-Zj-Nco" id="80b-fe-68y"/>
             </connections>
         </tapGestureRecognizer>
         <panGestureRecognizer minimumNumberOfTouches="1" id="RA6-hx-P5G">
             <connections>
-                <action selector="handlePanGestureRecognizer:" destination="7EQ-Zj-Nco" id="aj5-Il-zfN"/>
+                <action selector="panGestureRecognizer:" destination="7EQ-Zj-Nco" id="aj5-Il-zfN"/>
                 <outlet property="delegate" destination="7EQ-Zj-Nco" id="gCu-Yg-Mok"/>
             </connections>
         </panGestureRecognizer>
@@ -158,6 +163,12 @@
                 <outlet property="delegate" destination="7EQ-Zj-Nco" id="g1A-MX-1Iy"/>
             </connections>
         </swipeGestureRecognizer>
+        <pinchGestureRecognizer id="pcZ-5T-G41">
+            <connections>
+                <action selector="pinchGestureRecognizer:" destination="7EQ-Zj-Nco" id="AcG-3J-BpT"/>
+                <outlet property="delegate" destination="7EQ-Zj-Nco" id="GPd-Qq-X7A"/>
+            </connections>
+        </pinchGestureRecognizer>
     </objects>
     <resources>
         <image name="Close" width="32" height="32"/>

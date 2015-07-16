@@ -1,0 +1,5 @@
+#EXTM3U
+#EXTINF:1000,video1.mp4
+video1.mp4
+#EXTINF:2000,video2.mp4
+video2.mp4

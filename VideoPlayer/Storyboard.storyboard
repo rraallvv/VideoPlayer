@@ -1,124 +1,296 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="eqd-Ky-jzy">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="CuJ-tW-n5T">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--Main View Controller-->
-        <scene sceneID="xk9-bg-VHU">
+        <!--My Video Player Demo View Controller-->
+        <scene sceneID="IOd-wP-n3m">
             <objects>
-                <viewController id="eqd-Ky-jzy" customClass="MainViewController" sceneMemberID="viewController">
+                <viewController id="A2f-PB-0gz" customClass="MyVideoPlayerDemoViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="ElT-zl-WP3"/>
-                        <viewControllerLayoutGuide type="bottom" id="f1x-Ly-L5c"/>
+                        <viewControllerLayoutGuide type="top" id="YLP-Jg-Zwf"/>
+                        <viewControllerLayoutGuide type="bottom" id="x10-tB-Zb4"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="9Yz-XJ-gYs">
+                    <view key="view" contentMode="scaleToFill" id="RF2-zN-Lvz">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0X9-bJ-8FN">
-                                <rect key="frame" x="260" y="239" width="81" height="30"/>
-                                <state key="normal" title="Play Video1">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Video Player" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bNT-xQ-xrm">
+                                <rect key="frame" x="238" y="121" width="124" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="744-6I-2wG">
+                                <rect key="frame" x="200" y="150" width="200" height="150"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="744-6I-2wG" secondAttribute="height" multiplier="4:3" id="71e-8Y-vWz"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zc8-Au-8rR">
+                                <rect key="frame" x="229" y="308" width="142" height="30"/>
+                                <state key="normal" title="Play Video from URL">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="playVideo1ButtonAction:" destination="eqd-Ky-jzy" eventType="touchUpInside" id="6Dz-NK-pBo"/>
+                                    <action selector="playVideoFromURL:" destination="A2f-PB-0gz" eventType="touchUpInside" id="vZx-Ft-aX9"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0X9-bJ-8FN">
+                                <rect key="frame" x="260" y="346" width="80" height="30"/>
+                                <state key="normal" title="Play video1">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="playVideo1ButtonAction:" destination="A2f-PB-0gz" eventType="touchUpInside" id="ch3-zU-riv"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s4y-pJ-QJP">
-                                <rect key="frame" x="260" y="285" width="81" height="30"/>
-                                <state key="normal" title="Play Video2">
+                                <rect key="frame" x="260" y="384" width="80" height="30"/>
+                                <state key="normal" title="Play video2">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="playVideo2ButtonAction:" destination="eqd-Ky-jzy" eventType="touchUpInside" id="7JX-2T-YmN"/>
+                                    <action selector="playVideo2ButtonAction:" destination="A2f-PB-0gz" eventType="touchUpInside" id="Es6-zT-I1b"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NrZ-9Y-Fqd">
-                                <rect key="frame" x="242" y="331" width="116" height="30"/>
-                                <state key="normal" title="Play both Videos">
+                                <rect key="frame" x="262" y="422" width="76" height="30"/>
+                                <state key="normal" title="Play queue">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="playBothVideosButtonAction:" destination="eqd-Ky-jzy" eventType="touchUpInside" id="zCc-H8-mkl"/>
+                                    <action selector="playBothVideosButtonAction:" destination="A2f-PB-0gz" eventType="touchUpInside" id="Es5-PY-VBH"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="744-6I-2wG">
-                                <rect key="frame" x="336" y="400" width="256" height="192"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="192" id="1AB-nT-app"/>
-                                    <constraint firstAttribute="width" constant="256" id="6qV-7r-Gxx"/>
-                                </constraints>
-                            </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap me to go fullscreen" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HBU-hE-NAl">
-                                <rect key="frame" x="134" y="571" width="179" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Swipe me to the right to close" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bNT-xQ-xrm">
-                                <rect key="frame" x="349" y="371" width="230" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can drag me around too" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OWS-Mc-V29">
-                                <rect key="frame" x="95" y="465" width="218" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="NrZ-9Y-Fqd" firstAttribute="top" secondItem="s4y-pJ-QJP" secondAttribute="bottom" constant="16" id="16Q-lf-5t2"/>
-                            <constraint firstItem="s4y-pJ-QJP" firstAttribute="top" secondItem="0X9-bJ-8FN" secondAttribute="bottom" constant="16" id="4Jt-Eb-tfN"/>
-                            <constraint firstItem="HBU-hE-NAl" firstAttribute="bottom" secondItem="744-6I-2wG" secondAttribute="bottom" id="5EP-Uo-lC8"/>
-                            <constraint firstAttribute="centerX" secondItem="s4y-pJ-QJP" secondAttribute="centerX" id="8QG-ux-lnW"/>
-                            <constraint firstItem="s4y-pJ-QJP" firstAttribute="top" secondItem="NrZ-9Y-Fqd" secondAttribute="bottom" constant="8" symbolic="YES" id="AWp-gk-FGD"/>
-                            <constraint firstItem="744-6I-2wG" firstAttribute="top" secondItem="bNT-xQ-xrm" secondAttribute="bottom" constant="8" id="AsO-Wl-ppr"/>
-                            <constraint firstItem="OWS-Mc-V29" firstAttribute="top" secondItem="744-6I-2wG" secondAttribute="top" constant="65" id="Cpy-7d-Pfx"/>
-                            <constraint firstItem="744-6I-2wG" firstAttribute="leading" secondItem="HBU-hE-NAl" secondAttribute="trailing" constant="23" id="EIw-p2-saI"/>
-                            <constraint firstItem="744-6I-2wG" firstAttribute="leading" secondItem="OWS-Mc-V29" secondAttribute="trailing" constant="23" id="FbE-MB-TwP"/>
-                            <constraint firstItem="s4y-pJ-QJP" firstAttribute="top" secondItem="0X9-bJ-8FN" secondAttribute="bottom" constant="8" id="GHa-jD-TRa"/>
-                            <constraint firstAttribute="trailing" secondItem="744-6I-2wG" secondAttribute="trailing" constant="8" id="Iux-Ex-R5m"/>
-                            <constraint firstAttribute="centerY" secondItem="s4y-pJ-QJP" secondAttribute="centerY" id="JNi-ce-Bre"/>
-                            <constraint firstItem="NrZ-9Y-Fqd" firstAttribute="top" secondItem="s4y-pJ-QJP" secondAttribute="bottom" constant="8" id="RNs-Dd-IAo"/>
-                            <constraint firstItem="0X9-bJ-8FN" firstAttribute="centerX" secondItem="s4y-pJ-QJP" secondAttribute="centerX" id="Rd7-my-zXb"/>
-                            <constraint firstItem="OWS-Mc-V29" firstAttribute="centerY" secondItem="744-6I-2wG" secondAttribute="centerY" constant="-20.5" id="YjM-Oe-Zoy"/>
-                            <constraint firstAttribute="centerY" secondItem="NrZ-9Y-Fqd" secondAttribute="centerY" id="dZC-L9-cHh"/>
-                            <constraint firstItem="0X9-bJ-8FN" firstAttribute="centerX" secondItem="s4y-pJ-QJP" secondAttribute="centerX" id="deQ-2Q-afY"/>
-                            <constraint firstAttribute="width" secondItem="744-6I-2wG" secondAttribute="width" id="igb-ty-vi9"/>
-                            <constraint firstAttribute="centerX" secondItem="NrZ-9Y-Fqd" secondAttribute="centerX" id="kgV-rG-mJI"/>
-                            <constraint firstItem="s4y-pJ-QJP" firstAttribute="centerX" secondItem="NrZ-9Y-Fqd" secondAttribute="centerX" constant="0.5" id="oKk-3X-HL1"/>
-                            <constraint firstItem="s4y-pJ-QJP" firstAttribute="centerX" secondItem="NrZ-9Y-Fqd" secondAttribute="centerX" id="pI7-Nz-5h5"/>
-                            <constraint firstItem="s4y-pJ-QJP" firstAttribute="centerX" secondItem="NrZ-9Y-Fqd" secondAttribute="centerX" id="qji-gf-x5n"/>
-                            <constraint firstItem="bNT-xQ-xrm" firstAttribute="centerX" secondItem="744-6I-2wG" secondAttribute="centerX" id="vzO-Ob-h2d"/>
-                            <constraint firstItem="f1x-Ly-L5c" firstAttribute="top" secondItem="744-6I-2wG" secondAttribute="bottom" constant="8" id="z7W-ts-2OZ"/>
+                            <constraint firstItem="744-6I-2wG" firstAttribute="top" secondItem="bNT-xQ-xrm" secondAttribute="bottom" constant="8" symbolic="YES" id="6I7-bw-eBP"/>
+                            <constraint firstItem="s4y-pJ-QJP" firstAttribute="top" secondItem="0X9-bJ-8FN" secondAttribute="bottom" constant="8" symbolic="YES" id="8Gd-iV-7dq"/>
+                            <constraint firstItem="zc8-Au-8rR" firstAttribute="top" secondItem="744-6I-2wG" secondAttribute="bottom" constant="8" symbolic="YES" id="A6O-BC-oxw"/>
+                            <constraint firstItem="NrZ-9Y-Fqd" firstAttribute="top" secondItem="s4y-pJ-QJP" secondAttribute="bottom" constant="8" symbolic="YES" id="NtL-w3-yUp"/>
+                            <constraint firstItem="NrZ-9Y-Fqd" firstAttribute="centerX" secondItem="s4y-pJ-QJP" secondAttribute="centerX" id="ORP-6E-G7h"/>
+                            <constraint firstItem="zc8-Au-8rR" firstAttribute="centerX" secondItem="0X9-bJ-8FN" secondAttribute="centerX" id="QCs-DB-D64"/>
+                            <constraint firstAttribute="width" secondItem="744-6I-2wG" secondAttribute="width" multiplier="3:1" id="U8Q-9n-AQN"/>
+                            <constraint firstAttribute="centerY" secondItem="744-6I-2wG" secondAttribute="bottom" id="Zo7-oG-X12"/>
+                            <constraint firstItem="s4y-pJ-QJP" firstAttribute="centerX" secondItem="0X9-bJ-8FN" secondAttribute="centerX" id="bIQ-6S-8gr"/>
+                            <constraint firstItem="0X9-bJ-8FN" firstAttribute="top" secondItem="zc8-Au-8rR" secondAttribute="bottom" constant="8" symbolic="YES" id="iid-PF-zeS"/>
+                            <constraint firstAttribute="centerX" secondItem="bNT-xQ-xrm" secondAttribute="centerX" id="rac-Om-146"/>
+                            <constraint firstItem="bNT-xQ-xrm" firstAttribute="centerX" secondItem="744-6I-2wG" secondAttribute="centerX" id="tzx-JD-ohm"/>
+                            <constraint firstItem="744-6I-2wG" firstAttribute="centerX" secondItem="zc8-Au-8rR" secondAttribute="centerX" id="vDb-1Y-7tb"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="deQ-2Q-afY"/>
-                                <exclude reference="AWp-gk-FGD"/>
-                                <exclude reference="GHa-jD-TRa"/>
-                                <exclude reference="oKk-3X-HL1"/>
-                                <exclude reference="pI7-Nz-5h5"/>
-                                <exclude reference="RNs-Dd-IAo"/>
-                                <exclude reference="dZC-L9-cHh"/>
-                                <exclude reference="kgV-rG-mJI"/>
-                                <exclude reference="igb-ty-vi9"/>
-                            </mask>
-                        </variation>
                     </view>
+                    <tabBarItem key="tabBarItem" systemItem="favorites" id="md5-9S-aOu"/>
                     <connections>
-                        <outlet property="videoView" destination="744-6I-2wG" id="Nas-Bm-qJC"/>
+                        <outlet property="videoView" destination="744-6I-2wG" id="whL-Tz-2DW"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="HwQ-Pp-jWs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="98S-0F-iZu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="347" y="547"/>
+            <point key="canvasLocation" x="1645" y="211"/>
+        </scene>
+        <!--Player Demo View Controller-->
+        <scene sceneID="8UV-VY-aSk">
+            <objects>
+                <viewController id="J4x-V0-DOO" customClass="AVPlayerDemoViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="43X-LZ-kXK"/>
+                        <viewControllerLayoutGuide type="bottom" id="8Mo-QG-cGL"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hG5-SV-myo">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="playerViewController" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6be-m0-enU">
+                                <rect key="frame" x="221" y="121" width="158" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zKw-Qu-093">
+                                <rect key="frame" x="200" y="150" width="200" height="150"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="zKw-Qu-093" secondAttribute="height" multiplier="4:3" id="nhe-gU-9fk"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1BC-gW-8fK">
+                                <rect key="frame" x="229" y="308" width="142" height="30"/>
+                                <state key="normal" title="Play Video from URL">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="playVideoFromURL:" destination="J4x-V0-DOO" eventType="touchUpInside" id="FPY-sc-62v"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cd7-Jj-2yM">
+                                <rect key="frame" x="260" y="346" width="80" height="30"/>
+                                <state key="normal" title="Play video1">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="playVideo1ButtonAction:" destination="J4x-V0-DOO" eventType="touchUpInside" id="jO0-5y-NoF"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zzc-7p-Bhu">
+                                <rect key="frame" x="260" y="384" width="80" height="30"/>
+                                <state key="normal" title="Play video2">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="playVideo2ButtonAction:" destination="J4x-V0-DOO" eventType="touchUpInside" id="n9j-EL-ZCu"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9dS-t6-ZXY">
+                                <rect key="frame" x="262" y="422" width="76" height="30"/>
+                                <state key="normal" title="Play queue">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="playBothVideosButtonAction:" destination="J4x-V0-DOO" eventType="touchUpInside" id="wbG-MH-4Ue"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="6be-m0-enU" secondAttribute="centerX" id="0l6-Cf-fWq"/>
+                            <constraint firstAttribute="centerY" secondItem="zKw-Qu-093" secondAttribute="bottom" id="73e-di-7ym"/>
+                            <constraint firstItem="cd7-Jj-2yM" firstAttribute="top" secondItem="1BC-gW-8fK" secondAttribute="bottom" constant="8" symbolic="YES" id="7ud-PK-CGy"/>
+                            <constraint firstItem="9dS-t6-ZXY" firstAttribute="top" secondItem="Zzc-7p-Bhu" secondAttribute="bottom" constant="8" symbolic="YES" id="9vh-es-EXl"/>
+                            <constraint firstItem="Zzc-7p-Bhu" firstAttribute="top" secondItem="cd7-Jj-2yM" secondAttribute="bottom" constant="8" symbolic="YES" id="A9T-vx-qV7"/>
+                            <constraint firstAttribute="width" secondItem="zKw-Qu-093" secondAttribute="width" multiplier="3:1" id="DBM-zH-wGh"/>
+                            <constraint firstItem="1BC-gW-8fK" firstAttribute="top" secondItem="zKw-Qu-093" secondAttribute="bottom" constant="8" symbolic="YES" id="QbU-vX-AwU"/>
+                            <constraint firstItem="1BC-gW-8fK" firstAttribute="centerX" secondItem="cd7-Jj-2yM" secondAttribute="centerX" id="RD2-fQ-u5g"/>
+                            <constraint firstItem="6be-m0-enU" firstAttribute="centerX" secondItem="zKw-Qu-093" secondAttribute="centerX" id="fcg-ki-D7w"/>
+                            <constraint firstItem="zKw-Qu-093" firstAttribute="top" secondItem="6be-m0-enU" secondAttribute="bottom" constant="8" symbolic="YES" id="flA-9u-dF1"/>
+                            <constraint firstItem="9dS-t6-ZXY" firstAttribute="centerX" secondItem="Zzc-7p-Bhu" secondAttribute="centerX" id="h83-Rb-yO0"/>
+                            <constraint firstItem="Zzc-7p-Bhu" firstAttribute="centerX" secondItem="cd7-Jj-2yM" secondAttribute="centerX" id="iko-JD-t3d"/>
+                            <constraint firstItem="zKw-Qu-093" firstAttribute="centerX" secondItem="1BC-gW-8fK" secondAttribute="centerX" id="ksg-ae-Z6r"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" systemItem="favorites" id="ei4-Cf-dzN"/>
+                    <connections>
+                        <outlet property="playerView" destination="zKw-Qu-093" id="NmL-0Y-dJR"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MJI-bj-x9e" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1645" y="873"/>
+        </scene>
+        <!--Movie Player Demo View Controller-->
+        <scene sceneID="CWb-QN-OTR">
+            <objects>
+                <viewController id="Yea-0W-hlJ" customClass="MPMoviePlayerDemoViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ae9-ie-7Uv"/>
+                        <viewControllerLayoutGuide type="bottom" id="Wnh-x3-2oS"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="IV1-0C-xwP">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MPMoviePlayerViewController" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bdf-oE-I5K">
+                                <rect key="frame" x="184" y="122" width="231" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GLp-3q-NzA">
+                                <rect key="frame" x="200" y="151" width="200" height="149"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="GLp-3q-NzA" secondAttribute="height" multiplier="95:71" id="ybW-HI-UCH"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jCT-L1-fS3">
+                                <rect key="frame" x="229" y="308" width="142" height="30"/>
+                                <state key="normal" title="Play Video from URL">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="playVideoFromURL:" destination="Yea-0W-hlJ" eventType="touchUpInside" id="5Y6-ic-wTD"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gDD-qY-505">
+                                <rect key="frame" x="260" y="346" width="80" height="30"/>
+                                <state key="normal" title="Play video1">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="playVideo1ButtonAction:" destination="Yea-0W-hlJ" eventType="touchUpInside" id="cEu-z8-zij"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GZJ-iY-1D1">
+                                <rect key="frame" x="260" y="384" width="80" height="30"/>
+                                <state key="normal" title="Play video2">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="playVideo2ButtonAction:" destination="Yea-0W-hlJ" eventType="touchUpInside" id="IeF-7l-FyP"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JSz-iZ-qE9">
+                                <rect key="frame" x="262" y="422" width="76" height="30"/>
+                                <state key="normal" title="Play queue">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="playBothVideosButtonAction:" destination="Yea-0W-hlJ" eventType="touchUpInside" id="oht-4w-uWL"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="bdf-oE-I5K" firstAttribute="centerX" secondItem="GLp-3q-NzA" secondAttribute="centerX" id="2GZ-j1-0XR"/>
+                            <constraint firstItem="gDD-qY-505" firstAttribute="centerX" secondItem="GZJ-iY-1D1" secondAttribute="centerX" id="Fw0-8z-X5q"/>
+                            <constraint firstItem="gDD-qY-505" firstAttribute="top" secondItem="jCT-L1-fS3" secondAttribute="bottom" constant="8" symbolic="YES" id="IxS-ag-3lm"/>
+                            <constraint firstItem="GZJ-iY-1D1" firstAttribute="top" secondItem="gDD-qY-505" secondAttribute="bottom" constant="8" symbolic="YES" id="Xtg-Sn-lL6"/>
+                            <constraint firstAttribute="width" secondItem="GLp-3q-NzA" secondAttribute="width" multiplier="3:1" id="YoM-ZG-4yv"/>
+                            <constraint firstItem="GLp-3q-NzA" firstAttribute="top" secondItem="bdf-oE-I5K" secondAttribute="bottom" constant="8" symbolic="YES" id="bwy-Ih-fLs"/>
+                            <constraint firstItem="GLp-3q-NzA" firstAttribute="centerX" secondItem="jCT-L1-fS3" secondAttribute="centerX" id="elV-1l-usb"/>
+                            <constraint firstAttribute="centerY" secondItem="GLp-3q-NzA" secondAttribute="bottom" id="jL7-yA-YLr"/>
+                            <constraint firstAttribute="centerX" secondItem="bdf-oE-I5K" secondAttribute="centerX" id="lnV-dk-FEh"/>
+                            <constraint firstItem="JSz-iZ-qE9" firstAttribute="centerX" secondItem="GZJ-iY-1D1" secondAttribute="centerX" id="rhi-4V-SkP"/>
+                            <constraint firstItem="jCT-L1-fS3" firstAttribute="top" secondItem="GLp-3q-NzA" secondAttribute="bottom" constant="8" symbolic="YES" id="skc-DP-ko9"/>
+                            <constraint firstItem="gDD-qY-505" firstAttribute="centerX" secondItem="jCT-L1-fS3" secondAttribute="centerX" id="uVk-G6-f3O"/>
+                            <constraint firstItem="JSz-iZ-qE9" firstAttribute="top" secondItem="GZJ-iY-1D1" secondAttribute="bottom" constant="8" symbolic="YES" id="v6e-aq-1NW"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" systemItem="favorites" id="W09-sN-d3Q"/>
+                    <connections>
+                        <outlet property="playerView" destination="GLp-3q-NzA" id="HPl-sg-Pgj"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VOD-6q-1oE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1645" y="1535"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="t2A-vN-hq0">
+            <objects>
+                <tabBarController id="CuJ-tW-n5T" sceneMemberID="viewController">
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="MrJ-XE-lU4">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="A2f-PB-0gz" kind="relationship" relationship="viewControllers" id="DSB-nL-8bE"/>
+                        <segue destination="J4x-V0-DOO" kind="relationship" relationship="viewControllers" id="deG-QW-oFg"/>
+                        <segue destination="Yea-0W-hlJ" kind="relationship" relationship="viewControllers" id="2mW-NN-F9c"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1KT-0g-0E1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="732" y="873"/>
         </scene>
     </scenes>
 </document>

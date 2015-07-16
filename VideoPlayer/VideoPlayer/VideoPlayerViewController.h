@@ -30,5 +30,10 @@
 @interface VideoPlayerViewController : UIViewController
 
 @property (strong, nonatomic) AVPlayer *player;
+@property (nonatomic, readonly) CGRect videoBounds;
+@property (nonatomic, copy) NSString *videoGravity;
+@property (nonatomic, readonly, getter=isReadyForDisplay) BOOL readyForDisplay;
+@property (nonatomic, readonly) UIView *contentOverlayView;
+@property (nonatomic) BOOL showsPlaybackControls;
 
 @end

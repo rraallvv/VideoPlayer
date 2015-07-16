@@ -42,22 +42,47 @@
 	return (VideoPlayerView *)self.view;
 }
 
+- (AVPlayer *)player {
+	return self.playerView.player;
+}
+
 - (void)setPlayer:(AVPlayer *)player {
 	self.playerView.player = player;
 }
 
-- (AVPlayer *)player {
-	return self.playerView.player;
+- (CGRect)videoBounds {
+	CALayer *layer = self.playerView.playerLayer.sublayers.firstObject;
+	CGRect transformedBounds = CGRectApplyAffineTransform(layer.bounds, CATransform3DGetAffineTransform(layer.sublayerTransform));
+	return transformedBounds;
+}
+
+- (NSString *)videoGravity {
+	return self.playerView.playerLayer.videoGravity;
+}
+
+- (void)setVideoGravity:(NSString *)videoGravity {
+	self.playerView.playerLayer.videoGravity = videoGravity;
+}
+
+- (BOOL)isReadyForDisplay {
+	return self.player.status == AVPlayerStatusReadyToPlay;
+}
+
+- (UIView *)contentOverlayView {
+	return self.playerView.contentOverlayView;
 }
 
 
 #pragma mark Lifecycle
 
 - (void)loadView {
+	self.showsPlaybackControls = YES;
+
 	VideoPlayerView *playerView = [[[NSBundle mainBundle] loadNibNamed:@"VideoPlayerView"
 																 owner:self
 															   options:nil] objectAtIndex:0];
 	self.view = playerView;
+
 	self.playerView.delegate = self;
 }
 
@@ -71,13 +96,10 @@
 }
 
 
-#pragma mark Public methods
+#pragma mark Delegate methods
 
-- (void)presentInFullscreen {
-	if (self.parentViewController) {
-		[self removeFromParentViewController];
-	}
-	[UIApplication.sharedApplication.keyWindow.rootViewController presentViewController:self animated:NO completion:nil];
+- (BOOL)shouldShowPlaybackControls {
+	return self.showsPlaybackControls;
 }
 
 @end

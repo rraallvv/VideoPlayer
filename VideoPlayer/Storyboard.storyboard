@@ -94,7 +94,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="98S-0F-iZu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1645" y="211"/>
+            <point key="canvasLocation" x="1645" y="157"/>
         </scene>
         <!--AVPlayerViewController-->
         <scene sceneID="8UV-VY-aSk">
@@ -182,7 +182,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MJI-bj-x9e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1645" y="873"/>
+            <point key="canvasLocation" x="1645" y="813"/>
         </scene>
         <!--MPMoviePlayerViewController-->
         <scene sceneID="CWb-QN-OTR">
@@ -270,7 +270,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VOD-6q-1oE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1645" y="1535"/>
+            <point key="canvasLocation" x="1645" y="1470"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="t2A-vN-hq0">
@@ -290,7 +290,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1KT-0g-0E1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="732" y="873"/>
+            <point key="canvasLocation" x="929" y="870"/>
         </scene>
     </scenes>
     <resources>

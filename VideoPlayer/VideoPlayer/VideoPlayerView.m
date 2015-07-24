@@ -161,7 +161,10 @@ static NSString *stringFromCMTime(CMTime time) {
 	_periodicTimeObserver = [player addPeriodicTimeObserverForInterval:interval queue:NULL usingBlock: ^(CMTime time) {
 		if (self.player.rate != 0 && CMTimeCompare(time, lastTime) != 0) {
 			if (swithToFullscreenWhenPlaybackStarts) {
-				[self performSelector:@selector(setFullscreen:) withObject:@YES afterDelay:CMTimeGetSeconds(interval)];
+				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(CMTimeGetSeconds(interval) * NSEC_PER_SEC)),
+							   dispatch_get_main_queue(), ^{
+					self.fullscreen = YES;
+				});
 				swithToFullscreenWhenPlaybackStarts = NO;
 			}
 			if (self.stalled) {
@@ -198,60 +201,69 @@ static NSString *stringFromCMTime(CMTime time) {
 
 	_canToggleFullscreen = NO;
 
-	static CGRect theRect;
-
-	if (CGRectIsEmpty(theRect)) {
-		theRect = self.containerView.frame;
-	}
-
 	[self setShowsActivityIndicator:NO];
 
+	CGRect screenBounds = [[UIScreen mainScreen] bounds];
+
 	if (fullscreen) {
+		[UIApplication.sharedApplication.keyWindow addSubview:self];
+		self.frame = self.containerView.frame;
+		self.containerView.hidden = YES;
+
 		[UIView animateWithDuration:FullscreenTransitionDuration animations:^{
-			CGRect screenRect = [[UIScreen mainScreen] bounds];
-			theRect = self.containerView.frame;
-			self.containerView.frame = screenRect;
-			[self.zoomButton setImage:[UIImage imageNamed:@"ZoomOut"] forState:UIControlStateNormal];
+			self.frame = screenBounds;
 
 		} completion:^(BOOL finished) {
 			if (self.delegate.parentViewController) {
 				[self.delegate removeFromParentViewController];
 			}
-			[UIApplication.sharedApplication.keyWindow.rootViewController presentViewController:self.delegate animated:NO completion:nil];
-			self.controlsHidden = NO;
-			self.showBorders = NO;
-			if (_stalled) {
-				[self setShowsActivityIndicator:YES];
-			}
-			_canToggleFullscreen = YES;
+			[UIApplication.sharedApplication.keyWindow.rootViewController presentViewController:self.delegate animated:NO completion:^{
+				[self.zoomButton setImage:[UIImage imageNamed:@"ZoomOut"] forState:UIControlStateNormal];
+
+				self.controlsHidden = NO;
+				self.showBorders = NO;
+
+				if (self.stalled) {
+					[self setShowsActivityIndicator:YES];
+				}
+
+				_canToggleFullscreen = YES;
+			}];
 		}];
 
 	} else {
 		self.topControlsView.hidden = YES;
 		self.bottomControlsView.hidden = YES;
 
+		[UIApplication.sharedApplication.keyWindow addSubview:self];
+
 		UIViewController *presentingViewController = [self.delegate presentingViewController];
 
 		if (!presentingViewController) {
-			self.containerView.frame = theRect;
-			self.frame = CGRectMake(0, 0, CGRectGetWidth(theRect), CGRectGetHeight(theRect));
+			self.frame = self.containerView.bounds;
 
 		} else {
-			[presentingViewController dismissViewControllerAnimated:NO completion:^{
-				CGRect screenRect = [[UIScreen mainScreen] bounds];
-				self.containerView.frame = screenRect;
-				self.frame = screenRect;
-				[self.containerView addSubview:self];
+			//[UIApplication.sharedApplication.keyWindow addSubview:self];
 
+			[presentingViewController dismissViewControllerAnimated:NO completion:^{
+				[UIApplication.sharedApplication.keyWindow addSubview:self];
+				self.frame = screenBounds;
 				self.showBorders = YES;
 
 				[UIView animateWithDuration:FullscreenTransitionDuration animations:^{
-					self.containerView.frame = theRect;
-					[self.zoomButton setImage:[UIImage imageNamed:@"ZoomIn"] forState:UIControlStateNormal];
+					self.frame = self.containerView.frame;
+
 				} completion:^(BOOL finished) {
-					if (_stalled) {
+					[self.containerView addSubview:self];
+					self.frame = self.containerView.bounds;
+					self.containerView.hidden = NO;
+
+					[self.zoomButton setImage:[UIImage imageNamed:@"ZoomIn"] forState:UIControlStateNormal];
+
+					if (self.stalled) {
 						[self setShowsActivityIndicator:YES];
 					}
+
 					_canToggleFullscreen = YES;
 				}];
 			}];

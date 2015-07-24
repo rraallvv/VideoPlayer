@@ -35,6 +35,9 @@ static const CGFloat BoundsRestitutionDuration = 0.1;
 static const CGFloat SwipeFadeDuration = 0.2;//0.1;
 static const CGFloat ControlsFadeDuration = 0.5;
 
+/* Layout parameters */
+static const CGFloat separation = 8.0;
+
 /* Key-Value Observation keys */
 static NSString * const PlayerCurrentItemObservationKeypath	= @"player.currentItem";
 
@@ -55,7 +58,8 @@ static NSString *stringFromCMTime(CMTime time) {
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UISlider *scrubber;
-@property (weak, nonatomic) IBOutlet UILabel *playBackTimeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *playbackTimeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *remainingPlaybackTimeLabel;
 @property (weak, nonatomic) IBOutlet UIButton *zoomButton;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
@@ -109,12 +113,65 @@ static NSString *stringFromCMTime(CMTime time) {
 	}
 }
 
-- (void)dealloc {
-	[self.layer removeObserver:self forKeyPath:PlayerCurrentItemObservationKeypath];
-}
-
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
 	return YES;
+}
+
+- (void)layoutSubviews {
+	[super layoutSubviews];
+
+	CGRect playerFrame = self.frame;
+
+	/* Top view */
+	CGRect topControlsFrame = self.topControlsView.frame;
+	topControlsFrame = CGRectMake(0,
+								  0,
+								  CGRectGetWidth(playerFrame),
+								  CGRectGetHeight(topControlsFrame));
+	self.topControlsView.frame = topControlsFrame;
+	CGRect topControlsBounds = self.topControlsView.bounds;
+
+	/* Close button */
+	CGRect closeButtonFrame = self.closeButton.frame;
+	self.closeButton.center = CGPointMake(separation + CGRectGetWidth(closeButtonFrame)/2,
+										  CGRectGetMidY(topControlsBounds));
+
+	/* Zoom button */
+	CGRect zoomButtonFrame = self.zoomButton.frame;
+	self.zoomButton.center = CGPointMake(CGRectGetWidth(topControlsBounds) - separation - CGRectGetWidth(zoomButtonFrame)/2,
+										 CGRectGetMidY(topControlsBounds));
+
+	/* Time labels and the scrubber */
+	[self layoutTimeAndScrubber];
+
+	/* Bottom view */
+	CGRect bottomControlsFrame = self.bottomControlsView.frame;
+	bottomControlsFrame = CGRectMake(0,
+									 CGRectGetMaxY(playerFrame) - CGRectGetHeight(bottomControlsFrame),
+									 CGRectGetWidth(playerFrame),
+									 CGRectGetHeight(bottomControlsFrame));
+	self.bottomControlsView.frame = bottomControlsFrame;
+	CGRect bottomControlsBounds = self.bottomControlsView.bounds;
+
+	/* Play button*/
+	self.playButton.center = CGPointMake(CGRectGetMidX(bottomControlsBounds),
+										 CGRectGetMidY(bottomControlsBounds));
+
+	/* Volume view */
+	CGRect volumeFrame = self.volumeView.frame;
+	volumeFrame = CGRectMake(separation,
+							 CGRectGetMidY(bottomControlsBounds) - CGRectGetHeight(volumeFrame)/2,
+							 CGRectGetWidth(bottomControlsBounds)/4,
+							 CGRectGetHeight(volumeFrame));
+	self.volumeView.frame = volumeFrame;
+
+	/* Activity indicator */
+	self.activityIndicator.center = CGPointMake(CGRectGetMidX(playerFrame),
+												CGRectGetMidY(playerFrame));
+}
+
+- (void)dealloc {
+	[self.layer removeObserver:self forKeyPath:PlayerCurrentItemObservationKeypath];
 }
 
 
@@ -176,7 +233,11 @@ static NSString *stringFromCMTime(CMTime time) {
 			double normalizedTime = (double) time.value / (double) endTime.value;
 			self.scrubber.value = normalizedTime;
 		}
-		self.playBackTimeLabel.text = stringFromCMTime(time);
+		self.playbackTimeLabel.text = stringFromCMTime(time);
+		self.remainingPlaybackTimeLabel.text = [NSString stringWithFormat:@"-%@", stringFromCMTime(CMTimeSubtract(endTime, time))];
+
+		[self layoutTimeAndScrubber];
+
 		lastTime = time;
 	}];
 
@@ -227,6 +288,8 @@ static NSString *stringFromCMTime(CMTime time) {
 					[self setShowsActivityIndicator:YES];
 				}
 
+				[self setNeedsLayout];
+
 				_canToggleFullscreen = YES;
 			}];
 		}];
@@ -263,6 +326,8 @@ static NSString *stringFromCMTime(CMTime time) {
 					if (self.stalled) {
 						[self setShowsActivityIndicator:YES];
 					}
+
+					[self setNeedsLayout];
 
 					_canToggleFullscreen = YES;
 				}];
@@ -492,6 +557,30 @@ static NSString *stringFromCMTime(CMTime time) {
 	}
 
 	return center;
+}
+
+- (void)layoutTimeAndScrubber {
+	/* Playback time */
+	[self.playbackTimeLabel sizeToFit];
+	CGRect playbackTimeFrame = self.playbackTimeLabel.frame;
+	self.playbackTimeLabel.center = CGPointMake(CGRectGetMaxX(self.closeButton.frame) + separation + CGRectGetWidth(playbackTimeFrame)/2,
+												CGRectGetMidY(playbackTimeFrame));
+
+	/* Remaining playback time */
+	[self.remainingPlaybackTimeLabel sizeToFit];
+	CGRect remainingPlaybackTimeFrame = self.remainingPlaybackTimeLabel.frame;
+	self.remainingPlaybackTimeLabel.center = CGPointMake(CGRectGetMinX(self.zoomButton.frame) - separation - CGRectGetWidth(remainingPlaybackTimeFrame)/2,
+														 CGRectGetMidY(remainingPlaybackTimeFrame));
+
+	/* Scrubber */
+	CGRect scrubberFrame = self.scrubber.frame;
+	CGFloat scrubberMinX = CGRectGetMaxX(self.playbackTimeLabel.frame) + separation;
+	CGFloat scrubberMaxX = CGRectGetMinX(self.remainingPlaybackTimeLabel.frame) - separation;
+	scrubberFrame = CGRectMake(scrubberMinX,
+							   CGRectGetMinY(scrubberFrame),
+							   scrubberMaxX - scrubberMinX,
+							   CGRectGetHeight(scrubberFrame));
+	self.scrubber.frame = scrubberFrame;
 }
 
 

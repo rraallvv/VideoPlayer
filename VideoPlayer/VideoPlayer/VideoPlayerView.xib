@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VideoPlayerView"/>
@@ -12,15 +11,18 @@
             <rect key="frame" x="0.0" y="-3" width="447" height="307"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jy3-JM-ZsZ">
+                <view hidden="YES" opaque="NO" contentMode="scaleToFill" id="Jy3-JM-ZsZ">
                     <rect key="frame" x="0.0" y="0.0" width="447" height="307"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
-                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bky-sR-vcB">
+                <view hidden="YES" contentMode="scaleToFill" id="bky-sR-vcB">
                     <rect key="frame" x="0.0" y="0.0" width="447" height="46"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bDo-V9-GpF">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="bDo-V9-GpF">
                             <rect key="frame" x="8" y="7" width="32" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" image="Close">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -28,14 +30,16 @@
                                 <action selector="closeButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="41B-Di-iZy"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0:00:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a97-X3-kvP">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0:00:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="a97-X3-kvP">
                             <rect key="frame" x="48" y="13" width="58" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="IUS-7G-DCe" customClass="Scrubber">
-                            <rect key="frame" x="112" y="8" width="289" height="31"/>
+                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" id="IUS-7G-DCe" customClass="Scrubber">
+                            <rect key="frame" x="112" y="8" width="212" height="31"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <connections>
                                 <action selector="scrubberTouchDown:" destination="7EQ-Zj-Nco" eventType="touchDown" id="ULT-Pf-IL6"/>
                                 <action selector="scrubberTouchUp:" destination="7EQ-Zj-Nco" eventType="touchUpOutside" id="CW5-53-os2"/>
@@ -43,8 +47,16 @@
                                 <action selector="scrubberValueChanged:" destination="7EQ-Zj-Nco" eventType="valueChanged" id="dXZ-cp-p0h"/>
                             </connections>
                         </slider>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GeM-fE-cJD">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0:00:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="F6T-Tg-mWs">
+                            <rect key="frame" x="332" y="13" width="68" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="GeM-fE-cJD">
                             <rect key="frame" x="407" y="7" width="32" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" image="ZoomIn"/>
                             <connections>
                                 <action selector="zoomButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="9VH-ZC-cXX"/>
@@ -52,31 +64,19 @@
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstItem="bDo-V9-GpF" firstAttribute="leading" secondItem="bky-sR-vcB" secondAttribute="leading" constant="8" id="EKg-0v-84x"/>
-                        <constraint firstAttribute="centerY" secondItem="IUS-7G-DCe" secondAttribute="centerY" id="IQW-m6-JoX"/>
-                        <constraint firstItem="GeM-fE-cJD" firstAttribute="leading" secondItem="IUS-7G-DCe" secondAttribute="trailing" constant="8" id="aEv-o2-qgb"/>
-                        <constraint firstAttribute="trailing" secondItem="GeM-fE-cJD" secondAttribute="trailing" constant="8" id="bOW-BU-GDr"/>
-                        <constraint firstAttribute="centerY" secondItem="a97-X3-kvP" secondAttribute="centerY" id="bof-P5-3pd"/>
-                        <constraint firstAttribute="centerY" secondItem="GeM-fE-cJD" secondAttribute="centerY" id="esP-UH-trk"/>
-                        <constraint firstAttribute="height" constant="46" id="g32-gw-SMF"/>
-                        <constraint firstItem="a97-X3-kvP" firstAttribute="leading" secondItem="bDo-V9-GpF" secondAttribute="trailing" constant="8" id="hFV-25-sM6"/>
-                        <constraint firstAttribute="centerY" secondItem="bDo-V9-GpF" secondAttribute="centerY" id="pQY-KE-IAA"/>
-                        <constraint firstItem="IUS-7G-DCe" firstAttribute="leading" secondItem="a97-X3-kvP" secondAttribute="trailing" constant="8" id="sjc-GC-wQP"/>
-                    </constraints>
                 </view>
-                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K8m-17-7on">
+                <view hidden="YES" contentMode="scaleToFill" id="K8m-17-7on">
                     <rect key="frame" x="0.0" y="261" width="447" height="46"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jo5-1J-SJ6" customClass="VolumeView">
+                        <view opaque="NO" contentMode="scaleToFill" id="Jo5-1J-SJ6" customClass="VolumeView">
                             <rect key="frame" x="8" y="16" width="112" height="15"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="15" id="U5W-tP-0rw"/>
-                            </constraints>
                         </view>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZeX-Br-69W">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ZeX-Br-69W">
                             <rect key="frame" x="207" y="7" width="32" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" image="Pause">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -86,43 +86,16 @@
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="centerX" secondItem="ZeX-Br-69W" secondAttribute="centerX" constant="0.5" id="4M8-9m-HMx"/>
-                        <constraint firstAttribute="centerY" secondItem="Jo5-1J-SJ6" secondAttribute="centerY" id="TcI-VB-TXD"/>
-                        <constraint firstItem="Jo5-1J-SJ6" firstAttribute="leading" secondItem="K8m-17-7on" secondAttribute="leading" constant="8" id="Vgb-HO-QZB"/>
-                        <constraint firstAttribute="centerY" secondItem="ZeX-Br-69W" secondAttribute="centerY" id="WQy-1j-aE7"/>
-                        <constraint firstAttribute="width" secondItem="Jo5-1J-SJ6" secondAttribute="width" multiplier="4:1" id="o67-Dy-L4q"/>
-                        <constraint firstAttribute="height" constant="46" id="xQe-8i-Oku"/>
-                    </constraints>
                 </view>
-                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="wnt-gD-qVl">
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" id="wnt-gD-qVl">
                     <rect key="frame" x="213" y="144" width="20" height="20"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <gestureRecognizers/>
-            <constraints>
-                <constraint firstItem="Jy3-JM-ZsZ" firstAttribute="leading" secondItem="7EQ-Zj-Nco" secondAttribute="leading" id="37O-tQ-AO3"/>
-                <constraint firstAttribute="bottom" secondItem="K8m-17-7on" secondAttribute="bottom" id="5cz-9j-9b4"/>
-                <constraint firstAttribute="bottom" secondItem="bky-sR-vcB" secondAttribute="bottom" id="GZZ-sN-lOl"/>
-                <constraint firstAttribute="trailing" secondItem="Jy3-JM-ZsZ" secondAttribute="trailing" id="RnC-Da-FaF"/>
-                <constraint firstAttribute="trailing" secondItem="K8m-17-7on" secondAttribute="trailing" id="UWa-za-4Gb"/>
-                <constraint firstItem="bky-sR-vcB" firstAttribute="top" secondItem="7EQ-Zj-Nco" secondAttribute="top" id="bge-AZ-0Jc"/>
-                <constraint firstItem="Jy3-JM-ZsZ" firstAttribute="top" secondItem="7EQ-Zj-Nco" secondAttribute="top" id="dSU-fr-Scl"/>
-                <constraint firstItem="bky-sR-vcB" firstAttribute="leading" secondItem="7EQ-Zj-Nco" secondAttribute="leading" id="e2C-eP-d7f"/>
-                <constraint firstAttribute="bottom" secondItem="Jy3-JM-ZsZ" secondAttribute="bottom" id="j3Q-lw-Ut5"/>
-                <constraint firstItem="K8m-17-7on" firstAttribute="leading" secondItem="7EQ-Zj-Nco" secondAttribute="leading" id="pi7-9h-J9X"/>
-                <constraint firstAttribute="centerY" secondItem="wnt-gD-qVl" secondAttribute="centerY" id="uJA-DL-vzk"/>
-                <constraint firstAttribute="trailing" secondItem="bky-sR-vcB" secondAttribute="trailing" id="x12-TW-4MQ"/>
-                <constraint firstAttribute="centerX" secondItem="wnt-gD-qVl" secondAttribute="centerX" id="xiS-ps-hTK"/>
-            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <variation key="default">
-                <mask key="constraints">
-                    <exclude reference="GZZ-sN-lOl"/>
-                </mask>
-            </variation>
             <connections>
                 <outlet property="activityIndicator" destination="wnt-gD-qVl" id="a6m-bi-N5Z"/>
                 <outlet property="bottomControlsView" destination="K8m-17-7on" id="m8r-kU-SLX"/>
@@ -130,8 +103,9 @@
                 <outlet property="contentOverlayView" destination="Jy3-JM-ZsZ" id="B8d-F4-0ha"/>
                 <outlet property="panGestureRecognizer" destination="RA6-hx-P5G" id="dhy-nE-vBz"/>
                 <outlet property="pinchGestureRecognizer" destination="pcZ-5T-G41" id="6gE-Bo-4cz"/>
-                <outlet property="playBackTimeLabel" destination="a97-X3-kvP" id="2mN-te-t22"/>
                 <outlet property="playButton" destination="ZeX-Br-69W" id="X2z-kF-9OB"/>
+                <outlet property="playbackTimeLabel" destination="a97-X3-kvP" id="2mN-te-t22"/>
+                <outlet property="remainingPlaybackTimeLabel" destination="F6T-Tg-mWs" id="MOw-9v-Sj0"/>
                 <outlet property="scrubber" destination="IUS-7G-DCe" id="ecZ-rX-Jgu"/>
                 <outlet property="swipeGestureRecognizer" destination="gJl-gW-dSF" id="kdr-jq-l52"/>
                 <outlet property="tapGestureRcognizer" destination="fan-uj-Zp0" id="Srh-rl-Ptl"/>
@@ -143,7 +117,7 @@
                 <outletCollection property="gestureRecognizers" destination="gJl-gW-dSF" appends="YES" id="8Sl-R1-Gy6"/>
                 <outletCollection property="gestureRecognizers" destination="pcZ-5T-G41" appends="YES" id="aA5-7F-typ"/>
             </connections>
-            <point key="canvasLocation" x="579.5" y="474.5"/>
+            <point key="canvasLocation" x="787.5" y="488.5"/>
         </view>
         <tapGestureRecognizer id="fan-uj-Zp0">
             <connections>
@@ -175,4 +149,9 @@
         <image name="Pause" width="32" height="32"/>
         <image name="ZoomIn" width="32" height="32"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

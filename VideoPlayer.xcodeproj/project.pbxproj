@@ -32,6 +32,7 @@
 		E4FCAF751B61D19B00274DC8 /* AVPlayerDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FCAF741B61D19B00274DC8 /* AVPlayerDemoViewController.m */; };
 		E4FCAF781B61D1A400274DC8 /* MPMoviwPlayerDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FCAF771B61D1A400274DC8 /* MPMoviwPlayerDemoViewController.m */; };
 		E4FCAF7A1B61D41000274DC8 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E4FCAF791B61D41000274DC8 /* Default-568h@2x.png */; };
+		E4FCAF7D1B624EC400274DC8 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E4FCAF7C1B624EC400274DC8 /* Media.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,7 +71,8 @@
 		E4FCAF741B61D19B00274DC8 /* AVPlayerDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVPlayerDemoViewController.m; sourceTree = "<group>"; };
 		E4FCAF761B61D1A300274DC8 /* MPMoviePlayerDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPMoviePlayerDemoViewController.h; sourceTree = "<group>"; };
 		E4FCAF771B61D1A400274DC8 /* MPMoviwPlayerDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPMoviwPlayerDemoViewController.m; sourceTree = "<group>"; };
-		E4FCAF791B61D41000274DC8 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		E4FCAF791B61D41000274DC8 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		E4FCAF7C1B624EC400274DC8 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +134,7 @@
 				6D094BA514BCF4C70097E75B /* AppDelegate.m */,
 				E4FCAF7B1B61D68F00274DC8 /* DemoViewControllers */,
 				E4558F091B52A328000D9688 /* Storyboard.storyboard */,
+				E4FCAF7C1B624EC400274DC8 /* Media.xcassets */,
 				E44BBE621B5DA25700C97F89 /* playlist.m3u */,
 				E4558F0B1B52AC73000D9688 /* video1.mp4 */,
 				E4558F0D1B530148000D9688 /* video2.mp4 */,
@@ -247,6 +250,7 @@
 				E4558F0A1B52A328000D9688 /* Storyboard.storyboard in Resources */,
 				E4FCAF7A1B61D41000274DC8 /* Default-568h@2x.png in Resources */,
 				E4558F0E1B530148000D9688 /* video2.mp4 in Resources */,
+				E4FCAF7D1B624EC400274DC8 /* Media.xcassets in Resources */,
 				E44BBE631B5DA25700C97F89 /* playlist.m3u in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

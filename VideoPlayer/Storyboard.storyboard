@@ -8,7 +8,7 @@
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--My Video Player Demo View Controller-->
+        <!--My Video Player-->
         <scene sceneID="IOd-wP-n3m">
             <objects>
                 <viewController id="A2f-PB-0gz" customClass="MyVideoPlayerDemoViewController" sceneMemberID="viewController">
@@ -21,8 +21,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Video Player" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bNT-xQ-xrm">
-                                <rect key="frame" x="238" y="121" width="124" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <rect key="frame" x="229" y="118" width="143" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -87,7 +87,7 @@
                             <constraint firstItem="744-6I-2wG" firstAttribute="centerX" secondItem="zc8-Au-8rR" secondAttribute="centerX" id="vDb-1Y-7tb"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" systemItem="favorites" id="md5-9S-aOu"/>
+                    <tabBarItem key="tabBarItem" title="My Video Player" image="Tab Icon" id="md5-9S-aOu"/>
                     <connections>
                         <outlet property="videoView" destination="744-6I-2wG" id="whL-Tz-2DW"/>
                     </connections>
@@ -96,7 +96,7 @@
             </objects>
             <point key="canvasLocation" x="1645" y="211"/>
         </scene>
-        <!--Player Demo View Controller-->
+        <!--AVPlayerViewController-->
         <scene sceneID="8UV-VY-aSk">
             <objects>
                 <viewController id="J4x-V0-DOO" customClass="AVPlayerDemoViewController" sceneMemberID="viewController">
@@ -108,9 +108,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="playerViewController" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6be-m0-enU">
-                                <rect key="frame" x="221" y="121" width="158" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AVPlayerViewController" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6be-m0-enU">
+                                <rect key="frame" x="197" y="118" width="206" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -175,7 +175,7 @@
                             <constraint firstItem="zKw-Qu-093" firstAttribute="centerX" secondItem="1BC-gW-8fK" secondAttribute="centerX" id="ksg-ae-Z6r"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" systemItem="favorites" id="ei4-Cf-dzN"/>
+                    <tabBarItem key="tabBarItem" title="AVPlayerViewController" image="Tab Icon" id="ei4-Cf-dzN"/>
                     <connections>
                         <outlet property="playerView" destination="zKw-Qu-093" id="NmL-0Y-dJR"/>
                     </connections>
@@ -184,7 +184,7 @@
             </objects>
             <point key="canvasLocation" x="1645" y="873"/>
         </scene>
-        <!--Movie Player Demo View Controller-->
+        <!--MPMoviePlayerViewController-->
         <scene sceneID="CWb-QN-OTR">
             <objects>
                 <viewController id="Yea-0W-hlJ" customClass="MPMoviePlayerDemoViewController" sceneMemberID="viewController">
@@ -197,8 +197,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MPMoviePlayerViewController" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bdf-oE-I5K">
-                                <rect key="frame" x="184" y="122" width="231" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <rect key="frame" x="167" y="119" width="266" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -263,7 +263,7 @@
                             <constraint firstItem="JSz-iZ-qE9" firstAttribute="top" secondItem="GZJ-iY-1D1" secondAttribute="bottom" constant="8" symbolic="YES" id="v6e-aq-1NW"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" systemItem="favorites" id="W09-sN-d3Q"/>
+                    <tabBarItem key="tabBarItem" title="MPMoviePlayerViewController" image="Tab Icon" id="W09-sN-d3Q"/>
                     <connections>
                         <outlet property="playerView" destination="GLp-3q-NzA" id="HPl-sg-Pgj"/>
                     </connections>
@@ -293,4 +293,7 @@
             <point key="canvasLocation" x="732" y="873"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Tab Icon" width="32" height="32"/>
+    </resources>
 </document>

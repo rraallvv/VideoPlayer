@@ -88,6 +88,7 @@ static NSString *stringFromCMTime(CMTime time) {
 	CGPoint _swipeVelocity;
 	id _periodicTimeObserver;
 	BOOL _canToggleFullscreen;
+	BOOL _swithToFullscreenWhenPlaybackStarts;
 }
 
 
@@ -213,19 +214,20 @@ static NSString *stringFromCMTime(CMTime time) {
 	__weak AVPlayer *weakPlayerRef = player;
 
 	CMTime interval = CMTimeMake(33, 1000);
-	__block BOOL swithToFullscreenWhenPlaybackStarts = YES;
+	_swithToFullscreenWhenPlaybackStarts = YES;
 	__block CMTime lastTime = self.player.currentTime;
 	_periodicTimeObserver = [player addPeriodicTimeObserverForInterval:interval queue:NULL usingBlock: ^(CMTime time) {
 		if (self.player.rate != 0 && CMTimeCompare(time, lastTime) != 0) {
-			if (swithToFullscreenWhenPlaybackStarts) {
+			if (_swithToFullscreenWhenPlaybackStarts) {
 				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(CMTimeGetSeconds(interval) * NSEC_PER_SEC)),
 							   dispatch_get_main_queue(), ^{
 					self.fullscreen = YES;
 				});
-				swithToFullscreenWhenPlaybackStarts = NO;
+				_swithToFullscreenWhenPlaybackStarts = NO;
 			}
 			if (self.stalled) {
 				self.stalled = NO;
+				self.playing = YES;
 			}
 		}
 		CMTime endTime = CMTimeConvertScale(weakPlayerRef.currentItem.asset.duration, time.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
@@ -628,6 +630,7 @@ static NSString *stringFromCMTime(CMTime time) {
 														 name:AVPlayerItemDidPlayToEndTimeNotification
 													   object:newItem];
 			self.scrubber.hidden = NO;
+			_swithToFullscreenWhenPlaybackStarts = YES;
 			if (self.player.rate != 0) {
 				self.wantsToPlay = YES;
 			}

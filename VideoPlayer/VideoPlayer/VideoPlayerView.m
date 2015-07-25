@@ -34,6 +34,7 @@ static const CGFloat BoundsElasticity = 0.625;//0.5;//0.75;
 static const CGFloat BoundsRestitutionDuration = 0.1;
 static const CGFloat SwipeFadeDuration = 0.2;//0.1;
 static const CGFloat ControlsFadeDuration = 0.5;
+static const CGFloat swipeVelocityThreshold = 1638.4;//819.2;//409.6;
 
 /* Layout parameters */
 static const CGFloat separation = 8.0;
@@ -69,7 +70,6 @@ static NSString *stringFromCMTime(CMTime time) {
 @property (weak, nonatomic) UIView *containerView;
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *tapGestureRcognizer;
 @property (strong, nonatomic) IBOutlet UIPanGestureRecognizer *panGestureRecognizer;
-@property (strong, nonatomic) IBOutlet UISwipeGestureRecognizer *swipeGestureRecognizer;
 @property (strong, nonatomic) IBOutlet UIPinchGestureRecognizer *pinchGestureRecognizer;
 @property (nonatomic) BOOL fullscreen;
 @property (nonatomic) BOOL controlsHidden;
@@ -476,31 +476,31 @@ static NSString *stringFromCMTime(CMTime time) {
 			CGPoint velocity = [sender velocityInView:self.containerView.superview];
 			_swipeVelocity = CGPointMake(_swipeVelocity.x * 0.9 + velocity.x * 0.1,
 										 _swipeVelocity.y * 0.9 + velocity.y * 0.1);
+
+			CGFloat velocityMagnitud = sqrt(_swipeVelocity.x * _swipeVelocity.x + _swipeVelocity.x * _swipeVelocity.x);
+
+			if (velocityMagnitud > swipeVelocityThreshold) {
+				_swipeGestureRecognized = YES;
+
+				dispatch_async(dispatch_get_main_queue(), ^{
+					CGPoint center = self.containerView.center;
+					CGPoint endPosition = CGPointMake(center.x + SwipeFadeDuration * _swipeVelocity.x,
+													  center.y + SwipeFadeDuration * _swipeVelocity.y);
+					[UIView animateWithDuration:SwipeFadeDuration
+										  delay:0
+										options:UIViewAnimationOptionCurveLinear
+									 animations:^{
+										 self.containerView.center = endPosition;
+										 self.containerView.alpha = 0.0;
+									 } completion:^(BOOL finished) {
+										 self.containerView.center = [self capCenterToBounds:endPosition withElasticity:0.0];
+										 self.containerView.hidden = YES;
+										 self.containerView.alpha = 1.0;
+										 [self closePlayer];
+									 }];
+				});
+			}
 		}
-	}
-}
-
-- (IBAction)swipeGestureRecognizer:(UISwipeGestureRecognizer *)sender {
-	if (!self.fullscreen) {
-		_swipeGestureRecognized = YES;
-
-		dispatch_async(dispatch_get_main_queue(), ^{
-			CGPoint center = self.containerView.center;
-			CGPoint endPosition = CGPointMake(center.x + SwipeFadeDuration * _swipeVelocity.x,
-											  center.y + SwipeFadeDuration * _swipeVelocity.y);
-			[UIView animateWithDuration:SwipeFadeDuration
-								  delay:0
-								options:UIViewAnimationOptionCurveLinear
-							 animations:^{
-								 self.containerView.center = endPosition;
-								 self.containerView.alpha = 0.0;
-							 } completion:^(BOOL finished) {
-								 self.containerView.center = [self capCenterToBounds:endPosition withElasticity:0.0];
-								 self.containerView.hidden = YES;
-								 self.containerView.alpha = 1.0;
-								 [self closePlayer];
-							 }];
-		});
 	}
 }
 

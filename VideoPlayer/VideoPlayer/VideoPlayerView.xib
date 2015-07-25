@@ -107,14 +107,12 @@
                 <outlet property="playbackTimeLabel" destination="a97-X3-kvP" id="2mN-te-t22"/>
                 <outlet property="remainingPlaybackTimeLabel" destination="F6T-Tg-mWs" id="MOw-9v-Sj0"/>
                 <outlet property="scrubber" destination="IUS-7G-DCe" id="ecZ-rX-Jgu"/>
-                <outlet property="swipeGestureRecognizer" destination="gJl-gW-dSF" id="kdr-jq-l52"/>
                 <outlet property="tapGestureRcognizer" destination="fan-uj-Zp0" id="Srh-rl-Ptl"/>
                 <outlet property="topControlsView" destination="bky-sR-vcB" id="RWO-L6-srl"/>
                 <outlet property="volumeView" destination="Jo5-1J-SJ6" id="KJp-7e-xVA"/>
                 <outlet property="zoomButton" destination="GeM-fE-cJD" id="rPh-v5-Cbo"/>
                 <outletCollection property="gestureRecognizers" destination="fan-uj-Zp0" appends="YES" id="iE1-t2-DzF"/>
                 <outletCollection property="gestureRecognizers" destination="RA6-hx-P5G" appends="YES" id="jh6-5u-fEX"/>
-                <outletCollection property="gestureRecognizers" destination="gJl-gW-dSF" appends="YES" id="8Sl-R1-Gy6"/>
                 <outletCollection property="gestureRecognizers" destination="pcZ-5T-G41" appends="YES" id="aA5-7F-typ"/>
             </connections>
             <point key="canvasLocation" x="787.5" y="488.5"/>
@@ -131,12 +129,6 @@
                 <outlet property="delegate" destination="7EQ-Zj-Nco" id="gCu-Yg-Mok"/>
             </connections>
         </panGestureRecognizer>
-        <swipeGestureRecognizer direction="right" id="gJl-gW-dSF">
-            <connections>
-                <action selector="swipeGestureRecognizer:" destination="7EQ-Zj-Nco" id="3Xj-7S-anP"/>
-                <outlet property="delegate" destination="7EQ-Zj-Nco" id="g1A-MX-1Iy"/>
-            </connections>
-        </swipeGestureRecognizer>
         <pinchGestureRecognizer id="pcZ-5T-G41">
             <connections>
                 <action selector="pinchGestureRecognizer:" destination="7EQ-Zj-Nco" id="AcG-3J-BpT"/>

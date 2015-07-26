@@ -215,12 +215,11 @@ static NSString *stringFromCMTime(CMTime time) {
 
 	CMTime interval = CMTimeMake(33, 1000);
 	_swithToFullscreenWhenPlaybackStarts = YES;
-	__block CMTime lastTime = self.player.currentTime;
+	__block CMTime lastTime = player.currentTime;
 	_periodicTimeObserver = [player addPeriodicTimeObserverForInterval:interval queue:NULL usingBlock: ^(CMTime time) {
-		if (self.player.rate != 0 && CMTimeCompare(time, lastTime) != 0) {
+		if (weakPlayerRef.rate != 0 && CMTIME_IS_VALID(lastTime) && CMTimeCompare(time, lastTime) != 0) {
 			if (_swithToFullscreenWhenPlaybackStarts) {
-				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(CMTimeGetSeconds(interval) * NSEC_PER_SEC)),
-							   dispatch_get_main_queue(), ^{
+				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(CMTimeGetSeconds(interval) * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 					self.fullscreen = YES;
 				});
 				_swithToFullscreenWhenPlaybackStarts = NO;

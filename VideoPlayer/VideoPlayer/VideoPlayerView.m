@@ -98,7 +98,7 @@ static NSString *stringFromCMTime(CMTime time) {
 }
 
 - (void)awakeFromNib {
-	self.scrubber.hidden = YES;
+	//self.scrubber.hidden = YES;
 	self.activityIndicator.hidesWhenStopped = YES;
 	_canToggleFullscreen = YES;
 }
@@ -220,22 +220,24 @@ static NSString *stringFromCMTime(CMTime time) {
 	__block CMTime lastTime = player.currentTime;
 
 	_periodicTimeObserver = [player addPeriodicTimeObserverForInterval:interval queue:NULL usingBlock: ^(CMTime time) {
-		if (self.stalled && CMTIME_IS_VALID(lastTime) && weakPlayerRef.currentItem && weakPlayerRef.rate != 0) {
-			CFTimeInterval delta = CMTimeGetSeconds(CMTimeSubtract(time, lastTime));
-			if (minInterval < delta && delta < maxInterval) {
-				self.stalled = NO;
-				self.playing = YES;
+		if (weakPlayerRef.currentItem) {
+			if (self.stalled && CMTIME_IS_VALID(lastTime) && weakPlayerRef.rate != 0) {
+				CFTimeInterval delta = CMTimeGetSeconds(CMTimeSubtract(time, lastTime));
+				if (minInterval < delta && delta < maxInterval) {
+					self.stalled = NO;
+					self.playing = YES;
+				}
 			}
-		}
 
-		CMTime endTime = CMTimeConvertScale(weakPlayerRef.currentItem.asset.duration, time.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
-		if (CMTimeCompare(endTime, kCMTimeZero) != 0) {
-			double normalizedTime = (double) time.value / (double) endTime.value;
-			self.scrubber.value = normalizedTime;
-		}
+			CMTime endTime = CMTimeConvertScale(weakPlayerRef.currentItem.asset.duration, time.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
+			if (CMTimeCompare(endTime, kCMTimeZero) != 0) {
+				double normalizedTime = (double) time.value / (double) endTime.value;
+				self.scrubber.value = normalizedTime;
+			}
 
-		self.playbackTimeLabel.text = stringFromCMTime(time);
-		self.remainingPlaybackTimeLabel.text = [NSString stringWithFormat:@"-%@", stringFromCMTime(CMTimeSubtract(endTime, time))];
+			self.playbackTimeLabel.text = stringFromCMTime(time);
+			self.remainingPlaybackTimeLabel.text = [NSString stringWithFormat:@"-%@", stringFromCMTime(CMTimeSubtract(endTime, time))];
+		}
 
 		[self layoutTimeAndScrubber];
 
@@ -671,13 +673,20 @@ static NSString *stringFromCMTime(CMTime time) {
 													 selector:@selector(playerItemDidPlayToEndTime:)
 														 name:AVPlayerItemDidPlayToEndTimeNotification
 													   object:newItem];
-			self.scrubber.hidden = NO;
+			//self.scrubber.hidden = NO;
 			if (self.player.rate != 0) {
 				self.wantsToPlay = YES;
 			}
+
 		} else {
-			self.scrubber.hidden = YES;
+			//self.scrubber.hidden = YES;
+			self.scrubber.value = 0;
+
+			NSString *zeroTimeString = stringFromCMTime(kCMTimeZero);
+			self.playbackTimeLabel.text = zeroTimeString;
+			self.remainingPlaybackTimeLabel.text = [NSString stringWithFormat:@"-%@", zeroTimeString];
 		}
+
 		self.stalled = YES;
 
 	} else {

@@ -77,6 +77,7 @@ static NSString *stringFromCMTime(CMTime time) {
 @property (nonatomic) BOOL wantsToPlay;
 @property (nonatomic, getter=isPlaying) BOOL playing;
 @property (nonatomic) BOOL stalled;
+@property (nonatomic) BOOL showsActivityIndicator;
 
 @end
 
@@ -269,7 +270,7 @@ static NSString *stringFromCMTime(CMTime time) {
 
 	_canToggleFullscreen = NO;
 
-	[self setShowsActivityIndicator:NO];
+	self.showsActivityIndicator = NO;
 
 	CGRect screenBounds = [[UIScreen mainScreen] bounds];
 
@@ -294,7 +295,7 @@ static NSString *stringFromCMTime(CMTime time) {
 				self.showBorders = NO;
 
 				if (self.stalled) {
-					[self setShowsActivityIndicator:YES];
+					self.showsActivityIndicator = YES;
 				}
 
 				[self setNeedsLayout];
@@ -325,7 +326,7 @@ static NSString *stringFromCMTime(CMTime time) {
 				[self.zoomButton setImage:[UIImage imageNamed:@"ZoomIn"] forState:UIControlStateNormal];
 
 				if (self.stalled) {
-					[self setShowsActivityIndicator:YES];
+					self.showsActivityIndicator = YES;
 				}
 
 				[self setNeedsLayout];
@@ -396,6 +397,10 @@ static NSString *stringFromCMTime(CMTime time) {
 	_playing = playing;
 }
 
+- (BOOL)showsActivityIndicator {
+	return self.activityIndicator.isAnimating;
+}
+
 - (void)setShowsActivityIndicator:(BOOL)showsActivityIndicator {
 	if (showsActivityIndicator) {
 		if (!self.activityIndicator.isAnimating) {
@@ -409,7 +414,7 @@ static NSString *stringFromCMTime(CMTime time) {
 }
 
 - (void)setStalled:(BOOL)stalled {
-	[self setShowsActivityIndicator:stalled];
+	self.showsActivityIndicator = stalled;
 	_stalled = stalled;
 }
 

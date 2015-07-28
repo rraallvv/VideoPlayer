@@ -72,6 +72,10 @@
 	return self.playerView.contentOverlayView;
 }
 
+- (void)setFullscreen:(BOOL)fullscreen {
+	self.playerView.fullscreen = fullscreen;
+}
+
 
 #pragma mark Lifecycle
 

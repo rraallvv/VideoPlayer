@@ -41,4 +41,6 @@
 @property (weak, nonatomic) UIViewController <VideoPlayerViewDelegate> *delegate;
 @property (weak, nonatomic) IBOutlet UIView *contentOverlayView;
 
+@property (nonatomic) BOOL fullscreen;
+
 @end

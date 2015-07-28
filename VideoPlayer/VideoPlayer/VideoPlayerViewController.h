@@ -36,4 +36,6 @@
 @property (nonatomic, readonly) UIView *contentOverlayView;
 @property (nonatomic) BOOL showsPlaybackControls;
 
+@property (nonatomic) BOOL fullscreen;
+
 @end

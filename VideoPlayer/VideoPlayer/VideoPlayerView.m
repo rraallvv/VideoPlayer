@@ -71,7 +71,6 @@ static NSString *stringFromCMTime(CMTime time) {
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *tapGestureRcognizer;
 @property (strong, nonatomic) IBOutlet UIPanGestureRecognizer *panGestureRecognizer;
 @property (strong, nonatomic) IBOutlet UIPinchGestureRecognizer *pinchGestureRecognizer;
-@property (nonatomic) BOOL fullscreen;
 @property (nonatomic) BOOL controlsHidden;
 @property (nonatomic) BOOL showBorders;
 @property (nonatomic) BOOL wantsToPlay;

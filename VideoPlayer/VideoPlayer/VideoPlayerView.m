@@ -214,19 +214,25 @@ static NSString *stringFromCMTime(CMTime time) {
 	__weak AVPlayer *weakPlayerRef = player;
 
 	CMTime interval = CMTimeMake(33, 1000);
+	CFTimeInterval intervalSeconds = CMTimeGetSeconds(interval);
+	CFTimeInterval minInterval = 0.5 * intervalSeconds;
+	CFTimeInterval maxInterval = 1.5 * intervalSeconds;
 	_swithToFullscreenWhenPlaybackStarts = YES;
 	__block CMTime lastTime = player.currentTime;
 	_periodicTimeObserver = [player addPeriodicTimeObserverForInterval:interval queue:NULL usingBlock: ^(CMTime time) {
-		if (weakPlayerRef.rate != 0 && CMTIME_IS_VALID(lastTime) && CMTimeCompare(time, lastTime) != 0) {
-			if (_swithToFullscreenWhenPlaybackStarts) {
-				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(CMTimeGetSeconds(interval) * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-					self.fullscreen = YES;
-				});
-				_swithToFullscreenWhenPlaybackStarts = NO;
-			}
-			if (self.stalled) {
-				self.stalled = NO;
-				self.playing = YES;
+		if (weakPlayerRef.rate != 0 && CMTIME_IS_VALID(lastTime)) {
+			CFTimeInterval delta = CMTimeGetSeconds(CMTimeSubtract(time, lastTime));
+			if (minInterval < delta && delta < maxInterval) {
+				if (_swithToFullscreenWhenPlaybackStarts) {
+					dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(CMTimeGetSeconds(interval) * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+						self.fullscreen = YES;
+					});
+					_swithToFullscreenWhenPlaybackStarts = NO;
+				}
+				if (self.stalled) {
+					self.stalled = NO;
+					self.playing = YES;
+				}
 			}
 		}
 		CMTime endTime = CMTimeConvertScale(weakPlayerRef.currentItem.asset.duration, time.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);

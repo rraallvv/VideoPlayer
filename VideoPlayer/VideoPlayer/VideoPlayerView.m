@@ -253,7 +253,7 @@ static NSString *stringFromCMTime(CMTime time) {
 }
 
 - (BOOL)fullscreen {
-	return self.containerView != self.superview;
+	return self.containerView != self.superview && self.delegate.presentingViewController;
 }
 
 - (void)setFullscreen:(BOOL)fullscreen {
@@ -267,9 +267,11 @@ static NSString *stringFromCMTime(CMTime time) {
 
 	CGRect screenBounds = [[UIScreen mainScreen] bounds];
 
+	CGRect initialFrame = [self.superview convertRect:self.frame toView:UIApplication.sharedApplication.keyWindow];
+
 	if (fullscreen) {
 		[UIApplication.sharedApplication.keyWindow addSubview:self];
-		self.frame = self.containerView.frame;
+		self.frame = initialFrame;
 		self.containerView.hidden = YES;
 
 		[UIView animateWithDuration:FullscreenTransitionDuration animations:^{
@@ -301,38 +303,38 @@ static NSString *stringFromCMTime(CMTime time) {
 
 		[UIApplication.sharedApplication.keyWindow addSubview:self];
 
-		UIViewController *presentingViewController = [self.delegate presentingViewController];
+		void (^completionBlock)() = ^{
+			[UIApplication.sharedApplication.keyWindow addSubview:self];
+			self.frame = initialFrame;
+			self.showBorders = YES;
 
-		if (!presentingViewController) {
-			self.frame = self.containerView.bounds;
+			[UIView animateWithDuration:FullscreenTransitionDuration animations:^{
+				self.frame = self.containerView.frame;
 
-		} else {
-			//[UIApplication.sharedApplication.keyWindow addSubview:self];
+			} completion:^(BOOL finished) {
+				[self.containerView addSubview:self];
+				self.frame = self.containerView.bounds;
+				self.containerView.hidden = NO;
 
-			[presentingViewController dismissViewControllerAnimated:NO completion:^{
-				[UIApplication.sharedApplication.keyWindow addSubview:self];
-				self.frame = screenBounds;
-				self.showBorders = YES;
+				[self.zoomButton setImage:[UIImage imageNamed:@"ZoomIn"] forState:UIControlStateNormal];
 
-				[UIView animateWithDuration:FullscreenTransitionDuration animations:^{
-					self.frame = self.containerView.frame;
+				if (self.stalled) {
+					[self setShowsActivityIndicator:YES];
+				}
 
-				} completion:^(BOOL finished) {
-					[self.containerView addSubview:self];
-					self.frame = self.containerView.bounds;
-					self.containerView.hidden = NO;
+				[self setNeedsLayout];
 
-					[self.zoomButton setImage:[UIImage imageNamed:@"ZoomIn"] forState:UIControlStateNormal];
-
-					if (self.stalled) {
-						[self setShowsActivityIndicator:YES];
-					}
-
-					[self setNeedsLayout];
-
-					_canToggleFullscreen = YES;
-				}];
+				_canToggleFullscreen = YES;
 			}];
+		};
+
+		UIViewController *presentingViewController = self.delegate.presentingViewController;
+
+		if (presentingViewController) {
+			//[UIApplication.sharedApplication.keyWindow addSubview:self];
+			[presentingViewController dismissViewControllerAnimated:NO completion:completionBlock];
+		} else {
+			completionBlock();
 		}
 	}
 }
@@ -507,7 +509,44 @@ static NSString *stringFromCMTime(CMTime time) {
 
 - (IBAction)pinchGestureRecognizer:(UIPinchGestureRecognizer *)sender {
 	if (self.fullscreen) {
+#if 0 // TODO: This fails to continue the pinch gesture after dismissing the view controller
+		UIGestureRecognizerState state = sender.state;
+
+		static CGRect initialFrame;
+
+		if (state == UIGestureRecognizerStateBegan) {
+			self.bottomControlsView.hidden = YES;
+			self.topControlsView.hidden = YES;
+
+			initialFrame = [self.superview convertRect:self.frame toView:UIApplication.sharedApplication.keyWindow];
+
+			[UIApplication.sharedApplication.keyWindow addSubview:self];
+
+			[self.delegate.presentingViewController dismissViewControllerAnimated:NO completion:^{
+				[UIApplication.sharedApplication.keyWindow addSubview:self];
+				self.frame = initialFrame;
+				self.showBorders = YES;
+			}];
+
+		} else if (state == UIGestureRecognizerStateChanged) {
+			CGFloat scale = MAX(0.0, MIN(sender.scale, 1.0));
+			CGFloat reverseScale = 1.0 - scale;
+
+			CGRect finalFrame = self.containerView.frame;
+
+			CGRect frame = CGRectMake(scale * initialFrame.origin.x + reverseScale * finalFrame.origin.x,
+									  scale * initialFrame.origin.y + reverseScale * finalFrame.origin.y,
+									  scale * initialFrame.size.width + reverseScale * finalFrame.size.width,
+									  scale * initialFrame.size.height + reverseScale * finalFrame.size.height);
+
+			self.frame = frame;
+
+		} else {
+			self.fullscreen = NO;
+		}
+#else
 		self.fullscreen = NO;
+#endif
 	}
 }
 

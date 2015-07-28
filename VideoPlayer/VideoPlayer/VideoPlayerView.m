@@ -217,20 +217,24 @@ static NSString *stringFromCMTime(CMTime time) {
 	CFTimeInterval intervalSeconds = CMTimeGetSeconds(interval);
 	CFTimeInterval minInterval = 0.5 * intervalSeconds;
 	CFTimeInterval maxInterval = 1.5 * intervalSeconds;
+
 	__block CMTime lastTime = player.currentTime;
+
 	_periodicTimeObserver = [player addPeriodicTimeObserverForInterval:interval queue:NULL usingBlock: ^(CMTime time) {
-		if (self.stalled && weakPlayerRef.rate != 0 && CMTIME_IS_VALID(lastTime)) {
+		if (self.stalled && CMTIME_IS_VALID(lastTime) && weakPlayerRef.currentItem && weakPlayerRef.rate != 0) {
 			CFTimeInterval delta = CMTimeGetSeconds(CMTimeSubtract(time, lastTime));
 			if (minInterval < delta && delta < maxInterval) {
 				self.stalled = NO;
 				self.playing = YES;
 			}
 		}
+
 		CMTime endTime = CMTimeConvertScale(weakPlayerRef.currentItem.asset.duration, time.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
 		if (CMTimeCompare(endTime, kCMTimeZero) != 0) {
 			double normalizedTime = (double) time.value / (double) endTime.value;
 			self.scrubber.value = normalizedTime;
 		}
+
 		self.playbackTimeLabel.text = stringFromCMTime(time);
 		self.remainingPlaybackTimeLabel.text = [NSString stringWithFormat:@"-%@", stringFromCMTime(CMTimeSubtract(endTime, time))];
 

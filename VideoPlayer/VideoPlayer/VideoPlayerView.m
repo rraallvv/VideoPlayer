@@ -37,13 +37,16 @@ static const CGFloat ControlsFadeDuration = 0.5;
 static const CGFloat swipeVelocityThreshold = 1638.4;//819.2;//409.6;
 
 /* Layout parameters */
-static const CGFloat separation = 8.0;
+static CGFloat const separation = 8.0;
 
 /* Key-Value Observation keys */
 static NSString * const PlayerCurrentItemObservationKeypath	= @"player.currentItem";
 
 /* Key-Value Observation contexts */
 static void *PlayerCurrentItemObservationContext = &PlayerCurrentItemObservationContext;
+
+/* Time line indicator */
+static CGFloat const TimeLineIndicatorWidth = 1.0;//2.0;
 
 static NSString *stringFromCMTime(CMTime time) {
 	NSUInteger seconds = CMTimeGetSeconds(time);
@@ -88,6 +91,7 @@ static NSString *stringFromCMTime(CMTime time) {
 	CGPoint _swipeVelocity;
 	id _periodicTimeObserver;
 	BOOL _canToggleFullscreen;
+	CALayer *_timeLineLayer;
 }
 
 
@@ -101,6 +105,10 @@ static NSString *stringFromCMTime(CMTime time) {
 	//self.scrubber.hidden = YES;
 	self.activityIndicator.hidesWhenStopped = YES;
 	_canToggleFullscreen = YES;
+
+	_timeLineLayer = [CALayer layer];
+	_timeLineLayer.backgroundColor = [UIColor whiteColor].CGColor;
+	[self.layer addSublayer:_timeLineLayer];
 }
 
 - (void)didMoveToSuperview {
@@ -121,12 +129,13 @@ static NSString *stringFromCMTime(CMTime time) {
 	[super layoutSubviews];
 
 	CGRect playerFrame = self.frame;
+	CGFloat playerFrameWidth = CGRectGetWidth(playerFrame);
 
 	/* Top view */
 	CGRect topControlsFrame = self.topControlsView.frame;
 	topControlsFrame = CGRectMake(0,
 								  0,
-								  CGRectGetWidth(playerFrame),
+								  playerFrameWidth,
 								  CGRectGetHeight(topControlsFrame));
 	self.topControlsView.frame = topControlsFrame;
 	CGRect topControlsBounds = self.topControlsView.bounds;
@@ -142,13 +151,13 @@ static NSString *stringFromCMTime(CMTime time) {
 										 CGRectGetMidY(topControlsBounds));
 
 	/* Time labels and the scrubber */
-	[self layoutTimeAndScrubber];
+	[self layoutTimeIndicatorsInRect:playerFrame];
 
 	/* Bottom view */
 	CGRect bottomControlsFrame = self.bottomControlsView.frame;
 	bottomControlsFrame = CGRectMake(0,
 									 CGRectGetMaxY(playerFrame) - CGRectGetHeight(bottomControlsFrame),
-									 CGRectGetWidth(playerFrame),
+									 playerFrameWidth,
 									 CGRectGetHeight(bottomControlsFrame));
 	self.bottomControlsView.frame = bottomControlsFrame;
 	CGRect bottomControlsBounds = self.bottomControlsView.bounds;
@@ -174,6 +183,12 @@ static NSString *stringFromCMTime(CMTime time) {
 	[self.layer removeObserver:self forKeyPath:PlayerCurrentItemObservationKeypath];
 }
 
+
+#pragma mark Drawing
+
+- (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx {
+	printf(".");
+}
 
 #pragma mark Accessors
 
@@ -239,7 +254,7 @@ static NSString *stringFromCMTime(CMTime time) {
 			self.remainingPlaybackTimeLabel.text = [NSString stringWithFormat:@"-%@", stringFromCMTime(CMTimeSubtract(endTime, time))];
 		}
 
-		[self layoutTimeAndScrubber];
+		[self layoutTimeIndicatorsInRect:self.frame];
 
 		lastTime = time;
 	}];
@@ -275,6 +290,7 @@ static NSString *stringFromCMTime(CMTime time) {
 		[UIApplication.sharedApplication.keyWindow addSubview:self];
 		self.frame = initialFrame;
 		self.containerView.hidden = YES;
+		[_timeLineLayer removeFromSuperlayer];
 
 		[UIView animateWithDuration:FullscreenTransitionDuration animations:^{
 			self.frame = screenBounds;
@@ -317,6 +333,7 @@ static NSString *stringFromCMTime(CMTime time) {
 				[self.containerView addSubview:self];
 				self.frame = self.containerView.bounds;
 				self.containerView.hidden = NO;
+				[self.layer addSublayer:_timeLineLayer];
 
 				[self.zoomButton setImage:[UIImage imageNamed:@"ZoomIn"] forState:UIControlStateNormal];
 
@@ -605,7 +622,7 @@ static NSString *stringFromCMTime(CMTime time) {
 	return center;
 }
 
-- (void)layoutTimeAndScrubber {
+- (void)layoutTimeIndicatorsInRect:(CGRect)rect {
 	/* Playback time */
 	[self.playbackTimeLabel sizeToFit];
 	CGRect playbackTimeFrame = self.playbackTimeLabel.frame;
@@ -627,6 +644,13 @@ static NSString *stringFromCMTime(CMTime time) {
 							   scrubberMaxX - scrubberMinX,
 							   CGRectGetHeight(scrubberFrame));
 	self.scrubber.frame = scrubberFrame;
+
+	/* Time line progess indicator */
+	CGFloat borderWidth = self.layer.borderWidth;
+	_timeLineLayer.frame = CGRectMake(borderWidth,
+											  CGRectGetHeight(rect) - TimeLineIndicatorWidth - borderWidth,
+											  self.scrubber.value * (CGRectGetWidth(rect) - 2 * borderWidth),
+											  TimeLineIndicatorWidth);
 }
 
 

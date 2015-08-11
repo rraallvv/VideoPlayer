@@ -29,8 +29,8 @@
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
 	if (self = [super initWithCoder:aDecoder]) {
-		for (UISlider *subview in self.subviews){
-			if ([subview isKindOfClass:[UISlider class]]){
+		for (UISlider *subview in self.subviews) {
+			if ([subview isKindOfClass:[UISlider class]]) {
 				[subview setMaximumTrackImage:[[UIImage imageNamed:@"ScrubberMax"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 4, 0, 4)]
 								  forState:UIControlStateNormal];
 				[subview setMinimumTrackImage:[[UIImage imageNamed:@"ScrubberMin"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 4, 0, 4)]

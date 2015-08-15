@@ -92,6 +92,7 @@ static NSString *stringFromCMTime(CMTime time) {
 	id _periodicTimeObserver;
 	BOOL _canToggleFullscreen;
 	CALayer *_timeLineLayer;
+	BOOL _shouldChangeContainerView;
 }
 
 
@@ -105,6 +106,7 @@ static NSString *stringFromCMTime(CMTime time) {
 	//self.scrubber.hidden = YES;
 	self.activityIndicator.hidesWhenStopped = YES;
 	_canToggleFullscreen = YES;
+	_shouldChangeContainerView = YES;
 
 	_timeLineLayer = [CALayer layer];
 	_timeLineLayer.backgroundColor = [UIColor whiteColor].CGColor;
@@ -114,7 +116,7 @@ static NSString *stringFromCMTime(CMTime time) {
 - (void)didMoveToSuperview {
 	[super didMoveToSuperview];
 	self.layer.backgroundColor = [UIColor blackColor].CGColor;
-	if (!self.containerView) {
+	if (_shouldChangeContainerView) {
 		self.containerView = self.superview;
 		self.frame = CGRectMake(0, 0, CGRectGetWidth(self.containerView.frame), CGRectGetHeight(self.containerView.frame));
 		self.showBorders = YES;
@@ -279,6 +281,7 @@ static NSString *stringFromCMTime(CMTime time) {
 	}
 
 	_canToggleFullscreen = NO;
+	_shouldChangeContainerView = NO;
 
 	self.showsActivityIndicator = NO;
 
@@ -312,6 +315,7 @@ static NSString *stringFromCMTime(CMTime time) {
 				[self setNeedsLayout];
 
 				_canToggleFullscreen = YES;
+				_shouldChangeContainerView = YES;
 			}];
 		}];
 
@@ -344,6 +348,7 @@ static NSString *stringFromCMTime(CMTime time) {
 				[self setNeedsLayout];
 
 				_canToggleFullscreen = YES;
+				_shouldChangeContainerView = YES;
 			}];
 		};
 

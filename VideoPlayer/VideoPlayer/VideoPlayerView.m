@@ -327,7 +327,7 @@ static NSString *stringFromCMTime(CMTime time) {
 			self.showBorders = YES;
 
 			[UIView animateWithDuration:FullscreenTransitionDuration animations:^{
-				self.frame = self.containerView.frame;
+				self.frame = [self containerViewFrame];
 
 			} completion:^(BOOL finished) {
 				[self.containerView addSubview:self];
@@ -555,7 +555,7 @@ static NSString *stringFromCMTime(CMTime time) {
 			CGFloat scale = MAX(0.0, MIN(sender.scale, 1.0));
 			CGFloat reverseScale = 1.0 - scale;
 
-			CGRect finalFrame = self.containerView.frame;
+			CGRect finalFrame = [self containerViewFrame];
 
 			CGRect frame = CGRectMake(scale * initialFrame.origin.x + reverseScale * finalFrame.origin.x,
 									  scale * initialFrame.origin.y + reverseScale * finalFrame.origin.y,
@@ -593,9 +593,15 @@ static NSString *stringFromCMTime(CMTime time) {
 	self.controlsHidden = YES;
 }
 
+- (CGRect)containerViewFrame {
+	CGRect frame = self.containerView.frame;
+	frame.origin = [self.containerView.superview convertPoint:frame.origin toView:[UIApplication sharedApplication].keyWindow.rootViewController.view];
+	return frame;
+}
+
 - (CGRect)boundsLimit {
 	CGRect screenRect = UIScreen.mainScreen.bounds;
-	CGRect viewFrame = self.containerView.frame;
+	CGRect viewFrame = [self containerViewFrame];
 	return CGRectInset(screenRect, CGRectGetWidth(viewFrame)/2, CGRectGetHeight(viewFrame)/2);
 }
 

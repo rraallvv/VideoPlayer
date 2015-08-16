@@ -43,4 +43,9 @@
 
 @property (nonatomic) BOOL fullscreen;
 
+@property (strong, nonatomic, readonly) UITapGestureRecognizer *tapGestureRcognizer;
+@property (strong, nonatomic, readonly) UITapGestureRecognizer *doubleTapGestureRecognizer;
+@property (strong, nonatomic, readonly) UIPanGestureRecognizer *panGestureRecognizer;
+@property (strong, nonatomic, readonly) UIPinchGestureRecognizer *pinchGestureRecognizer;
+
 @end

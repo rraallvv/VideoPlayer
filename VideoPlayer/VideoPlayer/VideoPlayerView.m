@@ -726,10 +726,8 @@ static NSString *stringFromCMTime(CMTime time) {
 		} else {
 			//self.scrubber.hidden = YES;
 			self.scrubber.value = 0;
-
-			NSString *zeroTimeString = stringFromCMTime(kCMTimeZero);
-			self.playbackTimeLabel.text = zeroTimeString;
-			self.remainingPlaybackTimeLabel.text = [NSString stringWithFormat:@"-%@", zeroTimeString];
+			self.playbackTimeLabel.text = @"-:--:--";
+			self.remainingPlaybackTimeLabel.text = @"-:--:--";
 		}
 
 		self.stalled = YES;

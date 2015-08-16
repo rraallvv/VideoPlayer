@@ -24,18 +24,20 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "VideoPlayerView.h"
 
 @class AVPlayer, AVPlayerItem;
 
 @interface VideoPlayerViewController : UIViewController
 
 @property (strong, nonatomic) AVPlayer *player;
+
+@property (nonatomic) BOOL showsPlaybackControls;
+@property (nonatomic, readonly) UIView *contentOverlayView;
+@property (nonatomic, readonly, getter=isReadyForDisplay) BOOL readyForDisplay;
 @property (nonatomic, readonly) CGRect videoBounds;
 @property (nonatomic, copy) NSString *videoGravity;
-@property (nonatomic, readonly, getter=isReadyForDisplay) BOOL readyForDisplay;
-@property (nonatomic, readonly) UIView *contentOverlayView;
-@property (nonatomic) BOOL showsPlaybackControls;
 
-@property (nonatomic) BOOL fullscreen;
+@property (nonatomic, readonly) VideoPlayerView *playerView;
 
 @end

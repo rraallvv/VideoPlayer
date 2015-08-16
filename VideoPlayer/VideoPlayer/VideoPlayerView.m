@@ -49,10 +49,10 @@ static void *PlayerCurrentItemObservationContext = &PlayerCurrentItemObservation
 static CGFloat const TimeLineIndicatorWidth = 1.0;//2.0;
 
 static NSString *stringFromCMTime(CMTime time) {
-	NSUInteger seconds = CMTimeGetSeconds(time);
+	int seconds = CMTimeGetSeconds(time);
 
-	NSUInteger hours = floor(seconds / 3600);
-	NSUInteger minutes = floor(seconds % 3600 / 60);
+	int hours = floor(seconds / 3600);
+	int minutes = floor(seconds % 3600 / 60);
 	seconds = floor(seconds % 3600 % 60);
 
 	return [NSString stringWithFormat:@"%i:%02i:%02i", hours, minutes, seconds];
@@ -72,6 +72,7 @@ static NSString *stringFromCMTime(CMTime time) {
 @property (weak, nonatomic) IBOutlet UIView *bottomControlsView;
 @property (weak, nonatomic) UIView *containerView;
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *tapGestureRcognizer;
+@property (strong, nonatomic) IBOutlet UITapGestureRecognizer *doubleTapGestureRecognizer;
 @property (strong, nonatomic) IBOutlet UIPanGestureRecognizer *panGestureRecognizer;
 @property (strong, nonatomic) IBOutlet UIPinchGestureRecognizer *pinchGestureRecognizer;
 @property (nonatomic) BOOL controlsHidden;
@@ -107,6 +108,8 @@ static NSString *stringFromCMTime(CMTime time) {
 	self.activityIndicator.hidesWhenStopped = YES;
 	_canToggleFullscreen = YES;
 	_shouldChangeContainerView = YES;
+
+	[self.tapGestureRcognizer requireGestureRecognizerToFail:self.doubleTapGestureRecognizer];
 
 	_timeLineLayer = [CALayer layer];
 	_timeLineLayer.backgroundColor = [UIColor whiteColor].CGColor;
@@ -435,6 +438,9 @@ static NSString *stringFromCMTime(CMTime time) {
 	_stalled = stalled;
 }
 
+- (void)toggleWantsToPlay {
+	self.wantsToPlay = !self.isPlaying;
+}
 
 #pragma mark Actions
 
@@ -462,7 +468,7 @@ static NSString *stringFromCMTime(CMTime time) {
 }
 
 - (IBAction)playButtonTouchUpInside:(UIButton *)sender {
-	self.wantsToPlay = !self.isPlaying;
+	[self toggleWantsToPlay];
 }
 
 - (IBAction)tapGestureRecognizer:(UITapGestureRecognizer *)sender {
@@ -471,6 +477,10 @@ static NSString *stringFromCMTime(CMTime time) {
 	} else {
 		self.controlsHidden = !self.controlsHidden;
 	}
+}
+
+- (IBAction)doubleTapGestureRecognizer:(UITapGestureRecognizer *)sender {
+	[self toggleWantsToPlay];
 }
 
 - (IBAction)panGestureRecognizer:(UIPanGestureRecognizer *)sender {

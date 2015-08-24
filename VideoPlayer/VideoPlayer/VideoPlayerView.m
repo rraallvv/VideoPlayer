@@ -66,6 +66,8 @@ static NSString *stringFromCMTime(CMTime time) {
 @property (weak, nonatomic) IBOutlet UILabel *remainingPlaybackTimeLabel;
 @property (weak, nonatomic) IBOutlet UIButton *zoomButton;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
+@property (weak, nonatomic) IBOutlet UIButton *prevButton;
+@property (weak, nonatomic) IBOutlet UIButton *nextButton;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet MPVolumeView *volumeView;
 @property (weak, nonatomic) IBOutlet UIView *topControlsView;
@@ -179,6 +181,16 @@ static NSString *stringFromCMTime(CMTime time) {
 							 CGRectGetHeight(volumeFrame));
 	self.volumeView.frame = volumeFrame;
 
+	CGFloat const prevNextSeparation = (CGRectGetMidX(bottomControlsBounds) - CGRectGetMaxX(self.volumeView.frame)) / 2;
+
+	/* Prev button*/
+	self.prevButton.center = CGPointMake(CGRectGetMidX(bottomControlsBounds) - prevNextSeparation,
+										 CGRectGetMidY(bottomControlsBounds));
+
+	/* Next button*/
+	self.nextButton.center = CGPointMake(CGRectGetMidX(bottomControlsBounds) + prevNextSeparation,
+										 CGRectGetMidY(bottomControlsBounds));
+
 	/* Activity indicator */
 	self.activityIndicator.center = CGPointMake(CGRectGetMidX(playerFrame),
 												CGRectGetMidY(playerFrame));
@@ -229,6 +241,9 @@ static NSString *stringFromCMTime(CMTime time) {
 	}
 
 	self.showBorders = YES;
+
+	BOOL showPrevAndNextButtons = [player isKindOfClass:[AVQueuePlayer class]];
+	self.prevButton.hidden = self.nextButton.hidden = !showPrevAndNextButtons;
 
 	__weak AVPlayer *weakPlayerRef = player;
 
@@ -469,6 +484,14 @@ static NSString *stringFromCMTime(CMTime time) {
 
 - (IBAction)playButtonTouchUpInside:(UIButton *)sender {
 	[self toggleWantsToPlay];
+}
+
+- (IBAction)prevButtonTouchUpInside:(UIButton *)sender {
+	[self.player seekToTime:kCMTimeZero];
+}
+
+- (IBAction)nextButtonTouchUpInside:(UIButton *)sender {
+	[(AVQueuePlayer *)self.player advanceToNextItem];
 }
 
 - (IBAction)tapGestureRecognizer:(UITapGestureRecognizer *)sender {
@@ -722,6 +745,8 @@ static NSString *stringFromCMTime(CMTime time) {
 			if (self.player.rate != 0) {
 				self.wantsToPlay = YES;
 			}
+
+			//self.nextButton.enabled = [self.player isKindOfClass:[AVQueuePlayer class]] && [(AVQueuePlayer *)self.player items].count > 1;
 
 		} else {
 			//self.scrubber.hidden = YES;

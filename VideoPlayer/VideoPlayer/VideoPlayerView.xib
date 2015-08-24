@@ -84,6 +84,26 @@
                                 <action selector="playButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="qXq-fN-2CM"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="aPI-Nh-uIA">
+                            <rect key="frame" x="147" y="7" width="32" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" image="Previous">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="prevButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="4rh-bT-5Kx"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="00a-Rx-Das">
+                            <rect key="frame" x="267" y="7" width="32" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" image="Next">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="nextButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="lVY-pu-qef"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
@@ -102,10 +122,12 @@
                 <outlet property="closeButton" destination="bDo-V9-GpF" id="Wxe-S1-diS"/>
                 <outlet property="contentOverlayView" destination="Jy3-JM-ZsZ" id="B8d-F4-0ha"/>
                 <outlet property="doubleTapGestureRecognizer" destination="7WO-Df-y2G" id="Hce-pM-wjS"/>
+                <outlet property="nextButton" destination="00a-Rx-Das" id="GXH-bl-Yeo"/>
                 <outlet property="panGestureRecognizer" destination="RA6-hx-P5G" id="dhy-nE-vBz"/>
                 <outlet property="pinchGestureRecognizer" destination="pcZ-5T-G41" id="6gE-Bo-4cz"/>
                 <outlet property="playButton" destination="ZeX-Br-69W" id="X2z-kF-9OB"/>
                 <outlet property="playbackTimeLabel" destination="a97-X3-kvP" id="2mN-te-t22"/>
+                <outlet property="prevButton" destination="aPI-Nh-uIA" id="8FG-im-Lsz"/>
                 <outlet property="remainingPlaybackTimeLabel" destination="F6T-Tg-mWs" id="MOw-9v-Sj0"/>
                 <outlet property="scrubber" destination="IUS-7G-DCe" id="ecZ-rX-Jgu"/>
                 <outlet property="tapGestureRcognizer" destination="fan-uj-Zp0" id="Srh-rl-Ptl"/>
@@ -146,7 +168,9 @@
     </objects>
     <resources>
         <image name="Close" width="32" height="32"/>
+        <image name="Next" width="32" height="32"/>
         <image name="Pause" width="32" height="32"/>
+        <image name="Previous" width="32" height="32"/>
         <image name="ZoomIn" width="32" height="32"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

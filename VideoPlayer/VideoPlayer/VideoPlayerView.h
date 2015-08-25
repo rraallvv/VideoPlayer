@@ -42,6 +42,7 @@
 @property (weak, nonatomic) IBOutlet UIView *contentOverlayView;
 
 @property (nonatomic) BOOL fullscreen;
+@property (weak, nonatomic) UIView *containerView;
 
 @property (strong, nonatomic, readonly) UITapGestureRecognizer *tapGestureRcognizer;
 @property (strong, nonatomic, readonly) UITapGestureRecognizer *doubleTapGestureRecognizer;

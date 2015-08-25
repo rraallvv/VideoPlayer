@@ -72,7 +72,6 @@ static NSString *stringFromCMTime(CMTime time) {
 @property (weak, nonatomic) IBOutlet MPVolumeView *volumeView;
 @property (weak, nonatomic) IBOutlet UIView *topControlsView;
 @property (weak, nonatomic) IBOutlet UIView *bottomControlsView;
-@property (weak, nonatomic) UIView *containerView;
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *tapGestureRcognizer;
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *doubleTapGestureRecognizer;
 @property (strong, nonatomic) IBOutlet UIPanGestureRecognizer *panGestureRecognizer;
@@ -116,15 +115,16 @@ static NSString *stringFromCMTime(CMTime time) {
 	_timeLineLayer = [CALayer layer];
 	_timeLineLayer.backgroundColor = [UIColor whiteColor].CGColor;
 	[self.layer addSublayer:_timeLineLayer];
+
+	self.showBorders = YES;
+	self.layer.backgroundColor = [UIColor blackColor].CGColor;
 }
 
 - (void)didMoveToSuperview {
 	[super didMoveToSuperview];
-	self.layer.backgroundColor = [UIColor blackColor].CGColor;
 	if (_shouldChangeContainerView) {
 		self.containerView = self.superview;
 		self.frame = CGRectMake(0, 0, CGRectGetWidth(self.containerView.frame), CGRectGetHeight(self.containerView.frame));
-		self.showBorders = YES;
 	}
 }
 

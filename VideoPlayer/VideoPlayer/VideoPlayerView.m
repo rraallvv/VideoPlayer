@@ -40,10 +40,12 @@ static const CGFloat swipeVelocityThreshold = 1638.4;//819.2;//409.6;
 static CGFloat const separation = 8.0;
 
 /* Key-Value Observation keys */
-static NSString * const PlayerCurrentItemObservationKeypath	= @"player.currentItem";
+static NSString * const PlayerCurrentItemObservationKeypath = @"player.currentItem";
+static NSString * const PlayerRateObservationKeypath = @"player.rate";
 
 /* Key-Value Observation contexts */
 static void *PlayerCurrentItemObservationContext = &PlayerCurrentItemObservationContext;
+static void *PlayerRateObservationContext = &PlayerRateObservationContext;
 
 /* Time line indicator */
 static CGFloat const TimeLineIndicatorWidth = 1.0;//2.0;
@@ -228,6 +230,9 @@ static NSString *stringFromCMTime(CMTime time) {
 		[self.layer removeObserver:self
 						forKeyPath:PlayerCurrentItemObservationKeypath
 						   context:PlayerCurrentItemObservationContext];
+		[self.layer removeObserver:self
+						forKeyPath:PlayerRateObservationKeypath
+						   context:PlayerRateObservationContext];
 		if (_periodicTimeObserver) {
 			[self.player removeTimeObserver:_periodicTimeObserver];
 			_periodicTimeObserver = nil;
@@ -283,6 +288,11 @@ static NSString *stringFromCMTime(CMTime time) {
 				 forKeyPath:PlayerCurrentItemObservationKeypath
 					options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
 					context:PlayerCurrentItemObservationContext];
+
+	[self.layer addObserver:self
+				 forKeyPath:PlayerRateObservationKeypath
+					options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+					context:PlayerRateObservationContext];
 }
 
 - (AVPlayerLayer *)playerLayer {
@@ -453,10 +463,6 @@ static NSString *stringFromCMTime(CMTime time) {
 	_stalled = stalled;
 }
 
-- (void)toggleWantsToPlay {
-	self.wantsToPlay = !self.isPlaying;
-}
-
 #pragma mark Actions
 
 - (IBAction)scrubberTouchDown:(id)sender {
@@ -467,6 +473,8 @@ static NSString *stringFromCMTime(CMTime time) {
 - (IBAction)scrubberTouchUp:(id)sender {
 	self.controlsHidden = NO;
 	if (self.wantsToPlay) {
+		self.stalled = YES;
+		self.playing = NO;
 		[self.player play];
 	}
 }
@@ -618,6 +626,10 @@ static NSString *stringFromCMTime(CMTime time) {
 
 #pragma mark Helper methods
 
+- (void)toggleWantsToPlay {
+	self.wantsToPlay = !self.isPlaying;
+}
+
 - (void)closePlayer {
 	if ([self.player isKindOfClass:[AVQueuePlayer class]]) {
 		[(AVQueuePlayer *)self.player removeAllItems];
@@ -756,6 +768,11 @@ static NSString *stringFromCMTime(CMTime time) {
 		}
 
 		self.stalled = YES;
+
+	} else if (context == PlayerRateObservationContext) {
+		if (!self.isPlaying && self.player.rate != 0) {
+			self.wantsToPlay = YES;
+		}
 
 	} else {
 		[super observeValueForKeyPath:path ofObject:object change:change context:context];

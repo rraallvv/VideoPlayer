@@ -25,6 +25,10 @@
 
 #import <UIKit/UIKit.h>
 
+extern NSString * const VideoPlayerPrevItemNotification;
+extern NSString * const VideoPlayerNextItemNotification;
+
+
 @protocol VideoPlayerViewDelegate
 
 - (BOOL)shouldShowPlaybackControls;
@@ -43,6 +47,9 @@
 
 @property (nonatomic) BOOL fullscreen;
 @property (weak, nonatomic) UIView *containerView;
+
+@property (weak, nonatomic, readonly) UIButton *prevButton;
+@property (weak, nonatomic, readonly) UIButton *nextButton;
 
 @property (strong, nonatomic, readonly) UITapGestureRecognizer *tapGestureRcognizer;
 @property (strong, nonatomic, readonly) UITapGestureRecognizer *doubleTapGestureRecognizer;

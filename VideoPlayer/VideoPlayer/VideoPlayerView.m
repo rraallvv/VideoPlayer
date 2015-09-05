@@ -27,6 +27,9 @@
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
 
+/* Custom notifications */
+NSString * const VideoPlayerPrevItemNotification = @"VideoPlayerPrevItemNotification";
+NSString * const VideoPlayerNextItemNotification = @"VideoPlayerNextItemNotification";
 
 /* Animation parameters */
 static const CGFloat FullscreenTransitionDuration = 0.375;//0.25//0.5
@@ -496,10 +499,14 @@ static NSString *stringFromCMTime(CMTime time) {
 
 - (IBAction)prevButtonTouchUpInside:(UIButton *)sender {
 	[self.player seekToTime:kCMTimeZero];
+	[[NSNotificationCenter defaultCenter] postNotificationName:VideoPlayerPrevItemNotification object:self];
 }
 
 - (IBAction)nextButtonTouchUpInside:(UIButton *)sender {
-	[(AVQueuePlayer *)self.player advanceToNextItem];
+	if ([self.player isKindOfClass:[AVQueuePlayer class]]) {
+		[(AVQueuePlayer *)self.player advanceToNextItem];
+	}
+	[[NSNotificationCenter defaultCenter] postNotificationName:VideoPlayerNextItemNotification object:self];
 }
 
 - (IBAction)tapGestureRecognizer:(UITapGestureRecognizer *)sender {

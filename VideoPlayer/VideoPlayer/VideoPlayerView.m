@@ -81,6 +81,8 @@ static NSString *stringFromCMTime(CMTime time) {
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *doubleTapGestureRecognizer;
 @property (strong, nonatomic) IBOutlet UIPanGestureRecognizer *panGestureRecognizer;
 @property (strong, nonatomic) IBOutlet UIPinchGestureRecognizer *pinchGestureRecognizer;
+@property (strong, nonatomic) IBOutlet UISwipeGestureRecognizer *prevSwipeGestureRecognizer;
+@property (strong, nonatomic) IBOutlet UISwipeGestureRecognizer *nextSwipeGestureRecognizer;
 @property (nonatomic) BOOL controlsHidden;
 @property (nonatomic) BOOL showBorders;
 @property (nonatomic) BOOL wantsToPlay;
@@ -623,6 +625,18 @@ static NSString *stringFromCMTime(CMTime time) {
 #else
 		self.fullscreen = NO;
 #endif
+	}
+}
+
+- (IBAction)prevSwipeGestureRecognizer:(UISwipeGestureRecognizer *)sender {
+	if (self.fullscreen) {
+		[self prevButtonTouchUpInside:self.prevButton];
+	}
+}
+
+- (IBAction)nextSwipeGestureRecognizer:(UISwipeGestureRecognizer *)sender {
+	if (self.fullscreen) {
+		[self nextButtonTouchUpInside:self.nextButton];
 	}
 }
 

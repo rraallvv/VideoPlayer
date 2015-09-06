@@ -55,5 +55,7 @@ extern NSString * const VideoPlayerNextItemNotification;
 @property (strong, nonatomic, readonly) UITapGestureRecognizer *doubleTapGestureRecognizer;
 @property (strong, nonatomic, readonly) UIPanGestureRecognizer *panGestureRecognizer;
 @property (strong, nonatomic, readonly) UIPinchGestureRecognizer *pinchGestureRecognizer;
+@property (strong, nonatomic, readonly) UISwipeGestureRecognizer *prevSwipeGestureRecognizer;
+@property (strong, nonatomic, readonly) UISwipeGestureRecognizer *nextSwipeGestureRecognizer;
 
 @end

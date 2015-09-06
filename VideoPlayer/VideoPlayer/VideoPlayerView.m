@@ -755,32 +755,39 @@ static NSString *stringFromCMTime(CMTime time) {
 
 	if (context == PlayerCurrentItemObservationContext) {
 		AVPlayerItem *oldItem = [change objectForKey:@"old"];
+
+		NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+
 		if (oldItem && oldItem != (id)[NSNull null]) {
-			[[NSNotificationCenter defaultCenter] removeObserver:self
-															name:AVPlayerItemPlaybackStalledNotification
-														  object:oldItem];
-			[[NSNotificationCenter defaultCenter] removeObserver:self
-															name:AVPlayerItemDidPlayToEndTimeNotification
-														  object:oldItem];
+			[defaultCenter removeObserver:self
+									 name:AVPlayerItemPlaybackStalledNotification
+								   object:oldItem];
+
+			[defaultCenter removeObserver:self
+									 name:AVPlayerItemDidPlayToEndTimeNotification
+								   object:oldItem];
 		}
 
 		AVPlayerItem *newItem = [change objectForKey:@"new"];
+
 		if (newItem && newItem != (id)[NSNull null]) {
-			[[NSNotificationCenter defaultCenter] addObserver:self
-													 selector:@selector(playerItemDidStalled:)
-														 name:AVPlayerItemPlaybackStalledNotification
-													   object:newItem];
-			[[NSNotificationCenter defaultCenter] addObserver:self
-													 selector:@selector(playerItemDidPlayToEndTime:)
-														 name:AVPlayerItemDidPlayToEndTimeNotification
-													   object:newItem];
+			[defaultCenter addObserver:self
+							  selector:@selector(playerItemDidStalled:)
+								  name:AVPlayerItemPlaybackStalledNotification
+								object:newItem];
+
+			[defaultCenter addObserver:self
+							  selector:@selector(playerItemDidPlayToEndTime:)
+								  name:AVPlayerItemDidPlayToEndTimeNotification
+								object:newItem];
+
 			//self.scrubber.hidden = NO;
 			if (self.player.rate != 0) {
 				self.wantsToPlay = YES;
 			}
 
 			//self.nextButton.enabled = [self.player isKindOfClass:[AVQueuePlayer class]] && [(AVQueuePlayer *)self.player items].count > 1;
-
+			
 		} else {
 			//self.scrubber.hidden = YES;
 			self.scrubber.value = 0;

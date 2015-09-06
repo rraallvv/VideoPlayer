@@ -506,11 +506,13 @@ static NSString *stringFromCMTime(CMTime time) {
 }
 
 - (IBAction)prevButtonTouchUpInside:(UIButton *)sender {
+	self.controlsHidden = NO;
 	[self.player seekToTime:kCMTimeZero];
 	[[NSNotificationCenter defaultCenter] postNotificationName:VideoPlayerPrevItemNotification object:self];
 }
 
 - (IBAction)nextButtonTouchUpInside:(UIButton *)sender {
+	self.controlsHidden = NO;
 	if ([self.player isKindOfClass:[AVQueuePlayer class]]) {
 		[(AVQueuePlayer *)self.player advanceToNextItem];
 	}

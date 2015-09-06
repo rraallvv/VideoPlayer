@@ -89,6 +89,7 @@ static NSString *stringFromCMTime(CMTime time) {
 @property (nonatomic, getter=isPlaying) BOOL playing;
 @property (nonatomic) BOOL stalled;
 @property (nonatomic) BOOL showsActivityIndicator;
+@property (strong, nonatomic) IBOutlet UIImageView *thumbnailView;
 
 @end
 
@@ -201,6 +202,10 @@ static NSString *stringFromCMTime(CMTime time) {
 	/* Activity indicator */
 	self.activityIndicator.center = CGPointMake(CGRectGetMidX(playerFrame),
 												CGRectGetMidY(playerFrame));
+
+	/* Content overlay and thumbnail views */
+	self.contentOverlayView.frame = self.frame;
+	self.thumbnailView.frame = self.playerLayer.videoRect;
 }
 
 - (void)dealloc {
@@ -271,6 +276,7 @@ static NSString *stringFromCMTime(CMTime time) {
 				if (minInterval < delta && delta < maxInterval) {
 					self.stalled = NO;
 					self.playing = YES;
+					self.thumbnailView.image = nil;
 				}
 			}
 
@@ -734,6 +740,20 @@ static NSString *stringFromCMTime(CMTime time) {
 #pragma mark Notification handlers
 
 - (void)playerItemDidStalled:(NSNotification *)notification {
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+		AVAsset *asset = self.player.currentItem.asset;
+		AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+		CMTime currentTime = self.player.currentTime;
+		CGImageRef imageRef = [imageGenerator copyCGImageAtTime:currentTime actualTime:NULL error:NULL];
+		UIImage *thumbnail = [UIImage imageWithCGImage:imageRef];
+		CGImageRelease(imageRef);
+
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.thumbnailView.image = thumbnail;
+			self.thumbnailView.frame = self.playerLayer.videoRect;
+		});
+	});
+
 	self.stalled = YES;
 	self.playing = NO;
 }

@@ -10,7 +10,11 @@
             <rect key="frame" x="0.0" y="-3" width="447" height="307"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view hidden="YES" opaque="NO" contentMode="scaleToFill" id="Jy3-JM-ZsZ">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="sGK-UJ-j83">
+                    <rect key="frame" x="0.0" y="0.0" width="447" height="307"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <view opaque="NO" contentMode="scaleToFill" id="Jy3-JM-ZsZ">
                     <rect key="frame" x="0.0" y="0.0" width="447" height="307"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -132,6 +136,7 @@
                 <outlet property="remainingPlaybackTimeLabel" destination="F6T-Tg-mWs" id="MOw-9v-Sj0"/>
                 <outlet property="scrubber" destination="IUS-7G-DCe" id="ecZ-rX-Jgu"/>
                 <outlet property="tapGestureRcognizer" destination="fan-uj-Zp0" id="Srh-rl-Ptl"/>
+                <outlet property="thumbnailView" destination="sGK-UJ-j83" id="JNU-y0-aSu"/>
                 <outlet property="topControlsView" destination="bky-sR-vcB" id="RWO-L6-srl"/>
                 <outlet property="volumeView" destination="Jo5-1J-SJ6" id="KJp-7e-xVA"/>
                 <outlet property="zoomButton" destination="GeM-fE-cJD" id="rPh-v5-Cbo"/>

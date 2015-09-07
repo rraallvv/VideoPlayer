@@ -742,19 +742,36 @@ static NSString *stringFromCMTime(CMTime time) {
 #pragma mark Notification handlers
 
 - (void)playerItemDidStalled:(NSNotification *)notification {
-	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-		AVAsset *asset = self.player.currentItem.asset;
-		AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
-		CMTime currentTime = self.player.currentTime;
-		CGImageRef imageRef = [imageGenerator copyCGImageAtTime:currentTime actualTime:NULL error:NULL];
-		UIImage *thumbnail = [UIImage imageWithCGImage:imageRef];
-		CGImageRelease(imageRef);
+	if (!self.thumbnailView.image) {
+		AVPlayerItem *playerItem = self.player.currentItem;
+		CMTime currentTime = playerItem.currentTime;
+		AVAsset *asset = playerItem.asset;
 
-		dispatch_async(dispatch_get_main_queue(), ^{
-			self.thumbnailView.image = thumbnail;
-			self.thumbnailView.frame = self.playerLayer.videoRect;
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+			AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+			if (!imageGenerator) {
+				NSLog(@"Could't create the thumbnail image generator.");
+				return;
+			}
+
+			CGImageRef imageRef = [imageGenerator copyCGImageAtTime:currentTime actualTime:NULL error:NULL];
+			if (!imageRef) {
+				NSLog(@"Could't create the thumbnail image.");
+				return;
+			}
+
+			UIImage *thumbnail = [UIImage imageWithCGImage:imageRef];
+			CGImageRelease(imageRef);
+
+			dispatch_async(dispatch_get_main_queue(), ^{
+				self.thumbnailView.image = thumbnail;
+				self.thumbnailView.frame = self.playerLayer.videoRect;
+			});
 		});
-	});
+
+	} else {
+		NSLog(@"Stalled with a thumbnail image already generated.");
+	}
 
 	self.stalled = YES;
 	self.playing = NO;

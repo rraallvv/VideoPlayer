@@ -493,7 +493,7 @@ static NSString *stringFromCMTime(CMTime time) {
 - (IBAction)scrubberValueChanged:(id)sender {
 	NSTimeInterval duration = CMTimeGetSeconds(self.player.currentItem.asset.duration);
 	CMTime newTime = CMTimeMakeWithSeconds(self.scrubber.value * duration, self.player.currentTime.timescale);
-	[self.player seekToTime:newTime];
+	[self.player seekToTime:newTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
 }
 
 
@@ -754,6 +754,12 @@ static NSString *stringFromCMTime(CMTime time) {
 				return;
 			}
 
+			if ([imageGenerator respondsToSelector:@selector(setRequestedTimeToleranceBefore:)]
+				&& [imageGenerator respondsToSelector:@selector(setRequestedTimeToleranceAfter:)]) {
+				imageGenerator.requestedTimeToleranceBefore = kCMTimeZero;
+				imageGenerator.requestedTimeToleranceAfter = kCMTimeZero;
+			}
+
 			CGImageRef imageRef = [imageGenerator copyCGImageAtTime:currentTime actualTime:NULL error:NULL];
 			if (!imageRef) {
 				NSLog(@"Could't create the thumbnail image.");
@@ -762,6 +768,11 @@ static NSString *stringFromCMTime(CMTime time) {
 
 			UIImage *thumbnail = [UIImage imageWithCGImage:imageRef];
 			CGImageRelease(imageRef);
+
+			if (!self.stalled) {
+				NSLog(@"Playback stalled but failed to get the video capture on time.");
+				return;
+			}
 
 			dispatch_async(dispatch_get_main_queue(), ^{
 				self.thumbnailView.image = thumbnail;

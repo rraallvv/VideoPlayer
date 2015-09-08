@@ -221,6 +221,11 @@ static NSString *stringFromCMTime(CMTime time) {
 
 #pragma mark Accessors
 
+- (void)setFrame:(CGRect)frame {
+	[super setFrame:frame];
+	self.thumbnailView.frame = self.playerLayer.videoRect;
+}
+
 - (void)setShowBorders:(BOOL)showBorders {
 	if (showBorders) {
 		self.layer.borderColor = UIColor.blackColor.CGColor;

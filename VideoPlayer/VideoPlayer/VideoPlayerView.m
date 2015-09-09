@@ -26,6 +26,7 @@
 #import "VideoPlayerView.h"
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
+#import "Scrubber.h"
 
 /* Custom notifications */
 NSString * const VideoPlayerPrevItemNotification = @"VideoPlayerPrevItemNotification";
@@ -68,7 +69,7 @@ static NSString *stringFromCMTime(CMTime time) {
 @interface VideoPlayerView ()
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
-@property (weak, nonatomic) IBOutlet UISlider *scrubber;
+@property (weak, nonatomic) IBOutlet Scrubber *scrubber;
 @property (weak, nonatomic) IBOutlet UILabel *playbackTimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *remainingPlaybackTimeLabel;
 @property (weak, nonatomic) IBOutlet UIButton *zoomButton;
@@ -857,6 +858,7 @@ static NSString *stringFromCMTime(CMTime time) {
 		} else {
 			//self.scrubber.hidden = YES;
 			self.scrubber.value = 0;
+			self.scrubber.progress = 0;
 			self.playbackTimeLabel.text = @"-:--:--";
 			self.remainingPlaybackTimeLabel.text = @"-:--:--";
 			self.thumbnailView.image = nil;
@@ -876,6 +878,8 @@ static NSString *stringFromCMTime(CMTime time) {
 			duration = MAX(duration, CMTimeGetSeconds(range.start) + CMTimeGetSeconds(range.duration));
 		}
 		duration = duration / CMTimeGetSeconds(_currentItem.duration);
+
+		self.scrubber.progress = duration;
 
 	}else {
 		[super observeValueForKeyPath:path ofObject:object change:change context:context];

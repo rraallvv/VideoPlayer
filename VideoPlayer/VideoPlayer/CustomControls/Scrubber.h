@@ -23,6 +23,10 @@
  * THE SOFTWARE.
  */
 
+IB_DESIGNABLE
 @interface Scrubber : UISlider
+
+@property (nonatomic) float progress;
+@property (nonatomic, retain) IBInspectable UIImage *progressImage;
 
 @end

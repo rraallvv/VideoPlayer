@@ -43,8 +43,8 @@ static const CGFloat swipeVelocityThreshold = 1638.4;//819.2;//409.6;
 static CGFloat const separation = 8.0;
 
 /* Key-Value Observation keys */
-static NSString * const PlayerCurrentItemObservationKeypath = @"player.currentItem";
-static NSString * const PlayerRateObservationKeypath = @"player.rate";
+static NSString * const PlayerCurrentItemObservationKeyPath = @"player.currentItem";
+static NSString * const PlayerRateObservationKeyPath = @"player.rate";
 
 /* Key-Value Observation contexts */
 static void *PlayerCurrentItemObservationContext = &PlayerCurrentItemObservationContext;
@@ -210,7 +210,7 @@ static NSString *stringFromCMTime(CMTime time) {
 }
 
 - (void)dealloc {
-	[self.layer removeObserver:self forKeyPath:PlayerCurrentItemObservationKeypath];
+	[self.layer removeObserver:self forKeyPath:PlayerCurrentItemObservationKeyPath];
 }
 
 
@@ -244,10 +244,10 @@ static NSString *stringFromCMTime(CMTime time) {
 - (void)setPlayer:(AVPlayer *)player {
 	if (self.player) {
 		[self.layer removeObserver:self
-						forKeyPath:PlayerCurrentItemObservationKeypath
+						forKeyPath:PlayerCurrentItemObservationKeyPath
 						   context:PlayerCurrentItemObservationContext];
 		[self.layer removeObserver:self
-						forKeyPath:PlayerRateObservationKeypath
+						forKeyPath:PlayerRateObservationKeyPath
 						   context:PlayerRateObservationContext];
 		if (_periodicTimeObserver) {
 			[self.player removeTimeObserver:_periodicTimeObserver];
@@ -303,12 +303,12 @@ static NSString *stringFromCMTime(CMTime time) {
 	}];
 
 	[self.layer addObserver:self
-				 forKeyPath:PlayerCurrentItemObservationKeypath
+				 forKeyPath:PlayerCurrentItemObservationKeyPath
 					options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
 					context:PlayerCurrentItemObservationContext];
 
 	[self.layer addObserver:self
-				 forKeyPath:PlayerRateObservationKeypath
+				 forKeyPath:PlayerRateObservationKeyPath
 					options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
 					context:PlayerRateObservationContext];
 }

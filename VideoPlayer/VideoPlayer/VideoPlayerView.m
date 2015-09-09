@@ -261,6 +261,7 @@ static NSString *stringFromCMTime(CMTime time) {
 	}
 
 	self.showBorders = YES;
+	self.thumbnailView.image = nil;
 
 	BOOL showPrevAndNextButtons = [player isKindOfClass:[AVQueuePlayer class]];
 	self.prevButton.hidden = self.nextButton.hidden = !showPrevAndNextButtons;
@@ -848,6 +849,7 @@ static NSString *stringFromCMTime(CMTime time) {
 			self.scrubber.value = 0;
 			self.playbackTimeLabel.text = @"-:--:--";
 			self.remainingPlaybackTimeLabel.text = @"-:--:--";
+			self.thumbnailView.image = nil;
 		}
 
 		self.stalled = YES;

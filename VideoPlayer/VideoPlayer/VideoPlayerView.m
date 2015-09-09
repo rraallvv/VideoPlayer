@@ -103,6 +103,7 @@ static NSString *stringFromCMTime(CMTime time) {
 	BOOL _canToggleFullscreen;
 	CALayer *_timeLineLayer;
 	BOOL _shouldChangeContainerView;
+	AVPlayerItem *_currentItem;
 }
 
 
@@ -303,12 +304,12 @@ static NSString *stringFromCMTime(CMTime time) {
 
 	[self.layer addObserver:self
 				 forKeyPath:PlayerCurrentItemObservationKeypath
-					options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+					options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
 					context:PlayerCurrentItemObservationContext];
 
 	[self.layer addObserver:self
 				 forKeyPath:PlayerRateObservationKeypath
-					options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+					options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
 					context:PlayerRateObservationContext];
 }
 
@@ -810,32 +811,30 @@ static NSString *stringFromCMTime(CMTime time) {
 					   context:(void*)context {
 
 	if (context == PlayerCurrentItemObservationContext) {
-		AVPlayerItem *oldItem = [change objectForKey:@"old"];
-
 		NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
 
-		if (oldItem && oldItem != (id)[NSNull null]) {
+		if (_currentItem) {
 			[defaultCenter removeObserver:self
 									 name:AVPlayerItemPlaybackStalledNotification
-								   object:oldItem];
+								   object:_currentItem];
 
 			[defaultCenter removeObserver:self
 									 name:AVPlayerItemDidPlayToEndTimeNotification
-								   object:oldItem];
+								   object:_currentItem];
 		}
 
-		AVPlayerItem *newItem = [change objectForKey:@"new"];
+		_currentItem = self.player.currentItem;
 
-		if (newItem && newItem != (id)[NSNull null]) {
+		if (_currentItem) {
 			[defaultCenter addObserver:self
 							  selector:@selector(playerItemDidStalled:)
 								  name:AVPlayerItemPlaybackStalledNotification
-								object:newItem];
+								object:_currentItem];
 
 			[defaultCenter addObserver:self
 							  selector:@selector(playerItemDidPlayToEndTime:)
 								  name:AVPlayerItemDidPlayToEndTimeNotification
-								object:newItem];
+								object:_currentItem];
 
 			//self.scrubber.hidden = NO;
 			if (self.player.rate != 0) {

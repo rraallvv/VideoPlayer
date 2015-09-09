@@ -45,10 +45,12 @@ static CGFloat const separation = 8.0;
 /* Key-Value Observation keys */
 static NSString * const PlayerCurrentItemObservationKeyPath = @"player.currentItem";
 static NSString * const PlayerRateObservationKeyPath = @"player.rate";
+static NSString * const PlayerItemLoadedTimeRangesKeyPath = @"loadedTimeRanges";
 
 /* Key-Value Observation contexts */
 static void *PlayerCurrentItemObservationContext = &PlayerCurrentItemObservationContext;
 static void *PlayerRateObservationContext = &PlayerRateObservationContext;
+static void *PlayerItemLoadedTimeRangesContext = &PlayerItemLoadedTimeRangesContext;
 
 /* Time line indicator */
 static CGFloat const TimeLineIndicatorWidth = 1.0;//2.0;
@@ -821,6 +823,10 @@ static NSString *stringFromCMTime(CMTime time) {
 			[defaultCenter removeObserver:self
 									 name:AVPlayerItemDidPlayToEndTimeNotification
 								   object:_currentItem];
+
+			[_currentItem removeObserver:self
+							  forKeyPath:PlayerItemLoadedTimeRangesKeyPath
+								 context:PlayerItemLoadedTimeRangesContext];
 		}
 
 		_currentItem = self.player.currentItem;
@@ -835,6 +841,11 @@ static NSString *stringFromCMTime(CMTime time) {
 							  selector:@selector(playerItemDidPlayToEndTime:)
 								  name:AVPlayerItemDidPlayToEndTimeNotification
 								object:_currentItem];
+
+			[_currentItem addObserver:self
+						   forKeyPath:PlayerItemLoadedTimeRangesKeyPath
+							  options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+							  context:PlayerItemLoadedTimeRangesContext];
 
 			//self.scrubber.hidden = NO;
 			if (self.player.rate != 0) {
@@ -858,7 +869,15 @@ static NSString *stringFromCMTime(CMTime time) {
 			self.wantsToPlay = YES;
 		}
 
-	} else {
+	} else if (context == PlayerItemLoadedTimeRangesContext) {
+		double duration = 0.0;
+		for (NSValue *time in _currentItem.loadedTimeRanges) {
+			CMTimeRange range = [time CMTimeRangeValue];
+			duration = MAX(duration, CMTimeGetSeconds(range.start) + CMTimeGetSeconds(range.duration));
+		}
+		duration = duration / CMTimeGetSeconds(_currentItem.duration);
+
+	}else {
 		[super observeValueForKeyPath:path ofObject:object change:change context:context];
 	}
 }

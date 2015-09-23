@@ -31,6 +31,7 @@
 /* Custom notifications */
 NSString * const VideoPlayerPrevItemNotification = @"VideoPlayerPrevItemNotification";
 NSString * const VideoPlayerNextItemNotification = @"VideoPlayerNextItemNotification";
+NSString * const VideoPlayerCloseNotification = @"VideoPlayerCloseNotification";
 
 /* Animation parameters */
 static const CGFloat FullscreenTransitionDuration = 0.375;//0.25//0.5
@@ -660,6 +661,7 @@ static NSString *stringFromCMTime(CMTime time) {
 
 - (IBAction)closeButtonTouchUpInside:(UIButton *)sender {
 	[self closePlayer];
+	[[NSNotificationCenter defaultCenter] postNotificationName:VideoPlayerCloseNotification object:self];
 }
 
 
@@ -881,7 +883,7 @@ static NSString *stringFromCMTime(CMTime time) {
 
 		self.scrubber.progress = duration;
 
-	}else {
+	} else {
 		[super observeValueForKeyPath:path ofObject:object change:change context:context];
 	}
 }

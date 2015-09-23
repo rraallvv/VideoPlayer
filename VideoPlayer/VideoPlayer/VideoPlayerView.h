@@ -27,6 +27,7 @@
 
 extern NSString * const VideoPlayerPrevItemNotification;
 extern NSString * const VideoPlayerNextItemNotification;
+extern NSString * const VideoPlayerCloseNotification;
 
 
 @protocol VideoPlayerViewDelegate

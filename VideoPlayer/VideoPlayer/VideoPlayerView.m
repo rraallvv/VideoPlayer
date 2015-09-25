@@ -326,6 +326,10 @@ static NSString *stringFromCMTime(CMTime time) {
 }
 
 - (void)setFullscreen:(BOOL)fullscreen {
+	[self setFullscreen:fullscreen completion:nil];
+}
+
+- (void)setFullscreen:(BOOL)fullscreen completion:(void (^)(void))completion {
 	if (!_canToggleFullscreen || fullscreen == self.fullscreen) {
 		return;
 	}
@@ -366,6 +370,10 @@ static NSString *stringFromCMTime(CMTime time) {
 
 				_canToggleFullscreen = YES;
 				_shouldChangeContainerView = YES;
+
+				if (completion) {
+					completion();
+				}
 			}];
 		}];
 
@@ -375,7 +383,7 @@ static NSString *stringFromCMTime(CMTime time) {
 
 		[UIApplication.sharedApplication.keyWindow addSubview:self];
 
-		void (^completionBlock)() = ^{
+		void (^block)() = ^{
 			[UIApplication.sharedApplication.keyWindow addSubview:self];
 			self.frame = initialFrame;
 			self.showBorders = YES;
@@ -399,6 +407,10 @@ static NSString *stringFromCMTime(CMTime time) {
 
 				_canToggleFullscreen = YES;
 				_shouldChangeContainerView = YES;
+
+				if (completion) {
+					completion();
+				}
 			}];
 		};
 
@@ -406,9 +418,9 @@ static NSString *stringFromCMTime(CMTime time) {
 
 		if (presentingViewController) {
 			//[UIApplication.sharedApplication.keyWindow addSubview:self];
-			[presentingViewController dismissViewControllerAnimated:NO completion:completionBlock];
+			[presentingViewController dismissViewControllerAnimated:NO completion:block];
 		} else {
-			completionBlock();
+			block();
 		}
 	}
 }
@@ -677,7 +689,11 @@ static NSString *stringFromCMTime(CMTime time) {
 	} else {
 		[self.player replaceCurrentItemWithPlayerItem:nil];
 	}
-	self.fullscreen = NO;
+	__weak VideoPlayerView *weakSelf = self;
+	[self setFullscreen:NO completion:^{
+		[weakSelf removeFromSuperview];
+		weakSelf.containerView = nil;
+	}];
 }
 
 - (void)hideControlsTimer {

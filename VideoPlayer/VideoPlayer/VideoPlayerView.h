@@ -59,4 +59,6 @@ extern NSString * const VideoPlayerCloseNotification;
 @property (strong, nonatomic, readonly) UISwipeGestureRecognizer *prevSwipeGestureRecognizer;
 @property (strong, nonatomic, readonly) UISwipeGestureRecognizer *nextSwipeGestureRecognizer;
 
+- (void)closePlayer;
+
 @end

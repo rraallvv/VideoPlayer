@@ -93,7 +93,7 @@ static NSString *stringFromCMTime(CMTime time) {
 @property (nonatomic, getter=isPlaying) BOOL playing;
 @property (nonatomic) BOOL stalled;
 @property (nonatomic) BOOL showsActivityIndicator;
-@property (strong, nonatomic) IBOutlet UIImageView *thumbnailView;
+@property (strong, nonatomic) UIImageView *standbyImageView;
 
 @end
 
@@ -130,7 +130,7 @@ static NSString *stringFromCMTime(CMTime time) {
 	[self.layer addSublayer:_timeLineLayer];
 
 	self.showBorders = YES;
-	self.layer.backgroundColor = [UIColor blackColor].CGColor;
+	//self.layer.backgroundColor = self.backgroundColor.CGColor;
 }
 
 - (void)didMoveToSuperview {
@@ -209,8 +209,8 @@ static NSString *stringFromCMTime(CMTime time) {
 												CGRectGetMidY(playerFrame));
 
 	/* Content overlay and thumbnail views */
-	self.contentOverlayView.frame = self.frame;
-	self.thumbnailView.frame = self.playerLayer.videoRect;
+	self.contentOverlayView.frame = self.bounds;
+	self.standbyImageView.frame = self.bounds;
 }
 
 - (void)dealloc {
@@ -228,7 +228,8 @@ static NSString *stringFromCMTime(CMTime time) {
 
 - (void)setFrame:(CGRect)frame {
 	[super setFrame:frame];
-	self.thumbnailView.frame = self.playerLayer.videoRect;
+	self.contentOverlayView.frame = self.bounds;
+	self.standbyImageView.frame = self.bounds;
 }
 
 - (void)setShowBorders:(BOOL)showBorders {
@@ -266,7 +267,8 @@ static NSString *stringFromCMTime(CMTime time) {
 	}
 
 	self.showBorders = YES;
-	self.thumbnailView.image = nil;
+	self.standbyImageView.image = nil;
+	self.standbyImageView.hidden = YES;
 
 	BOOL showPrevAndNextButtons = [player isKindOfClass:[AVQueuePlayer class]];
 	self.prevButton.hidden = self.nextButton.hidden = !showPrevAndNextButtons;
@@ -287,7 +289,8 @@ static NSString *stringFromCMTime(CMTime time) {
 				if (minInterval < delta && delta < maxInterval) {
 					self.stalled = NO;
 					self.playing = YES;
-					self.thumbnailView.image = nil;
+					self.standbyImageView.image = nil;
+					self.standbyImageView.hidden = YES;
 				}
 			}
 
@@ -495,6 +498,22 @@ static NSString *stringFromCMTime(CMTime time) {
 - (void)setStalled:(BOOL)stalled {
 	self.showsActivityIndicator = stalled;
 	_stalled = stalled;
+}
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor {
+	[super setBackgroundColor:backgroundColor];
+	self.standbyImageView.backgroundColor = backgroundColor;
+}
+
+- (UIImageView *)standbyImageView {
+	if (!_standbyImageView && self.contentOverlayView) {
+		_standbyImageView = [[UIImageView alloc] init];
+		_standbyImageView.contentMode = UIViewContentModeScaleAspectFit;
+		_standbyImageView.backgroundColor = self.backgroundColor;
+		_standbyImageView.hidden = YES;
+		[self insertSubview:_standbyImageView belowSubview:self.contentOverlayView];
+	}
+	return _standbyImageView;
 }
 
 #pragma mark Actions
@@ -770,7 +789,7 @@ static NSString *stringFromCMTime(CMTime time) {
 #pragma mark Notification handlers
 
 - (void)playerItemDidStalled:(NSNotification *)notification {
-	if (!self.thumbnailView.image) {
+	if (!self.standbyImageView.image) {
 		AVPlayerItem *playerItem = self.player.currentItem;
 		CMTime currentTime = playerItem.currentTime;
 		AVAsset *asset = playerItem.asset;
@@ -803,8 +822,9 @@ static NSString *stringFromCMTime(CMTime time) {
 			}
 
 			dispatch_async(dispatch_get_main_queue(), ^{
-				self.thumbnailView.image = thumbnail;
-				self.thumbnailView.frame = self.playerLayer.videoRect;
+				self.standbyImageView.image = thumbnail;
+				self.standbyImageView.hidden = NO;
+				self.standbyImageView.frame = self.bounds;
 			});
 		});
 
@@ -879,7 +899,8 @@ static NSString *stringFromCMTime(CMTime time) {
 			self.scrubber.progress = 0;
 			self.playbackTimeLabel.text = @"-:--:--";
 			self.remainingPlaybackTimeLabel.text = @"-:--:--";
-			self.thumbnailView.image = nil;
+			self.standbyImageView.image = nil;
+			self.standbyImageView.hidden = YES;
 		}
 
 		self.stalled = YES;

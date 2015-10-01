@@ -36,8 +36,12 @@
 		_maximumTrackImages = [NSMutableDictionary dictionary];
 		UIEdgeInsets capInsets = UIEdgeInsetsMake(0, 4, 0, 4);
 		self.progressImage = [[UIImage imageNamed:@"Progress"] resizableImageWithCapInsets:capInsets];
+
 		[self setMaximumTrackImage:[[UIImage imageNamed:@"ScrubberMax"] resizableImageWithCapInsets:capInsets] forState:UIControlStateNormal];
 		[self setMinimumTrackImage:[[UIImage imageNamed:@"ScrubberMin"] resizableImageWithCapInsets:capInsets] forState:UIControlStateNormal];
+
+		[self setMaximumTrackImage:[[UIImage imageNamed:@"ScrubberMax"] resizableImageWithCapInsets:capInsets] forState:UIControlStateHighlighted];
+		[self setMinimumTrackImage:[[UIImage imageNamed:@"ScrubberMin"] resizableImageWithCapInsets:capInsets] forState:UIControlStateHighlighted];
 
 		self.progress = 0.0;
 	}

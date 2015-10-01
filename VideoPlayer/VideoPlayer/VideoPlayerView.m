@@ -334,6 +334,9 @@ static NSString *stringFromCMTime(CMTime time) {
 
 - (void)setFullscreen:(BOOL)fullscreen completion:(void (^)(void))completion {
 	if (!_canToggleFullscreen || fullscreen == self.fullscreen) {
+		if (completion) {
+			completion();
+		}
 		return;
 	}
 

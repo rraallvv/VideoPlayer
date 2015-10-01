@@ -217,13 +217,6 @@ static NSString *stringFromCMTime(CMTime time) {
 	[self.layer removeObserver:self forKeyPath:PlayerCurrentItemObservationKeyPath];
 }
 
-
-#pragma mark Drawing
-
-- (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx {
-	printf(".");
-}
-
 #pragma mark Accessors
 
 - (void)setFrame:(CGRect)frame {
@@ -782,10 +775,13 @@ static NSString *stringFromCMTime(CMTime time) {
 
 	/* Time line progess indicator */
 	CGFloat borderWidth = self.layer.borderWidth;
+	[CATransaction begin];
+	[CATransaction setDisableActions:YES];
 	_timeLineLayer.frame = CGRectMake(borderWidth,
-											  CGRectGetHeight(rect) - TimeLineIndicatorWidth - borderWidth,
-											  self.scrubber.value * (CGRectGetWidth(rect) - 2 * borderWidth),
-											  TimeLineIndicatorWidth);
+									  CGRectGetHeight(rect) - TimeLineIndicatorWidth - borderWidth,
+									  self.scrubber.value * (CGRectGetWidth(rect) - 2 * borderWidth),
+									  TimeLineIndicatorWidth);
+	[CATransaction commit];
 }
 
 

@@ -695,7 +695,7 @@ static NSString *stringFromCMTime(CMTime time) {
 #pragma mark Helper methods
 
 - (void)toggleWantsToPlay {
-	self.wantsToPlay = !self.isPlaying;
+	self.wantsToPlay = !self.wantsToPlay;
 }
 
 - (void)closePlayer {

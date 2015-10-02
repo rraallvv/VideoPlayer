@@ -341,6 +341,8 @@ static NSString *stringFromCMTime(CMTime time) {
 		self.containerView.hidden = YES;
 		[_timeLineLayer removeFromSuperlayer];
 
+		[self clearControlsHiddenTimer];
+
 		[UIView animateWithDuration:FullscreenTransitionDuration animations:^{
 			self.frame = screenBounds;
 
@@ -422,9 +424,9 @@ static NSString *stringFromCMTime(CMTime time) {
 }
 
 - (void)setControlsHidden:(BOOL)controlsHidden {
-	if (controlsHidden) {
-		[_hideControlsTimer invalidate];
+	[self clearControlsHiddenTimer];
 
+	if (controlsHidden) {
 		[UIView animateWithDuration:ControlsFadeDuration animations:^{
 			self.topControlsView.alpha = 0.0;
 			self.bottomControlsView.alpha = 0.0;
@@ -508,7 +510,7 @@ static NSString *stringFromCMTime(CMTime time) {
 #pragma mark Actions
 
 - (IBAction)scrubberTouchDown:(id)sender {
-	[_hideControlsTimer invalidate];
+	[self clearControlsHiddenTimer];
 	[self.player pause];
 }
 
@@ -533,6 +535,7 @@ static NSString *stringFromCMTime(CMTime time) {
 }
 
 - (IBAction)playButtonTouchUpInside:(UIButton *)sender {
+	self.controlsHidden = NO;
 	[self toggleWantsToPlay];
 }
 
@@ -686,6 +689,13 @@ static NSString *stringFromCMTime(CMTime time) {
 
 
 #pragma mark Helper methods
+
+- (void)clearControlsHiddenTimer {
+	if (_hideControlsTimer) {
+		[_hideControlsTimer invalidate];
+		_hideControlsTimer = nil;
+	}
+}
 
 - (void)updateTimeIndicatorsWithTime:(CMTime)time {
 	CMTime endTime = CMTimeConvertScale(self.player.currentItem.asset.duration, time.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);

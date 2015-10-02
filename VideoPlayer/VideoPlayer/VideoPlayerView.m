@@ -449,9 +449,9 @@ static NSString *stringFromCMTime(CMTime time) {
 }
 
 - (void)setWantsToPlay:(BOOL)wantsToPlay {
-	if (!self.player.currentItem) {
-		return;
-	}
+//	if (!self.player.currentItem) {
+//		return;
+//	}
 	self.playing = wantsToPlay;
 	if (wantsToPlay) {
 		[self.player play];
@@ -933,6 +933,7 @@ static NSString *stringFromCMTime(CMTime time) {
 		duration = duration / CMTimeGetSeconds(_currentItem.duration);
 
 		self.scrubber.progress = duration;
+		[self.scrubber setNeedsDisplay];
 
 	} else {
 		[super observeValueForKeyPath:path ofObject:object change:change context:context];

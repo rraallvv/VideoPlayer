@@ -287,14 +287,7 @@ static NSString *stringFromCMTime(CMTime time) {
 				}
 			}
 
-			CMTime endTime = CMTimeConvertScale(weakPlayerRef.currentItem.asset.duration, time.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
-			if (CMTimeCompare(endTime, kCMTimeZero) != 0) {
-				double normalizedTime = (double) time.value / (double) endTime.value;
-				self.scrubber.value = normalizedTime;
-			}
-
-			self.playbackTimeLabel.text = stringFromCMTime(time);
-			self.remainingPlaybackTimeLabel.text = [NSString stringWithFormat:@"-%@", stringFromCMTime(CMTimeSubtract(endTime, time))];
+			[self updateTimeIndicatorsWithTime:time];
 		}
 
 		[self layoutTimeIndicatorsInRect:self.frame];
@@ -693,6 +686,16 @@ static NSString *stringFromCMTime(CMTime time) {
 
 
 #pragma mark Helper methods
+
+- (void)updateTimeIndicatorsWithTime:(CMTime)time {
+	CMTime endTime = CMTimeConvertScale(self.player.currentItem.asset.duration, time.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
+	if (CMTimeCompare(endTime, kCMTimeZero) != 0) {
+		double normalizedTime = (double) time.value / (double) endTime.value;
+		self.scrubber.value = normalizedTime;
+	}
+	self.playbackTimeLabel.text = stringFromCMTime(time);
+	self.remainingPlaybackTimeLabel.text = [NSString stringWithFormat:@"-%@", stringFromCMTime(CMTimeSubtract(endTime, time))];
+}
 
 - (void)toggleWantsToPlay {
 	self.wantsToPlay = !self.wantsToPlay;

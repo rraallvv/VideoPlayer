@@ -751,24 +751,26 @@ static NSString *stringFromCMTime(CMTime time) {
 }
 
 - (void)layoutTimeIndicatorsInRect:(CGRect)rect {
+	CGRect topControlsFrame = self.topControlsView.frame;
+
 	/* Playback time */
 	[self.playbackTimeLabel sizeToFit];
 	CGRect playbackTimeFrame = self.playbackTimeLabel.frame;
 	self.playbackTimeLabel.center = CGPointMake(CGRectGetMaxX(self.closeButton.frame) + separation + CGRectGetWidth(playbackTimeFrame)/2,
-												CGRectGetMidY(playbackTimeFrame));
+												CGRectGetMidY(topControlsFrame));
 
 	/* Remaining playback time */
 	[self.remainingPlaybackTimeLabel sizeToFit];
 	CGRect remainingPlaybackTimeFrame = self.remainingPlaybackTimeLabel.frame;
 	self.remainingPlaybackTimeLabel.center = CGPointMake(CGRectGetMinX(self.zoomButton.frame) - separation - CGRectGetWidth(remainingPlaybackTimeFrame)/2,
-														 CGRectGetMidY(remainingPlaybackTimeFrame));
+														 CGRectGetMidY(topControlsFrame));
 
 	/* Scrubber */
 	CGRect scrubberFrame = self.scrubber.frame;
-	CGFloat scrubberMinX = CGRectGetMaxX(self.playbackTimeLabel.frame) + separation;
-	CGFloat scrubberMaxX = CGRectGetMinX(self.remainingPlaybackTimeLabel.frame) - separation;
+	CGFloat scrubberMinX = CGRectGetMaxX(self.playbackTimeLabel.frame) + 0.5 * separation;
+	CGFloat scrubberMaxX = CGRectGetMinX(self.remainingPlaybackTimeLabel.frame) - 0.5 * separation;
 	scrubberFrame = CGRectMake(scrubberMinX,
-							   CGRectGetMinY(scrubberFrame),
+							   CGRectGetMidY(topControlsFrame) - 0.5 * CGRectGetHeight(scrubberFrame),
 							   scrubberMaxX - scrubberMinX,
 							   CGRectGetHeight(scrubberFrame));
 	self.scrubber.frame = scrubberFrame;

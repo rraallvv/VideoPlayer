@@ -94,6 +94,7 @@ static NSString *stringFromCMTime(CMTime time) {
 @property (nonatomic) BOOL stalled;
 @property (nonatomic) BOOL showsActivityIndicator;
 @property (strong, nonatomic) UIImageView *standbyImageView;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @end
 
@@ -207,6 +208,15 @@ static NSString *stringFromCMTime(CMTime time) {
 	/* Activity indicator */
 	self.activityIndicator.center = CGPointMake(CGRectGetMidX(playerFrame),
 												CGRectGetMidY(playerFrame));
+
+	/* Title label */
+	[self.titleLabel sizeToFit];
+	CGRect titleFrame = self.titleLabel.frame;
+	titleFrame = CGRectMake(CGRectGetMinX(topControlsFrame) + separation,
+							CGRectGetMaxY(topControlsFrame),
+							CGRectGetWidth(topControlsFrame) - 2.0 * separation,
+							CGRectGetHeight(titleFrame));
+	self.titleLabel.frame = titleFrame;
 
 	/* Content overlay and thumbnail views */
 	self.contentOverlayView.frame = self.bounds;
@@ -372,8 +382,7 @@ static NSString *stringFromCMTime(CMTime time) {
 		}];
 
 	} else {
-		self.topControlsView.hidden = YES;
-		self.bottomControlsView.hidden = YES;
+		[self setControlsHidden:YES animated:NO];
 
 		[UIApplication.sharedApplication.keyWindow addSubview:self];
 
@@ -424,22 +433,40 @@ static NSString *stringFromCMTime(CMTime time) {
 }
 
 - (void)setControlsHidden:(BOOL)controlsHidden {
+	[self setControlsHidden:controlsHidden animated:YES];
+}
+
+- (void)setControlsHidden:(BOOL)controlsHidden animated:(BOOL)animated {
 	[self clearControlsHiddenTimer];
 
 	if (controlsHidden) {
-		[UIView animateWithDuration:ControlsFadeDuration animations:^{
-			self.topControlsView.alpha = 0.0;
-			self.bottomControlsView.alpha = 0.0;
-		} completion:^(BOOL finished) {
+		if (animated) {
+			[UIView animateWithDuration:ControlsFadeDuration animations:^{
+				self.topControlsView.alpha = 0.0;
+				self.bottomControlsView.alpha = 0.0;
+				self.titleLabel.alpha = 0.0;
+
+			} completion:^(BOOL finished) {
+				self.topControlsView.hidden = YES;
+				self.bottomControlsView.hidden = YES;
+				self.titleLabel.hidden = YES;
+			}];
+
+		} else {
 			self.topControlsView.hidden = YES;
 			self.bottomControlsView.hidden = YES;
-		}];
+			self.titleLabel.hidden = YES;
+		}
 
 	} else if ([self.delegate shouldShowPlaybackControls]) {
 		self.topControlsView.hidden = NO;
 		self.bottomControlsView.hidden = NO;
+		self.titleLabel.hidden = NO;
+
 		self.topControlsView.alpha = 1.0;
 		self.bottomControlsView.alpha = 1.0;
+		self.titleLabel.alpha = 1.0;
+
 		_hideControlsTimer = [NSTimer scheduledTimerWithTimeInterval:5.0
 															  target:self
 															selector:@selector(hideControlsTimer)
@@ -505,6 +532,14 @@ static NSString *stringFromCMTime(CMTime time) {
 		[self insertSubview:_standbyImageView belowSubview:self.contentOverlayView];
 	}
 	return _standbyImageView;
+}
+
+- (void)setTitle:(NSString *)title {
+	self.titleLabel.text = title;
+}
+
+- (NSString *)title {
+	return self.titleLabel.text;
 }
 
 #pragma mark Actions
@@ -635,8 +670,7 @@ static NSString *stringFromCMTime(CMTime time) {
 		static CGRect initialFrame;
 
 		if (state == UIGestureRecognizerStateBegan) {
-			self.bottomControlsView.hidden = YES;
-			self.topControlsView.hidden = YES;
+			[self setControlsHidden:YES animated:NO];
 
 			initialFrame = [self.superview convertRect:self.frame toView:UIApplication.sharedApplication.keyWindow];
 

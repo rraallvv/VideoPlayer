@@ -59,6 +59,8 @@ extern NSString * const VideoPlayerCloseNotification;
 @property (strong, nonatomic, readonly) UISwipeGestureRecognizer *prevSwipeGestureRecognizer;
 @property (strong, nonatomic, readonly) UISwipeGestureRecognizer *nextSwipeGestureRecognizer;
 
+@property (copy, nonatomic) NSString *title;
+
 - (void)setFullscreen:(BOOL)fullscreen completion:(void (^)(void))completion;
 - (void)closePlayer;
 

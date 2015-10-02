@@ -65,6 +65,13 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
+                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Q5c-ES-TNe" userLabel="Title">
+                    <rect key="frame" x="8" y="45" width="431" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
                 <view hidden="YES" contentMode="scaleToFill" id="K8m-17-7on">
                     <rect key="frame" x="0.0" y="261" width="447" height="46"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -133,6 +140,7 @@
                 <outlet property="remainingPlaybackTimeLabel" destination="F6T-Tg-mWs" id="MOw-9v-Sj0"/>
                 <outlet property="scrubber" destination="IUS-7G-DCe" id="ecZ-rX-Jgu"/>
                 <outlet property="tapGestureRcognizer" destination="fan-uj-Zp0" id="Srh-rl-Ptl"/>
+                <outlet property="titleLabel" destination="Q5c-ES-TNe" id="EFj-UM-XVI"/>
                 <outlet property="topControlsView" destination="bky-sR-vcB" id="RWO-L6-srl"/>
                 <outlet property="volumeView" destination="Jo5-1J-SJ6" id="KJp-7e-xVA"/>
                 <outlet property="zoomButton" destination="GeM-fE-cJD" id="rPh-v5-Cbo"/>

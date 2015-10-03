@@ -132,6 +132,11 @@ static NSString *stringFromCMTime(CMTime time) {
 
 	self.showBorders = YES;
 	//self.layer.backgroundColor = self.backgroundColor.CGColor;
+
+	/* Add a gesture recognizer to detect touches on the volume control */
+	UIPanGestureRecognizer *volumeGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(volumeAdjusted:)];
+	volumeGestureRecognizer.cancelsTouchesInView = NO;
+	[self.volumeView addGestureRecognizer:volumeGestureRecognizer];
 }
 
 - (void)didMoveToSuperview {
@@ -702,6 +707,10 @@ static NSString *stringFromCMTime(CMTime time) {
 		self.fullscreen = NO;
 #endif
 	}
+}
+
+- (void)volumeAdjusted:(UIPanGestureRecognizer *)recognizer {
+	[self setControlsHidden:NO animated:NO];
 }
 
 - (IBAction)prevSwipeGestureRecognizer:(UISwipeGestureRecognizer *)sender {

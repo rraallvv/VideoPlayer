@@ -122,7 +122,6 @@ static NSString *stringFromCMTime(CMTime time) {
     self.topControlsView.hidden = YES;
     self.bottomControlsView.hidden = YES;
 	self.activityIndicator.hidden = YES;
-	self.titleLabel.hidden = YES;
 
 	self.activityIndicator.hidesWhenStopped = YES;
 	_canToggleFullscreen = YES;
@@ -161,24 +160,31 @@ static NSString *stringFromCMTime(CMTime time) {
 	CGRect playerFrame = self.frame;
 	CGFloat playerFrameWidth = CGRectGetWidth(playerFrame);
 
+	[self.titleLabel sizeToFit];
+
 	/* Top view */
 	CGRect topControlsFrame = self.topControlsView.frame;
+	CGFloat firstRowHeight = 2.0 * separation + MAX(CGRectGetHeight(self.closeButton.frame), CGRectGetHeight(self.zoomButton.frame));
+	CGFloat topControlsHeight = firstRowHeight + CGRectGetHeight(self.titleLabel.frame);
+	if (self.titleLabel.text && [self.titleLabel.text length] > 0) {
+		topControlsHeight += separation;
+	}
 	topControlsFrame = CGRectMake(0,
 								  0,
 								  playerFrameWidth,
-								  CGRectGetHeight(topControlsFrame));
+								  topControlsHeight);
 	self.topControlsView.frame = topControlsFrame;
 	CGRect topControlsBounds = self.topControlsView.bounds;
 
 	/* Close button */
 	CGRect closeButtonFrame = self.closeButton.frame;
 	self.closeButton.center = CGPointMake(separation + CGRectGetWidth(closeButtonFrame)/2,
-										  CGRectGetMidY(topControlsBounds));
+										  firstRowHeight/2);
 
 	/* Zoom button */
 	CGRect zoomButtonFrame = self.zoomButton.frame;
 	self.zoomButton.center = CGPointMake(CGRectGetWidth(topControlsBounds) - separation - CGRectGetWidth(zoomButtonFrame)/2,
-										 CGRectGetMidY(topControlsBounds));
+										 firstRowHeight/2);
 
 	/* Time labels and the scrubber */
 	[self layoutTimeIndicatorsInRect:playerFrame];
@@ -219,10 +225,9 @@ static NSString *stringFromCMTime(CMTime time) {
 												CGRectGetMidY(playerFrame));
 
 	/* Title label */
-	[self.titleLabel sizeToFit];
 	CGRect titleFrame = self.titleLabel.frame;
 	titleFrame = CGRectMake(CGRectGetMinX(topControlsFrame) + separation,
-							CGRectGetMaxY(topControlsFrame),
+							CGRectGetMaxY(topControlsFrame) - separation - CGRectGetHeight(titleFrame),
 							CGRectGetWidth(topControlsFrame) - 2.0 * separation,
 							CGRectGetHeight(titleFrame));
 	self.titleLabel.frame = titleFrame;
@@ -811,26 +816,26 @@ static NSString *stringFromCMTime(CMTime time) {
 }
 
 - (void)layoutTimeIndicatorsInRect:(CGRect)rect {
-	CGRect topControlsFrame = self.topControlsView.frame;
+	CGFloat midY = CGRectGetMidY(self.closeButton.frame);
 
 	/* Playback time */
 	[self.playbackTimeLabel sizeToFit];
 	CGRect playbackTimeFrame = self.playbackTimeLabel.frame;
 	self.playbackTimeLabel.center = CGPointMake(CGRectGetMaxX(self.closeButton.frame) + separation + CGRectGetWidth(playbackTimeFrame)/2,
-												CGRectGetMidY(topControlsFrame));
+												midY);
 
 	/* Remaining playback time */
 	[self.remainingPlaybackTimeLabel sizeToFit];
 	CGRect remainingPlaybackTimeFrame = self.remainingPlaybackTimeLabel.frame;
 	self.remainingPlaybackTimeLabel.center = CGPointMake(CGRectGetMinX(self.zoomButton.frame) - separation - CGRectGetWidth(remainingPlaybackTimeFrame)/2,
-														 CGRectGetMidY(topControlsFrame));
+														 midY);
 
 	/* Scrubber */
 	CGRect scrubberFrame = self.scrubber.frame;
 	CGFloat scrubberMinX = CGRectGetMaxX(self.playbackTimeLabel.frame) + 0.5 * separation;
 	CGFloat scrubberMaxX = CGRectGetMinX(self.remainingPlaybackTimeLabel.frame) - 0.5 * separation;
 	scrubberFrame = CGRectMake(scrubberMinX,
-							   CGRectGetMidY(topControlsFrame) - 0.5 * CGRectGetHeight(scrubberFrame),
+							   midY - 0.5 * CGRectGetHeight(scrubberFrame),
 							   scrubberMaxX - scrubberMinX,
 							   CGRectGetHeight(scrubberFrame));
 	self.scrubber.frame = scrubberFrame;

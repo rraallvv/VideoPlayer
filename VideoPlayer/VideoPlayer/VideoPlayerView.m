@@ -119,7 +119,11 @@ static NSString *stringFromCMTime(CMTime time) {
 }
 
 - (void)awakeFromNib {
-	//self.scrubber.hidden = YES;
+    self.topControlsView.hidden = YES;
+    self.bottomControlsView.hidden = YES;
+	self.activityIndicator.hidden = YES;
+	self.titleLabel.hidden = YES;
+
 	self.activityIndicator.hidesWhenStopped = YES;
 	_canToggleFullscreen = YES;
 	_shouldChangeContainerView = YES;

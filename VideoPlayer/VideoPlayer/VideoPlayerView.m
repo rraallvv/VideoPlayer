@@ -362,7 +362,7 @@ static NSString *stringFromCMTime(CMTime time) {
 	if (fullscreen) {
 		[UIApplication.sharedApplication.keyWindow addSubview:self];
 		self.frame = initialFrame;
-		self.containerView.hidden = YES;
+		//self.containerView.hidden = YES;
 		[_timeLineLayer removeFromSuperlayer];
 
 		[self clearControlsHiddenTimer];
@@ -411,7 +411,7 @@ static NSString *stringFromCMTime(CMTime time) {
 			} completion:^(BOOL finished) {
 				[self.containerView addSubview:self];
 				self.frame = self.containerView.bounds;
-				self.containerView.hidden = NO;
+				//self.containerView.hidden = NO;
 				[self.layer addSublayer:_timeLineLayer];
 
 				[self.zoomButton setImage:[UIImage imageNamed:@"ZoomIn"] forState:UIControlStateNormal];
@@ -666,7 +666,7 @@ static NSString *stringFromCMTime(CMTime time) {
 										 self.containerView.alpha = 0.0;
 									 } completion:^(BOOL finished) {
 										 self.containerView.center = [self capCenterToBounds:endPosition withElasticity:0.0];
-										 self.containerView.hidden = YES;
+										 //self.containerView.hidden = YES;
 										 self.containerView.alpha = 1.0;
 										 [self closePlayer];
 									 }];

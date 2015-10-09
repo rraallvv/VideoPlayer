@@ -769,10 +769,10 @@ static NSString *stringFromCMTime(CMTime time) {
 	} else {
 		[self.player replaceCurrentItemWithPlayerItem:nil];
 	}
-	__weak VideoPlayerView *weakSelf = self;
+	__weak VideoPlayerView *weakRef = self;
 	[self setFullscreen:NO completion:^{
-		[weakSelf removeFromSuperview];
-		weakSelf.containerView = nil;
+		[weakRef removeFromSuperview];
+		weakRef.containerView = nil;
 	}];
 }
 

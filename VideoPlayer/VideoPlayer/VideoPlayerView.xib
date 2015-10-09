@@ -166,7 +166,7 @@
                 <outletCollection property="gestureRecognizers" destination="wQh-om-3g2" appends="YES" id="elk-UW-1Wq"/>
                 <outletCollection property="gestureRecognizers" destination="GTV-LF-rm0" appends="YES" id="i1Z-tb-Xkc"/>
             </connections>
-            <point key="canvasLocation" x="1004.5" y="485.5"/>
+            <point key="canvasLocation" x="482.5" y="398.5"/>
         </view>
         <tapGestureRecognizer id="fan-uj-Zp0">
             <connections>

@@ -29,21 +29,13 @@ extern NSString * const VideoPlayerPrevItemNotification;
 extern NSString * const VideoPlayerNextItemNotification;
 extern NSString * const VideoPlayerCloseNotification;
 
-
-@protocol VideoPlayerViewDelegate
-
-- (BOOL)shouldShowPlaybackControls;
-
-@end
-
-
 @class AVPlayer, AVPlayerLayer;
 
 @interface VideoPlayerView : UIView
 
 @property (strong, nonatomic) AVPlayer *player;
 @property (strong, nonatomic, readonly) AVPlayerLayer *playerLayer;
-@property (weak, nonatomic) UIViewController <VideoPlayerViewDelegate> *delegate;
+@property (weak, nonatomic) UIViewController *delegate;
 @property (weak, nonatomic) IBOutlet UIView *contentOverlayView;
 
 @property (nonatomic) BOOL fullscreen;

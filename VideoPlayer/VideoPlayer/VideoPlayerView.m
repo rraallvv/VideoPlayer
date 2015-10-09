@@ -472,7 +472,7 @@ static NSString *stringFromCMTime(CMTime time) {
 			self.titleLabel.hidden = YES;
 		}
 
-	} else if ([self.delegate shouldShowPlaybackControls]) {
+	} else {
 		self.topControlsView.hidden = NO;
 		self.bottomControlsView.hidden = NO;
 		self.titleLabel.hidden = NO;

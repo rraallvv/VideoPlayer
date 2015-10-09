@@ -27,14 +27,7 @@
 #import "VideoPlayerView.h"
 #import <AVFoundation/AVFoundation.h>
 
-
-@interface VideoPlayerViewController () <VideoPlayerViewDelegate>
-
-@end
-
-
 @implementation VideoPlayerViewController
-
 
 #pragma mark Accessors
 
@@ -75,8 +68,6 @@
 #pragma mark Lifecycle
 
 - (void)loadView {
-	self.showsPlaybackControls = YES;
-
 	VideoPlayerView *playerView = [[[NSBundle mainBundle] loadNibNamed:@"VideoPlayerView"
 																 owner:self
 															   options:nil] objectAtIndex:0];
@@ -92,13 +83,6 @@
 - (void)dealloc {
 	[self.player pause];
 	self.player = nil;
-}
-
-
-#pragma mark Delegate methods
-
-- (BOOL)shouldShowPlaybackControls {
-	return self.showsPlaybackControls;
 }
 
 @end

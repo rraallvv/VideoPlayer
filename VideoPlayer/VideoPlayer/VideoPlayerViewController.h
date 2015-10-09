@@ -32,7 +32,6 @@
 
 @property (strong, nonatomic) AVPlayer *player;
 
-@property (nonatomic) BOOL showsPlaybackControls;
 @property (nonatomic, readonly) UIView *contentOverlayView;
 @property (nonatomic, readonly, getter=isReadyForDisplay) BOOL readyForDisplay;
 @property (nonatomic, readonly) CGRect videoBounds;

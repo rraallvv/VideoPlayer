@@ -95,6 +95,7 @@ static NSString *stringFromCMTime(CMTime time) {
 @property (nonatomic) BOOL showsActivityIndicator;
 @property (strong, nonatomic) UIImageView *standbyImageView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (assign, nonatomic) BOOL shouldShowStatusbar;
 
 @end
 
@@ -122,6 +123,7 @@ static NSString *stringFromCMTime(CMTime time) {
     self.topControlsView.hidden = YES;
     self.bottomControlsView.hidden = YES;
 	self.activityIndicator.hidden = YES;
+	self.shouldShowStatusbar = NO;
 
 	self.activityIndicator.hidesWhenStopped = YES;
 	_canToggleFullscreen = YES;
@@ -170,7 +172,7 @@ static NSString *stringFromCMTime(CMTime time) {
 		topControlsHeight += separation;
 	}
 	topControlsFrame = CGRectMake(0,
-								  0,
+								  UIApplication.sharedApplication.statusBarFrame.size.height,
 								  playerFrameWidth,
 								  topControlsHeight);
 	self.topControlsView.frame = topControlsFrame;
@@ -460,6 +462,9 @@ static NSString *stringFromCMTime(CMTime time) {
 				self.bottomControlsView.alpha = 0.0;
 				self.titleLabel.alpha = 0.0;
 
+				self.shouldShowStatusbar = YES;
+				[self.delegate setNeedsStatusBarAppearanceUpdate];
+
 			} completion:^(BOOL finished) {
 				self.topControlsView.hidden = YES;
 				self.bottomControlsView.hidden = YES;
@@ -470,12 +475,18 @@ static NSString *stringFromCMTime(CMTime time) {
 			self.topControlsView.hidden = YES;
 			self.bottomControlsView.hidden = YES;
 			self.titleLabel.hidden = YES;
+
+			self.shouldShowStatusbar = YES;
+			[self.delegate setNeedsStatusBarAppearanceUpdate];
 		}
 
 	} else {
 		self.topControlsView.hidden = NO;
 		self.bottomControlsView.hidden = NO;
 		self.titleLabel.hidden = NO;
+
+		self.shouldShowStatusbar = NO;
+		[self.delegate setNeedsStatusBarAppearanceUpdate];
 
 		self.topControlsView.alpha = 1.0;
 		self.bottomControlsView.alpha = 1.0;

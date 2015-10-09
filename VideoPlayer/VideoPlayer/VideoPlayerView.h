@@ -53,6 +53,8 @@ extern NSString * const VideoPlayerCloseNotification;
 
 @property (copy, nonatomic) NSString *title;
 
+@property (assign, nonatomic, readonly) BOOL shouldShowStatusbar;
+
 - (void)setFullscreen:(BOOL)fullscreen completion:(void (^)(void))completion;
 - (void)closePlayer;
 

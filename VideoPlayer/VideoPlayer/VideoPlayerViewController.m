@@ -77,7 +77,11 @@
 }
 
 - (BOOL)prefersStatusBarHidden {
-	return YES;
+	return self.playerView.shouldShowStatusbar;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+	return UIStatusBarStyleLightContent;
 }
 
 - (void)dealloc {

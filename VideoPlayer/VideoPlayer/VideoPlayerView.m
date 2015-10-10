@@ -78,6 +78,7 @@ static NSString *stringFromCMTime(CMTime time) {
 @property (weak, nonatomic) IBOutlet UIButton *prevButton;
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
+@property (weak, nonatomic) IBOutlet UIButton *gravityButton;
 @property (weak, nonatomic) IBOutlet MPVolumeView *volumeView;
 @property (weak, nonatomic) IBOutlet UIView *topControlsView;
 @property (weak, nonatomic) IBOutlet UIView *bottomControlsView;
@@ -222,6 +223,11 @@ static NSString *stringFromCMTime(CMTime time) {
 	/* Next button*/
 	self.nextButton.center = CGPointMake(CGRectGetMidX(bottomControlsBounds) + prevNextSeparation,
 										 CGRectGetMidY(bottomControlsBounds));
+
+	/* Gravity button */
+	CGRect gravityButtonFrame = self.gravityButton.frame;
+	self.gravityButton.center = CGPointMake(CGRectGetWidth(bottomControlsBounds) - separation - CGRectGetWidth(gravityButtonFrame)/2,
+											CGRectGetMidY(bottomControlsBounds));
 
 	/* Activity indicator */
 	self.activityIndicator.center = CGPointMake(CGRectGetMidX(playerFrame),
@@ -750,6 +756,15 @@ static NSString *stringFromCMTime(CMTime time) {
 	[[NSNotificationCenter defaultCenter] postNotificationName:VideoPlayerCloseNotification object:self];
 }
 
+- (IBAction)gravityButtonTouchUpInside:(UIButton *)sender {
+	if (self.playerLayer.videoGravity == AVLayerVideoGravityResizeAspect) {
+		self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+		[self.gravityButton setImage:[UIImage imageNamed:@"Boxed"] forState:UIControlStateNormal];
+	} else {
+		self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+		[self.gravityButton setImage:[UIImage imageNamed:@"Cropped"] forState:UIControlStateNormal];
+	}
+}
 
 #pragma mark Helper methods
 

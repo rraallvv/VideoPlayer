@@ -21,15 +21,13 @@
                     <rect key="frame" x="0.0" y="0.0" width="447" height="70"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="bDo-V9-GpF">
-                            <rect key="frame" x="8" y="7" width="32" height="32"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="3dq-xV-pdc">
+                            <rect key="frame" x="7" y="7" width="32" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <animations/>
-                            <state key="normal" image="Close">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
+                            <state key="normal" image="Close"/>
                             <connections>
-                                <action selector="closeButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="41B-Di-iZy"/>
+                                <action selector="closeButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="1aT-ss-HuQ"/>
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0:00:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="a97-X3-kvP">
@@ -123,6 +121,17 @@
                                 <action selector="nextButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="lVY-pu-qef"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="bDo-V9-GpF" userLabel="Gravity Button">
+                            <rect key="frame" x="408" y="7" width="32" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <animations/>
+                            <state key="normal" image="Cropped">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="gravityButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="A6D-Rn-ZME"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <animations/>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -140,10 +149,11 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="activityIndicator" destination="wnt-gD-qVl" id="a6m-bi-N5Z"/>
-                <outlet property="bottomControlsView" destination="K8m-17-7on" id="m8r-kU-SLX"/>
-                <outlet property="closeButton" destination="bDo-V9-GpF" id="Wxe-S1-diS"/>
+                <outlet property="bottomControlsView" destination="K8m-17-7on" id="W8j-51-Da0"/>
+                <outlet property="closeButton" destination="3dq-xV-pdc" id="1UO-s5-bT5"/>
                 <outlet property="contentOverlayView" destination="Jy3-JM-ZsZ" id="B8d-F4-0ha"/>
                 <outlet property="doubleTapGestureRecognizer" destination="7WO-Df-y2G" id="Hce-pM-wjS"/>
+                <outlet property="gravityButton" destination="bDo-V9-GpF" id="54t-EN-w6X"/>
                 <outlet property="nextButton" destination="00a-Rx-Das" id="GXH-bl-Yeo"/>
                 <outlet property="nextSwipeGestureRecognizer" destination="GTV-LF-rm0" id="lV4-4v-hra"/>
                 <outlet property="panGestureRecognizer" destination="RA6-hx-P5G" id="dhy-nE-vBz"/>
@@ -207,6 +217,7 @@
     </objects>
     <resources>
         <image name="Close" width="32" height="32"/>
+        <image name="Cropped" width="32" height="32"/>
         <image name="Next" width="32" height="32"/>
         <image name="Pause" width="32" height="32"/>
         <image name="Previous" width="32" height="32"/>

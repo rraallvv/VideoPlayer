@@ -124,7 +124,9 @@ static NSString *stringFromCMTime(CMTime time) {
 
 - (void)awakeFromNib {
 	self.topControlsToolbar.hidden = YES;
+	self.topControlsToolbar.clipsToBounds = YES;
     self.bottomControlsToolbar.hidden = YES;
+	self.bottomControlsToolbar.clipsToBounds = YES;
 	self.activityIndicator.hidden = YES;
 	self.shouldShowStatusbar = NO;
 

@@ -80,7 +80,9 @@ static NSString *stringFromCMTime(CMTime time) {
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet UIButton *gravityButton;
 @property (weak, nonatomic) IBOutlet MPVolumeView *volumeView;
+@property (weak, nonatomic) IBOutlet UIToolbar *topControlsToolbar;
 @property (weak, nonatomic) IBOutlet UIView *topControlsView;
+@property (weak, nonatomic) IBOutlet UIToolbar *bottomControlsToolbar;
 @property (weak, nonatomic) IBOutlet UIView *bottomControlsView;
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *tapGestureRcognizer;
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *doubleTapGestureRecognizer;
@@ -121,8 +123,8 @@ static NSString *stringFromCMTime(CMTime time) {
 }
 
 - (void)awakeFromNib {
-    self.topControlsView.hidden = YES;
-    self.bottomControlsView.hidden = YES;
+	self.topControlsToolbar.hidden = YES;
+    self.bottomControlsToolbar.hidden = YES;
 	self.activityIndicator.hidden = YES;
 	self.shouldShowStatusbar = NO;
 
@@ -177,6 +179,7 @@ static NSString *stringFromCMTime(CMTime time) {
 										 0,
 										 playerFrameWidth,
 										 topControlsHeight);
+	self.topControlsToolbar.frame = topControlsFrame;
 	self.topControlsView.frame = topControlsFrame;
 	CGRect topControlsBounds = self.topControlsView.bounds;
 
@@ -194,11 +197,14 @@ static NSString *stringFromCMTime(CMTime time) {
 	[self layoutTimeIndicatorsInRect:playerFrame];
 
 	/* Bottom view */
-	CGRect bottomControlsFrame = self.bottomControlsView.frame;
+	CGRect bottomControlsFrame = self.bottomControlsToolbar.frame;
 	bottomControlsFrame = CGRectMake(0,
 									 CGRectGetMaxY(playerFrame) - CGRectGetHeight(bottomControlsFrame),
 									 playerFrameWidth,
 									 CGRectGetHeight(bottomControlsFrame));
+	self.bottomControlsToolbar.frame = bottomControlsFrame;
+
+	bottomControlsFrame.origin = CGPointZero;
 	self.bottomControlsView.frame = bottomControlsFrame;
 	CGRect bottomControlsBounds = self.bottomControlsView.bounds;
 
@@ -451,7 +457,7 @@ static NSString *stringFromCMTime(CMTime time) {
 }
 
 - (BOOL)controlsHidden {
-	return self.topControlsView.hidden || self.bottomControlsView.hidden;
+	return self.topControlsToolbar.hidden || self.bottomControlsToolbar.hidden;
 }
 
 - (void)setControlsHidden:(BOOL)controlsHidden {
@@ -464,22 +470,22 @@ static NSString *stringFromCMTime(CMTime time) {
 	if (controlsHidden) {
 		if (animated) {
 			[UIView animateWithDuration:ControlsFadeDuration animations:^{
-				self.topControlsView.alpha = 0.0;
-				self.bottomControlsView.alpha = 0.0;
+				self.topControlsToolbar.alpha = 0.0;
+				self.bottomControlsToolbar.alpha = 0.0;
 				self.titleLabel.alpha = 0.0;
 
 				self.shouldShowStatusbar = YES;
 				[self.delegate setNeedsStatusBarAppearanceUpdate];
 
 			} completion:^(BOOL finished) {
-				self.topControlsView.hidden = YES;
-				self.bottomControlsView.hidden = YES;
+				self.topControlsToolbar.hidden = YES;
+				self.bottomControlsToolbar.hidden = YES;
 				self.titleLabel.hidden = YES;
 			}];
 
 		} else {
-			self.topControlsView.hidden = YES;
-			self.bottomControlsView.hidden = YES;
+			self.topControlsToolbar.hidden = YES;
+			self.bottomControlsToolbar.hidden = YES;
 			self.titleLabel.hidden = YES;
 
 			self.shouldShowStatusbar = YES;
@@ -487,15 +493,15 @@ static NSString *stringFromCMTime(CMTime time) {
 		}
 
 	} else {
-		self.topControlsView.hidden = NO;
-		self.bottomControlsView.hidden = NO;
+		self.topControlsToolbar.hidden = NO;
+		self.bottomControlsToolbar.hidden = NO;
 		self.titleLabel.hidden = NO;
 
 		self.shouldShowStatusbar = NO;
 		[self.delegate setNeedsStatusBarAppearanceUpdate];
 
-		self.topControlsView.alpha = 1.0;
-		self.bottomControlsView.alpha = 1.0;
+		self.topControlsToolbar.alpha = 1.0;
+		self.bottomControlsToolbar.alpha = 1.0;
 		self.titleLabel.alpha = 1.0;
 
 		_hideControlsTimer = [NSTimer scheduledTimerWithTimeInterval:5.0

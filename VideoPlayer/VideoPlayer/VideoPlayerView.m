@@ -78,7 +78,7 @@ static NSString *stringFromCMTime(CMTime time) {
 @property (weak, nonatomic) IBOutlet UIButton *prevButton;
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
-@property (weak, nonatomic) IBOutlet UIButton *gravityButton;
+@property (weak, nonatomic) IBOutlet UIButton *contentModeButton;
 @property (weak, nonatomic) IBOutlet MPVolumeView *volumeView;
 @property (weak, nonatomic) IBOutlet UIToolbar *topControlsToolbar;
 @property (weak, nonatomic) IBOutlet UIView *topControlsView;
@@ -231,8 +231,8 @@ static NSString *stringFromCMTime(CMTime time) {
 										 CGRectGetMidY(bottomControlsBounds));
 
 	/* Gravity button */
-	CGRect gravityButtonFrame = self.gravityButton.frame;
-	self.gravityButton.center = CGPointMake(CGRectGetWidth(bottomControlsBounds) - separation - CGRectGetWidth(gravityButtonFrame)/2,
+	CGRect contentModeButtonFrame = self.contentModeButton.frame;
+	self.contentModeButton.center = CGPointMake(CGRectGetWidth(bottomControlsBounds) - separation - CGRectGetWidth(contentModeButtonFrame)/2,
 											CGRectGetMidY(bottomControlsBounds));
 
 	/* Activity indicator */
@@ -563,7 +563,11 @@ static NSString *stringFromCMTime(CMTime time) {
 - (UIImageView *)standbyImageView {
 	if (!_standbyImageView && self.contentOverlayView) {
 		_standbyImageView = [[UIImageView alloc] init];
-		_standbyImageView.contentMode = UIViewContentModeScaleAspectFit;
+		if (self.playerLayer.videoGravity == AVLayerVideoGravityResizeAspect) {
+			_standbyImageView.contentMode = UIViewContentModeScaleAspectFit;
+		} else {
+			_standbyImageView.contentMode = UIViewContentModeScaleAspectFill;
+		}
 		_standbyImageView.backgroundColor = self.backgroundColor;
 		_standbyImageView.hidden = YES;
 		[self insertSubview:_standbyImageView belowSubview:self.contentOverlayView];
@@ -762,13 +766,15 @@ static NSString *stringFromCMTime(CMTime time) {
 	[[NSNotificationCenter defaultCenter] postNotificationName:VideoPlayerCloseNotification object:self];
 }
 
-- (IBAction)gravityButtonTouchUpInside:(UIButton *)sender {
+- (IBAction)contentModeButtonTouchUpInside:(UIButton *)sender {
 	if (self.playerLayer.videoGravity == AVLayerVideoGravityResizeAspect) {
+		[self.contentModeButton setImage:[UIImage imageNamed:@"Fit"] forState:UIControlStateNormal];
 		self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-		[self.gravityButton setImage:[UIImage imageNamed:@"Boxed"] forState:UIControlStateNormal];
+		_standbyImageView.contentMode = UIViewContentModeScaleAspectFill;
 	} else {
+		[self.contentModeButton setImage:[UIImage imageNamed:@"Fill"] forState:UIControlStateNormal];
 		self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-		[self.gravityButton setImage:[UIImage imageNamed:@"Cropped"] forState:UIControlStateNormal];
+		_standbyImageView.contentMode = UIViewContentModeScaleAspectFit;
 	}
 }
 

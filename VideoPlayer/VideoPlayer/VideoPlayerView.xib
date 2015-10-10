@@ -135,15 +135,15 @@
                                             <action selector="nextButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="lVY-pu-qef"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="bDo-V9-GpF" userLabel="Gravity Button">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="bDo-V9-GpF" userLabel="Content Mode Button">
                                         <rect key="frame" x="408" y="7" width="32" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <animations/>
-                                        <state key="normal" image="Cropped">
+                                        <state key="normal" image="Fill">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="gravityButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="A6D-Rn-ZME"/>
+                                            <action selector="contentModeButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="A6D-Rn-ZME"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -168,9 +168,9 @@
                 <outlet property="bottomControlsToolbar" destination="6WF-hC-csb" id="Bwb-XE-g70"/>
                 <outlet property="bottomControlsView" destination="K8m-17-7on" id="W8j-51-Da0"/>
                 <outlet property="closeButton" destination="3dq-xV-pdc" id="1UO-s5-bT5"/>
+                <outlet property="contentModeButton" destination="bDo-V9-GpF" id="54t-EN-w6X"/>
                 <outlet property="contentOverlayView" destination="Jy3-JM-ZsZ" id="B8d-F4-0ha"/>
                 <outlet property="doubleTapGestureRecognizer" destination="7WO-Df-y2G" id="Hce-pM-wjS"/>
-                <outlet property="gravityButton" destination="bDo-V9-GpF" id="54t-EN-w6X"/>
                 <outlet property="nextButton" destination="00a-Rx-Das" id="GXH-bl-Yeo"/>
                 <outlet property="nextSwipeGestureRecognizer" destination="GTV-LF-rm0" id="lV4-4v-hra"/>
                 <outlet property="panGestureRecognizer" destination="RA6-hx-P5G" id="dhy-nE-vBz"/>
@@ -235,7 +235,7 @@
     </objects>
     <resources>
         <image name="Close" width="32" height="32"/>
-        <image name="Cropped" width="32" height="32"/>
+        <image name="Fill" width="32" height="32"/>
         <image name="Next" width="32" height="32"/>
         <image name="Pause" width="32" height="32"/>
         <image name="Previous" width="32" height="32"/>

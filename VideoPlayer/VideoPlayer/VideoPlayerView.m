@@ -161,32 +161,33 @@ static NSString *stringFromCMTime(CMTime time) {
 
 	CGRect playerFrame = self.frame;
 	CGFloat playerFrameWidth = CGRectGetWidth(playerFrame);
+	CGRect titleFrame = self.titleLabel.frame;
+	CGFloat firstRowY = UIApplication.sharedApplication.statusBarFrame.size.height;
 
 	[self.titleLabel sizeToFit];
 
 	/* Top view */
-	CGRect topControlsFrame = self.topControlsView.frame;
 	CGFloat firstRowHeight = 2.0 * separation + MAX(CGRectGetHeight(self.closeButton.frame), CGRectGetHeight(self.zoomButton.frame));
-	CGFloat topControlsHeight = firstRowHeight + CGRectGetHeight(self.titleLabel.frame);
-	if (self.titleLabel.text && [self.titleLabel.text length] > 0) {
+	CGFloat topControlsHeight = firstRowY + firstRowHeight + CGRectGetHeight(titleFrame);
+	if (CGRectGetHeight(titleFrame) > 0) {
 		topControlsHeight += separation;
 	}
-	topControlsFrame = CGRectMake(0,
-								  UIApplication.sharedApplication.statusBarFrame.size.height,
-								  playerFrameWidth,
-								  topControlsHeight);
+	CGRect topControlsFrame = CGRectMake(0,
+										 0,
+										 playerFrameWidth,
+										 topControlsHeight);
 	self.topControlsView.frame = topControlsFrame;
 	CGRect topControlsBounds = self.topControlsView.bounds;
 
 	/* Close button */
 	CGRect closeButtonFrame = self.closeButton.frame;
 	self.closeButton.center = CGPointMake(separation + CGRectGetWidth(closeButtonFrame)/2,
-										  firstRowHeight/2);
+										  firstRowY + firstRowHeight/2);
 
 	/* Zoom button */
 	CGRect zoomButtonFrame = self.zoomButton.frame;
 	self.zoomButton.center = CGPointMake(CGRectGetWidth(topControlsBounds) - separation - CGRectGetWidth(zoomButtonFrame)/2,
-										 firstRowHeight/2);
+										 firstRowY + firstRowHeight/2);
 
 	/* Time labels and the scrubber */
 	[self layoutTimeIndicatorsInRect:playerFrame];
@@ -227,7 +228,6 @@ static NSString *stringFromCMTime(CMTime time) {
 												CGRectGetMidY(playerFrame));
 
 	/* Title label */
-	CGRect titleFrame = self.titleLabel.frame;
 	titleFrame = CGRectMake(CGRectGetMinX(topControlsFrame) + separation,
 							CGRectGetMaxY(topControlsFrame) - separation - CGRectGetHeight(titleFrame),
 							CGRectGetWidth(topControlsFrame) - 2.0 * separation,

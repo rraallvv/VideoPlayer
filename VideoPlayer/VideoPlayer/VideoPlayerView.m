@@ -474,7 +474,6 @@ static NSString *stringFromCMTime(CMTime time) {
 			[UIView animateWithDuration:ControlsFadeDuration animations:^{
 				self.topControlsToolbar.alpha = 0.0;
 				self.bottomControlsToolbar.alpha = 0.0;
-				self.titleLabel.alpha = 0.0;
 
 				self.shouldShowStatusbar = YES;
 				[self.delegate setNeedsStatusBarAppearanceUpdate];
@@ -482,13 +481,11 @@ static NSString *stringFromCMTime(CMTime time) {
 			} completion:^(BOOL finished) {
 				self.topControlsToolbar.hidden = YES;
 				self.bottomControlsToolbar.hidden = YES;
-				self.titleLabel.hidden = YES;
 			}];
 
 		} else {
 			self.topControlsToolbar.hidden = YES;
 			self.bottomControlsToolbar.hidden = YES;
-			self.titleLabel.hidden = YES;
 
 			self.shouldShowStatusbar = YES;
 			[self.delegate setNeedsStatusBarAppearanceUpdate];
@@ -497,14 +494,12 @@ static NSString *stringFromCMTime(CMTime time) {
 	} else {
 		self.topControlsToolbar.hidden = NO;
 		self.bottomControlsToolbar.hidden = NO;
-		self.titleLabel.hidden = NO;
 
 		self.shouldShowStatusbar = NO;
 		[self.delegate setNeedsStatusBarAppearanceUpdate];
 
 		self.topControlsToolbar.alpha = 1.0;
 		self.bottomControlsToolbar.alpha = 1.0;
-		self.titleLabel.alpha = 1.0;
 
 		_hideControlsTimer = [NSTimer scheduledTimerWithTimeInterval:5.0
 															  target:self

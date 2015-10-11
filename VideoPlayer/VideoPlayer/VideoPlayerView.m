@@ -113,6 +113,7 @@ static NSString *stringFromCMTime(CMTime time) {
 	CALayer *_timeLineLayer;
 	BOOL _shouldChangeContainerView;
 	AVPlayerItem *_currentItem;
+	BOOL _shouldAutohideControls;
 }
 
 
@@ -322,6 +323,8 @@ static NSString *stringFromCMTime(CMTime time) {
 				if (minInterval < delta && delta < maxInterval) {
 					self.stalled = NO;
 					self.playing = YES;
+					_shouldAutohideControls = YES;
+					self.controlsHidden = YES;
 					self.standbyImageView.image = nil;
 					self.standbyImageView.hidden = YES;
 				}
@@ -468,6 +471,9 @@ static NSString *stringFromCMTime(CMTime time) {
 
 - (void)setControlsHidden:(BOOL)controlsHidden animated:(BOOL)animated {
 	[self clearControlsHiddenTimer];
+
+	if (controlsHidden == self.controlsHidden)
+		return;
 
 	if (controlsHidden) {
 		if (animated) {
@@ -812,7 +818,9 @@ static NSString *stringFromCMTime(CMTime time) {
 }
 
 - (void)hideControlsTimer {
-	self.controlsHidden = YES;
+	if (_shouldAutohideControls) {
+		self.controlsHidden = YES;
+	}
 }
 
 - (CGRect)containerViewFrame {
@@ -988,6 +996,7 @@ static NSString *stringFromCMTime(CMTime time) {
 							  context:PlayerItemLoadedTimeRangesContext];
 
 			//self.scrubber.hidden = NO;
+			_shouldAutohideControls = NO;
 			if (self.player.rate != 0) {
 				self.wantsToPlay = YES;
 			}

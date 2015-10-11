@@ -415,11 +415,11 @@ static NSString *stringFromCMTime(CMTime time) {
 		}];
 
 	} else {
-		[self setControlsHidden:YES animated:NO];
-
 		[UIApplication.sharedApplication.keyWindow addSubview:self];
 
 		void (^block)() = ^{
+			[self setControlsHidden:YES animated:NO];
+
 			[UIApplication.sharedApplication.keyWindow addSubview:self];
 			self.frame = initialFrame;
 			self.showBorders = YES;

@@ -99,6 +99,7 @@ static NSString *stringFromCMTime(CMTime time) {
 @property (strong, nonatomic) UIImageView *standbyImageView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (assign, nonatomic) BOOL shouldShowStatusbar;
+@property (assign, nonatomic) BOOL shouldAutohideControls;
 
 @end
 
@@ -113,7 +114,6 @@ static NSString *stringFromCMTime(CMTime time) {
 	CALayer *_timeLineLayer;
 	BOOL _shouldChangeContainerView;
 	AVPlayerItem *_currentItem;
-	BOOL _shouldAutohideControls;
 }
 
 
@@ -323,7 +323,7 @@ static NSString *stringFromCMTime(CMTime time) {
 				if (minInterval < delta && delta < maxInterval) {
 					self.stalled = NO;
 					self.playing = YES;
-					_shouldAutohideControls = YES;
+					self.shouldAutohideControls = YES;
 					self.controlsHidden = YES;
 					self.standbyImageView.image = nil;
 					self.standbyImageView.hidden = YES;
@@ -586,6 +586,13 @@ static NSString *stringFromCMTime(CMTime time) {
 	return self.titleLabel.text;
 }
 
+- (void)setShouldAutohideControls:(BOOL)shouldAutohideControls {
+	if (!shouldAutohideControls) {
+		[self clearControlsHiddenTimer];
+	}
+	_shouldAutohideControls = shouldAutohideControls;
+}
+
 #pragma mark Actions
 
 - (IBAction)scrubberTouchDown:(id)sender {
@@ -818,7 +825,7 @@ static NSString *stringFromCMTime(CMTime time) {
 }
 
 - (void)hideControlsTimer {
-	if (_shouldAutohideControls) {
+	if (self.shouldAutohideControls) {
 		self.controlsHidden = YES;
 	}
 }
@@ -996,7 +1003,7 @@ static NSString *stringFromCMTime(CMTime time) {
 							  context:PlayerItemLoadedTimeRangesContext];
 
 			//self.scrubber.hidden = NO;
-			_shouldAutohideControls = NO;
+			self.shouldAutohideControls = NO;
 			if (self.player.rate != 0) {
 				self.wantsToPlay = YES;
 			}

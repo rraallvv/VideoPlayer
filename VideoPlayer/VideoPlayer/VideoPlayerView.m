@@ -191,7 +191,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	CGFloat firstRowHeight = 2.0 * separation + firstRowMaxHeight;
 	CGFloat topControlsHeight = firstRowY + firstRowHeight + CGRectGetHeight(titleFrame);
 	if (CGRectGetHeight(titleFrame) > 0) {
-		topControlsHeight += separation;
+		topControlsHeight += 0.5 * separation;
 	}
 	CGRect topControlsFrame = CGRectMake(0,
 										 0,

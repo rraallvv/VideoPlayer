@@ -167,15 +167,17 @@ static NSString *stringFromCMTime(CMTime time) {
 - (void)layoutSubviews {
 	[super layoutSubviews];
 
+	[self.titleLabel sizeToFit];
+	[self.closeButton sizeToFit];
+
 	CGRect playerFrame = self.frame;
 	CGFloat playerFrameWidth = CGRectGetWidth(playerFrame);
 	CGRect titleFrame = self.titleLabel.frame;
 	CGFloat firstRowY = UIApplication.sharedApplication.statusBarFrame.size.height;
-
-	[self.titleLabel sizeToFit];
+	CGFloat firstRowMaxHeight = MAX(CGRectGetHeight(self.closeButton.frame), CGRectGetHeight(self.zoomButton.frame));
 
 	/* Top view */
-	CGFloat firstRowHeight = 2.0 * separation + MAX(CGRectGetHeight(self.closeButton.frame), CGRectGetHeight(self.zoomButton.frame));
+	CGFloat firstRowHeight = 2.0 * separation + firstRowMaxHeight;
 	CGFloat topControlsHeight = firstRowY + firstRowHeight + CGRectGetHeight(titleFrame);
 	if (CGRectGetHeight(titleFrame) > 0) {
 		topControlsHeight += separation;
@@ -887,13 +889,13 @@ static NSString *stringFromCMTime(CMTime time) {
 	/* Playback time */
 	[self.playbackTimeLabel sizeToFit];
 	CGRect playbackTimeFrame = self.playbackTimeLabel.frame;
-	self.playbackTimeLabel.center = CGPointMake(CGRectGetMaxX(self.closeButton.frame) + separation + CGRectGetWidth(playbackTimeFrame)/2,
+	self.playbackTimeLabel.center = CGPointMake(CGRectGetMaxX(self.closeButton.frame) + 3.0 * separation + CGRectGetWidth(playbackTimeFrame)/2,
 												midY);
 
 	/* Remaining playback time */
 	[self.remainingPlaybackTimeLabel sizeToFit];
 	CGRect remainingPlaybackTimeFrame = self.remainingPlaybackTimeLabel.frame;
-	self.remainingPlaybackTimeLabel.center = CGPointMake(CGRectGetMinX(self.zoomButton.frame) - separation - CGRectGetWidth(remainingPlaybackTimeFrame)/2,
+	self.remainingPlaybackTimeLabel.center = CGPointMake(CGRectGetMinX(self.zoomButton.frame) - 3.0 * separation - CGRectGetWidth(remainingPlaybackTimeFrame)/2,
 														 midY);
 
 	/* Scrubber */

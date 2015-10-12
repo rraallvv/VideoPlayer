@@ -60,11 +60,15 @@ static CGFloat const TimeLineIndicatorWidth = 1.0;//2.0;
 static NSString *stringFromCMTime(CMTime time) {
 	int seconds = CMTimeGetSeconds(time);
 
-	int hours = floor(seconds / 3600);
-	int minutes = floor(seconds % 3600 / 60);
-	seconds = floor(seconds % 3600 % 60);
+	int hours = seconds / 3600;
+	int minutes = (seconds % 3600) / 60;
+	seconds = (seconds % 3600) % 60;
 
-	return [NSString stringWithFormat:@"%i:%02i:%02i", hours, minutes, seconds];
+	if (hours) {
+		return [NSString stringWithFormat:@"%i:%02i:%02i", hours, minutes, seconds];
+	}
+
+	return [NSString stringWithFormat:@"%i:%02i", minutes, seconds];
 }
 
 @interface VideoPlayerView ()
@@ -1031,8 +1035,8 @@ static NSString *stringFromCMTime(CMTime time) {
 			//self.scrubber.hidden = YES;
 			self.scrubber.value = 0;
 			self.scrubber.progress = 0;
-			self.playbackTimeLabel.text = @"-:--:--";
-			self.remainingPlaybackTimeLabel.text = @"-:--:--";
+			self.playbackTimeLabel.text = @"-:--";
+			self.remainingPlaybackTimeLabel.text = @"-:--";
 			self.standbyImageView.image = nil;
 			self.standbyImageView.hidden = YES;
 			self.shouldAutohideControls = NO;

@@ -507,7 +507,10 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 		self.bottomControlsToolbar.hidden = NO;
 
 		self.shouldShowStatusbar = NO;
-		[self.delegate setNeedsStatusBarAppearanceUpdate];
+
+		if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
+			[self.delegate setNeedsStatusBarAppearanceUpdate];
+		}
 
 		self.topControlsToolbar.alpha = 1.0;
 		self.bottomControlsToolbar.alpha = 1.0;

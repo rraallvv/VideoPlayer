@@ -71,13 +71,18 @@ static NSString *stringFromCMTime(CMTime time) {
 	return [NSString stringWithFormat:@"%i:%02i", minutes, seconds];
 }
 
+/* System localized strings */
+static inline NSString *UIKitLocalizedString(NSString *key) {
+	return [[NSBundle bundleWithIdentifier:@"com.apple.UIKit"] localizedStringForKey:key value:@"" table:nil];
+}
+
+
 @interface VideoPlayerView ()
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet Scrubber *scrubber;
 @property (weak, nonatomic) IBOutlet UILabel *playbackTimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *remainingPlaybackTimeLabel;
-@property (weak, nonatomic) IBOutlet UIButton *zoomButton;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (weak, nonatomic) IBOutlet UIButton *prevButton;
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
@@ -137,6 +142,8 @@ static NSString *stringFromCMTime(CMTime time) {
 	self.activityIndicator.hidden = YES;
 	self.shouldShowStatusbar = NO;
 
+	[self.closeButton setTitle:UIKitLocalizedString([self.closeButton titleForState:UIControlStateNormal]) forState:UIControlStateNormal];
+
 	self.activityIndicator.hidesWhenStopped = YES;
 	_canToggleFullscreen = YES;
 	_shouldChangeContainerView = YES;
@@ -178,7 +185,7 @@ static NSString *stringFromCMTime(CMTime time) {
 	CGFloat playerFrameWidth = CGRectGetWidth(playerFrame);
 	CGRect titleFrame = self.titleLabel.frame;
 	CGFloat firstRowY = UIApplication.sharedApplication.statusBarFrame.size.height;
-	CGFloat firstRowMaxHeight = MAX(CGRectGetHeight(self.closeButton.frame), CGRectGetHeight(self.zoomButton.frame));
+	CGFloat firstRowMaxHeight = MAX(CGRectGetHeight(self.closeButton.frame), CGRectGetHeight(self.contentModeButton.frame));
 
 	/* Top view */
 	CGFloat firstRowHeight = 2.0 * separation + firstRowMaxHeight;
@@ -199,9 +206,9 @@ static NSString *stringFromCMTime(CMTime time) {
 	self.closeButton.center = CGPointMake(separation + CGRectGetWidth(closeButtonFrame)/2,
 										  firstRowY + firstRowHeight/2);
 
-	/* Zoom button */
-	CGRect zoomButtonFrame = self.zoomButton.frame;
-	self.zoomButton.center = CGPointMake(CGRectGetWidth(topControlsBounds) - separation - CGRectGetWidth(zoomButtonFrame)/2,
+	/* Content mode button */
+	CGRect contentModeButtonFrame = self.contentModeButton.frame;
+	self.contentModeButton.center = CGPointMake(CGRectGetWidth(topControlsBounds) - separation - CGRectGetWidth(contentModeButtonFrame)/2,
 										 firstRowY + firstRowHeight/2);
 
 	/* Time labels and the scrubber */
@@ -240,11 +247,6 @@ static NSString *stringFromCMTime(CMTime time) {
 	/* Next button*/
 	self.nextButton.center = CGPointMake(CGRectGetMidX(bottomControlsBounds) + prevNextSeparation,
 										 CGRectGetMidY(bottomControlsBounds));
-
-	/* Gravity button */
-	CGRect contentModeButtonFrame = self.contentModeButton.frame;
-	self.contentModeButton.center = CGPointMake(CGRectGetWidth(bottomControlsBounds) - separation - CGRectGetWidth(contentModeButtonFrame)/2,
-											CGRectGetMidY(bottomControlsBounds));
 
 	/* Activity indicator */
 	self.activityIndicator.center = CGPointMake(CGRectGetMidX(playerFrame),
@@ -402,8 +404,6 @@ static NSString *stringFromCMTime(CMTime time) {
 				[self.delegate removeFromParentViewController];
 			}
 			[UIApplication.sharedApplication.keyWindow.rootViewController presentViewController:self.delegate animated:NO completion:^{
-				[self.zoomButton setImage:[UIImage imageNamed:@"ZoomOut"] forState:UIControlStateNormal];
-
 				self.controlsHidden = NO;
 				self.showBorders = NO;
 
@@ -440,8 +440,6 @@ static NSString *stringFromCMTime(CMTime time) {
 				self.frame = self.containerView.bounds;
 				//self.containerView.hidden = NO;
 				[self.layer addSublayer:_timeLineLayer];
-
-				[self.zoomButton setImage:[UIImage imageNamed:@"ZoomIn"] forState:UIControlStateNormal];
 
 				if (self.stalled) {
 					self.showsActivityIndicator = YES;
@@ -621,11 +619,6 @@ static NSString *stringFromCMTime(CMTime time) {
 	NSTimeInterval duration = CMTimeGetSeconds(self.player.currentItem.asset.duration);
 	CMTime newTime = CMTimeMakeWithSeconds(self.scrubber.value * duration, self.player.currentTime.timescale);
 	[self.player seekToTime:newTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
-}
-
-
-- (IBAction)zoomButtonTouchUpInside:(UIButton *)sender {
-	self.fullscreen = !self.fullscreen;
 }
 
 - (IBAction)playButtonTouchUpInside:(UIButton *)sender {
@@ -899,7 +892,7 @@ static NSString *stringFromCMTime(CMTime time) {
 	/* Remaining playback time */
 	[self.remainingPlaybackTimeLabel sizeToFit];
 	CGRect remainingPlaybackTimeFrame = self.remainingPlaybackTimeLabel.frame;
-	self.remainingPlaybackTimeLabel.center = CGPointMake(CGRectGetMinX(self.zoomButton.frame) - 3.0 * separation - CGRectGetWidth(remainingPlaybackTimeFrame)/2,
+	self.remainingPlaybackTimeLabel.center = CGPointMake(CGRectGetMinX(self.contentModeButton.frame) - 3.0 * separation - CGRectGetWidth(remainingPlaybackTimeFrame)/2,
 														 midY);
 
 	/* Scrubber */

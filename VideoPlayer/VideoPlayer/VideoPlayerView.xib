@@ -28,16 +28,17 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="3dq-xV-pdc">
-                                        <rect key="frame" x="7" y="7" width="32" height="32"/>
+                                        <rect key="frame" x="7" y="7" width="50" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <animations/>
-                                        <state key="normal" image="Close"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                        <state key="normal" title="Done"/>
                                         <connections>
                                             <action selector="closeButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="1aT-ss-HuQ"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0:00:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="a97-X3-kvP">
-                                        <rect key="frame" x="48" y="14" width="52" height="18"/>
+                                        <rect key="frame" x="66" y="14" width="52" height="18"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
@@ -45,7 +46,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" id="IUS-7G-DCe" customClass="Scrubber">
-                                        <rect key="frame" x="109" y="8" width="219" height="31"/>
+                                        <rect key="frame" x="124" y="8" width="204" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <animations/>
                                         <connections>
@@ -63,15 +64,6 @@
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="GeM-fE-cJD">
-                                        <rect key="frame" x="407" y="7" width="32" height="32"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <animations/>
-                                        <state key="normal" image="ZoomIn"/>
-                                        <connections>
-                                            <action selector="zoomButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="9VH-ZC-cXX"/>
-                                        </connections>
-                                    </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Q5c-ES-TNe" userLabel="Title">
                                         <rect key="frame" x="0.0" y="45" width="447" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -80,6 +72,17 @@
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="bDo-V9-GpF" userLabel="Content Mode Button">
+                                        <rect key="frame" x="406" y="8" width="32" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <animations/>
+                                        <state key="normal" image="Fill">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="contentModeButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="A6D-Rn-ZME"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <animations/>
                             </view>
@@ -135,17 +138,6 @@
                                             <action selector="nextButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="lVY-pu-qef"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="bDo-V9-GpF" userLabel="Content Mode Button">
-                                        <rect key="frame" x="408" y="7" width="32" height="32"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <animations/>
-                                        <state key="normal" image="Fill">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="contentModeButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="A6D-Rn-ZME"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <animations/>
                             </view>
@@ -186,7 +178,6 @@
                 <outlet property="topControlsToolbar" destination="Hv3-Yb-ADT" id="nq5-7b-tED"/>
                 <outlet property="topControlsView" destination="bky-sR-vcB" id="RWO-L6-srl"/>
                 <outlet property="volumeView" destination="Jo5-1J-SJ6" id="KJp-7e-xVA"/>
-                <outlet property="zoomButton" destination="GeM-fE-cJD" id="rPh-v5-Cbo"/>
                 <outletCollection property="gestureRecognizers" destination="fan-uj-Zp0" appends="YES" id="iE1-t2-DzF"/>
                 <outletCollection property="gestureRecognizers" destination="RA6-hx-P5G" appends="YES" id="jh6-5u-fEX"/>
                 <outletCollection property="gestureRecognizers" destination="pcZ-5T-G41" appends="YES" id="aA5-7F-typ"/>
@@ -234,11 +225,9 @@
         </swipeGestureRecognizer>
     </objects>
     <resources>
-        <image name="Close" width="32" height="32"/>
         <image name="Fill" width="32" height="32"/>
         <image name="Next" width="32" height="32"/>
         <image name="Pause" width="32" height="32"/>
         <image name="Previous" width="32" height="32"/>
-        <image name="ZoomIn" width="32" height="32"/>
     </resources>
 </document>

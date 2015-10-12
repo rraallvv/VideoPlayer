@@ -640,15 +640,17 @@ static NSString *stringFromCMTime(CMTime time) {
 }
 
 - (IBAction)tapGestureRecognizer:(UITapGestureRecognizer *)sender {
-	if (!self.fullscreen) {
-		self.fullscreen = YES;
-	} else {
+	if (self.fullscreen) {
 		self.controlsHidden = !self.controlsHidden;
+	} else {
+		self.fullscreen = YES;
 	}
 }
 
 - (IBAction)doubleTapGestureRecognizer:(UITapGestureRecognizer *)sender {
-	[self toggleWantsToPlay];
+	if (self.fullscreen) {
+		[self toggleContentMode];
+	}
 }
 
 - (IBAction)panGestureRecognizer:(UIPanGestureRecognizer *)sender {
@@ -809,6 +811,18 @@ static NSString *stringFromCMTime(CMTime time) {
 
 - (void)toggleWantsToPlay {
 	self.wantsToPlay = !self.wantsToPlay;
+}
+
+- (void)toggleContentMode {
+	if (self.playerLayer.videoGravity == AVLayerVideoGravityResizeAspect) {
+		[self.contentModeButton setImage:[UIImage imageNamed:@"Fit"] forState:UIControlStateNormal];
+		self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+		_standbyImageView.contentMode = UIViewContentModeScaleAspectFill;
+	} else {
+		[self.contentModeButton setImage:[UIImage imageNamed:@"Fill"] forState:UIControlStateNormal];
+		self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+		_standbyImageView.contentMode = UIViewContentModeScaleAspectFit;
+	}
 }
 
 - (void)closePlayer {

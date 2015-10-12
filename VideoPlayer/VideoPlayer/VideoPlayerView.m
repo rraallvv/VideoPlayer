@@ -1003,7 +1003,6 @@ static NSString *stringFromCMTime(CMTime time) {
 							  context:PlayerItemLoadedTimeRangesContext];
 
 			//self.scrubber.hidden = NO;
-			self.shouldAutohideControls = NO;
 			if (self.player.rate != 0) {
 				self.wantsToPlay = YES;
 			}
@@ -1018,6 +1017,7 @@ static NSString *stringFromCMTime(CMTime time) {
 			self.remainingPlaybackTimeLabel.text = @"-:--:--";
 			self.standbyImageView.image = nil;
 			self.standbyImageView.hidden = YES;
+			self.shouldAutohideControls = NO;
 		}
 
 		self.stalled = YES;

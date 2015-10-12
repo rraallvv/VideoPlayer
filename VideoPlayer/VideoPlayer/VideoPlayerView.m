@@ -215,11 +215,10 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	[self layoutTimeIndicatorsInRect:playerFrame];
 
 	/* Bottom view */
-	CGRect bottomControlsFrame = self.bottomControlsToolbar.frame;
-	bottomControlsFrame = CGRectMake(0,
-									 CGRectGetMaxY(playerFrame) - CGRectGetHeight(bottomControlsFrame),
-									 playerFrameWidth,
-									 CGRectGetHeight(bottomControlsFrame));
+	CGRect bottomControlsFrame = CGRectMake(0,
+											CGRectGetMaxY(playerFrame) - CGRectGetHeight(topControlsFrame),
+											playerFrameWidth,
+											CGRectGetHeight(topControlsFrame));
 	self.bottomControlsToolbar.frame = bottomControlsFrame;
 
 	bottomControlsFrame.origin = CGPointZero;

@@ -124,6 +124,8 @@ static NSString *stringFromCMTime(CMTime time) {
 }
 
 - (void)awakeFromNib {
+	self.layer.allowsGroupOpacity = NO;
+
 	self.topControlsToolbar.hidden = YES;
 	self.topControlsToolbar.clipsToBounds = YES;
     self.bottomControlsToolbar.hidden = YES;

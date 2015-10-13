@@ -480,6 +480,8 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	if (controlsHidden == self.controlsHidden)
 		return;
 
+	BOOL responsToSetNeedsStatusBarAppearanceUpdate = [self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)];
+
 	if (controlsHidden) {
 		if (animated) {
 			[UIView animateWithDuration:ControlsFadeDuration animations:^{
@@ -487,7 +489,10 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 				self.bottomControlsToolbar.alpha = 0.0;
 
 				self.shouldShowStatusbar = YES;
-				[self.delegate setNeedsStatusBarAppearanceUpdate];
+
+				if (responsToSetNeedsStatusBarAppearanceUpdate) {
+					[self.delegate setNeedsStatusBarAppearanceUpdate];
+				}
 
 			} completion:^(BOOL finished) {
 				self.topControlsToolbar.hidden = YES;
@@ -499,7 +504,10 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 			self.bottomControlsToolbar.hidden = YES;
 
 			self.shouldShowStatusbar = YES;
-			[self.delegate setNeedsStatusBarAppearanceUpdate];
+
+			if (responsToSetNeedsStatusBarAppearanceUpdate) {
+				[self.delegate setNeedsStatusBarAppearanceUpdate];
+			}
 		}
 
 	} else {
@@ -508,7 +516,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 
 		self.shouldShowStatusbar = NO;
 
-		if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
+		if (responsToSetNeedsStatusBarAppearanceUpdate) {
 			[self.delegate setNeedsStatusBarAppearanceUpdate];
 		}
 

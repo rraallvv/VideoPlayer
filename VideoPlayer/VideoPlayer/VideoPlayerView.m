@@ -975,6 +975,9 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 
 	self.stalled = YES;
 	self.playing = NO;
+
+	self.shouldAutohideControls = NO;
+	self.controlsHidden = NO;
 }
 
 - (void)playerItemDidPlayToEndTime:(NSNotification *)notification {
@@ -1033,7 +1036,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 			}
 
 			//self.nextButton.enabled = [self.player isKindOfClass:[AVQueuePlayer class]] && [(AVQueuePlayer *)self.player items].count > 1;
-			
+
 		} else {
 			//self.scrubber.hidden = YES;
 			self.scrubber.value = 0;

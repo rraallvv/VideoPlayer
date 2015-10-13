@@ -480,19 +480,12 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	if (controlsHidden == self.controlsHidden)
 		return;
 
-	BOOL responsToSetNeedsStatusBarAppearanceUpdate = [self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)];
-
 	if (controlsHidden) {
 		if (animated) {
 			[UIView animateWithDuration:ControlsFadeDuration animations:^{
 				self.topControlsToolbar.alpha = 0.0;
 				self.bottomControlsToolbar.alpha = 0.0;
-
 				self.shouldShowStatusbar = YES;
-
-				if (responsToSetNeedsStatusBarAppearanceUpdate) {
-					[self.delegate setNeedsStatusBarAppearanceUpdate];
-				}
 
 			} completion:^(BOOL finished) {
 				self.topControlsToolbar.hidden = YES;
@@ -502,24 +495,13 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 		} else {
 			self.topControlsToolbar.hidden = YES;
 			self.bottomControlsToolbar.hidden = YES;
-
 			self.shouldShowStatusbar = YES;
-
-			if (responsToSetNeedsStatusBarAppearanceUpdate) {
-				[self.delegate setNeedsStatusBarAppearanceUpdate];
-			}
 		}
 
 	} else {
 		self.topControlsToolbar.hidden = NO;
 		self.bottomControlsToolbar.hidden = NO;
-
 		self.shouldShowStatusbar = NO;
-
-		if (responsToSetNeedsStatusBarAppearanceUpdate) {
-			[self.delegate setNeedsStatusBarAppearanceUpdate];
-		}
-
 		self.topControlsToolbar.alpha = 1.0;
 		self.bottomControlsToolbar.alpha = 1.0;
 
@@ -607,6 +589,16 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 		[self clearControlsHiddenTimer];
 	}
 	_shouldAutohideControls = shouldAutohideControls;
+}
+
+- (void)setShouldShowStatusbar:(BOOL)shouldShowStatusbar {
+	_shouldShowStatusbar = shouldShowStatusbar;
+
+	if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
+		[self.delegate setNeedsStatusBarAppearanceUpdate];
+	} else {
+		[[UIApplication sharedApplication] setStatusBarHidden:shouldShowStatusbar withAnimation:UIStatusBarAnimationNone];
+	}
 }
 
 #pragma mark Actions

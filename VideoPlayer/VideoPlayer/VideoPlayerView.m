@@ -593,6 +593,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 
 - (void)setTitle:(NSString *)title {
 	self.titleLabel.text = title;
+	[self layoutIfNeeded];
 }
 
 - (NSString *)title {

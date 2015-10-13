@@ -90,9 +90,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 @property (weak, nonatomic) IBOutlet UIButton *contentModeButton;
 @property (weak, nonatomic) IBOutlet MPVolumeView *volumeView;
 @property (weak, nonatomic) IBOutlet UIToolbar *topControlsToolbar;
-@property (weak, nonatomic) IBOutlet UIView *topControlsView;
 @property (weak, nonatomic) IBOutlet UIToolbar *bottomControlsToolbar;
-@property (weak, nonatomic) IBOutlet UIView *bottomControlsView;
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *tapGestureRcognizer;
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *doubleTapGestureRecognizer;
 @property (strong, nonatomic) IBOutlet UIPanGestureRecognizer *panGestureRecognizer;
@@ -176,40 +174,60 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 }
 
 - (void)layoutSubviews {
-	[super layoutSubviews];
+	//[super layoutSubviews];
 
 	[self.titleLabel sizeToFit];
 	[self.closeButton sizeToFit];
 
 	CGRect playerFrame = self.frame;
+	CGRect playerBounds = self.bounds;
+
+	if (playerBounds.size.width > playerBounds.size.height && playerFrame.size.width < playerFrame.size.height) {
+		CGFloat x = playerFrame.origin.x;
+		CGFloat y = playerFrame.origin.y;
+		CGFloat width = playerFrame.size.width;
+		CGFloat height = playerFrame.size.height;
+		playerFrame = CGRectMake(y, x, height, width);
+	}
+
 	CGFloat playerFrameWidth = CGRectGetWidth(playerFrame);
 	CGRect titleFrame = self.titleLabel.frame;
-	CGFloat firstRowY = UIApplication.sharedApplication.statusBarFrame.size.height;
+	CGRect statusbarFrame = UIApplication.sharedApplication.statusBarFrame;
+
+	CGFloat firstRowY = MIN(CGRectGetWidth(statusbarFrame), CGRectGetHeight(statusbarFrame));
 	CGFloat firstRowMaxHeight = MAX(CGRectGetHeight(self.closeButton.frame), CGRectGetHeight(self.contentModeButton.frame));
 
 	/* Top view */
 	CGFloat firstRowHeight = 2.0 * separation + firstRowMaxHeight;
-	CGFloat topControlsHeight = firstRowY + firstRowHeight + CGRectGetHeight(titleFrame);
-	if (CGRectGetHeight(titleFrame) > 0) {
-		topControlsHeight += 0.5 * separation;
+	CGFloat topControlsHeight = firstRowHeight;
+
+	if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
+		topControlsHeight += firstRowY;
+		firstRowY = 0;
 	}
+
+	CGFloat titleOffset = CGRectGetHeight(titleFrame);
+	if (titleOffset > 0) {
+		titleOffset += 0.5 * separation;
+		topControlsHeight += titleOffset;
+	}
+
 	CGRect topControlsFrame = CGRectMake(0,
-										 0,
+										 firstRowY,
 										 playerFrameWidth,
 										 topControlsHeight);
 	self.topControlsToolbar.frame = topControlsFrame;
-	self.topControlsView.frame = topControlsFrame;
-	CGRect topControlsBounds = self.topControlsView.bounds;
+	CGRect topControlsBounds = self.topControlsToolbar.bounds;
 
 	/* Close button */
 	CGRect closeButtonFrame = self.closeButton.frame;
 	self.closeButton.center = CGPointMake(separation + CGRectGetWidth(closeButtonFrame)/2,
-										  firstRowY + firstRowHeight/2);
+										  CGRectGetHeight(topControlsBounds) - firstRowHeight/2 - titleOffset);
 
 	/* Content mode button */
 	CGRect contentModeButtonFrame = self.contentModeButton.frame;
 	self.contentModeButton.center = CGPointMake(CGRectGetWidth(topControlsBounds) - separation - CGRectGetWidth(contentModeButtonFrame)/2,
-										 firstRowY + firstRowHeight/2);
+										 CGRectGetHeight(topControlsBounds) - firstRowHeight/2 - titleOffset);
 
 	/* Time labels and the scrubber */
 	[self layoutTimeIndicatorsInRect:playerFrame];
@@ -220,10 +238,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 											playerFrameWidth,
 											CGRectGetHeight(topControlsFrame));
 	self.bottomControlsToolbar.frame = bottomControlsFrame;
-
-	bottomControlsFrame.origin = CGPointZero;
-	self.bottomControlsView.frame = bottomControlsFrame;
-	CGRect bottomControlsBounds = self.bottomControlsView.bounds;
+	CGRect bottomControlsBounds = self.bottomControlsToolbar.bounds;
 
 	/* Play button*/
 	self.playButton.center = CGPointMake(CGRectGetMidX(bottomControlsBounds),
@@ -259,8 +274,8 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	self.titleLabel.frame = titleFrame;
 
 	/* Content overlay and thumbnail views */
-	self.contentOverlayView.frame = self.bounds;
-	self.standbyImageView.frame = self.bounds;
+	self.contentOverlayView.frame = playerFrame;
+	self.standbyImageView.frame = playerFrame;
 }
 
 - (void)dealloc {

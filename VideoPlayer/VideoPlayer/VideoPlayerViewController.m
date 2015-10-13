@@ -68,6 +68,8 @@
 #pragma mark Lifecycle
 
 - (void)loadView {
+	self.wantsFullScreenLayout = YES;
+
 	VideoPlayerView *playerView = [[[NSBundle mainBundle] loadNibNamed:@"VideoPlayerView"
 																 owner:self
 															   options:nil] objectAtIndex:0];

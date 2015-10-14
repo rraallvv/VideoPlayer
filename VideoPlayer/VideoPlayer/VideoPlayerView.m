@@ -494,6 +494,9 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 - (void)setControlsHidden:(BOOL)controlsHidden animated:(BOOL)animated {
 	[self clearControlsHiddenTimer];
 
+	if (_canToggleFullscreen && !self.fullscreen)
+		return;
+
 	if (controlsHidden == self.controlsHidden)
 		return;
 

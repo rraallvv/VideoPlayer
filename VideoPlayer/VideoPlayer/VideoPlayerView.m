@@ -876,17 +876,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 }
 
 - (CGRect)containerViewFrame {
-	CGRect frame = self.containerView.frame;
-	frame.origin = [self.containerView.superview convertPoint:frame.origin toView:[UIApplication sharedApplication].keyWindow.rootViewController.view];
-	CGRect bounds = self.containerView.frame;
-	if (bounds.size.width > bounds.size.height && frame.size.width < frame.size.height) {
-		CGFloat x = frame.origin.x;
-		CGFloat y = frame.origin.y;
-		CGFloat width = frame.size.width;
-		CGFloat height = frame.size.height;
-		frame = CGRectMake(y, x, height, width);
-	}
-	return frame;
+	return [self.containerView.superview convertRect:self.containerView.frame toView:UIApplication.sharedApplication.keyWindow];
 }
 
 - (CGRect)boundsLimit {

@@ -421,9 +421,11 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 				self.controlsHidden = NO;
 				self.showBorders = NO;
 
+				/*
 				if (self.stalled) {
 					self.showsActivityIndicator = YES;
 				}
+				 */
 
 				[self setNeedsLayout];
 
@@ -575,7 +577,9 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 }
 
 - (void)setStalled:(BOOL)stalled {
-	self.showsActivityIndicator = stalled;
+	if (!self.fullscreen) {
+		self.showsActivityIndicator = stalled;
+	}
 	_stalled = stalled;
 }
 

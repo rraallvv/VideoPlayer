@@ -526,6 +526,14 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 															userInfo:nil
 															 repeats:NO];
 	}
+
+	if (!controlsHidden) {
+		[CATransaction begin];
+		[CATransaction setDisableActions:YES];
+		[self setNeedsLayout];
+		[self layoutIfNeeded];
+		[CATransaction commit];
+	}
 }
 
 - (void)setWantsToPlay:(BOOL)wantsToPlay {

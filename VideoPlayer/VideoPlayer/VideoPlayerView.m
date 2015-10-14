@@ -274,8 +274,8 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	self.titleLabel.frame = titleFrame;
 
 	/* Content overlay and thumbnail views */
-	self.contentOverlayView.frame = playerFrame;
-	self.standbyImageView.frame = playerFrame;
+	self.contentOverlayView.frame = playerBounds;
+	self.standbyImageView.frame = playerBounds;
 }
 
 - (void)dealloc {

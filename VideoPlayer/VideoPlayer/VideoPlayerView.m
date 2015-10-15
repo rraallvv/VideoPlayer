@@ -813,15 +813,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 }
 
 - (IBAction)contentModeButtonTouchUpInside:(UIButton *)sender {
-	if (self.playerLayer.videoGravity == AVLayerVideoGravityResizeAspect) {
-		[self.contentModeButton setImage:[UIImage imageNamed:@"Fit"] forState:UIControlStateNormal];
-		self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-		_standbyImageView.contentMode = UIViewContentModeScaleAspectFill;
-	} else {
-		[self.contentModeButton setImage:[UIImage imageNamed:@"Fill"] forState:UIControlStateNormal];
-		self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-		_standbyImageView.contentMode = UIViewContentModeScaleAspectFit;
-	}
+	[self toggleContentMode];
 }
 
 #pragma mark Helper methods

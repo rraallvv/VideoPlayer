@@ -103,7 +103,8 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 @property (nonatomic, getter=isPlaying) BOOL playing;
 @property (nonatomic) BOOL stalled;
 @property (nonatomic) BOOL showsActivityIndicator;
-@property (strong, nonatomic) UIImageView *standbyImageView;
+@property (strong, nonatomic) UIView *standbyView;
+@property (strong, nonatomic) CALayer *standbyLayer;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (assign, nonatomic) BOOL shouldShowStatusbar;
 @property (assign, nonatomic) BOOL shouldAutohideControls;
@@ -121,6 +122,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	CALayer *_timeLineLayer;
 	BOOL _shouldChangeContainerView;
 	AVPlayerItem *_currentItem;
+	UIImage *_standbyImage;
 }
 
 
@@ -275,7 +277,9 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 
 	/* Content overlay and thumbnail views */
 	self.contentOverlayView.frame = playerBounds;
-	self.standbyImageView.frame = playerBounds;
+
+	self.standbyLayer.frame = playerBounds;
+	self.standbyView.frame = playerBounds;
 }
 
 - (void)dealloc {
@@ -286,8 +290,10 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 
 - (void)setFrame:(CGRect)frame {
 	[super setFrame:frame];
-	self.contentOverlayView.frame = self.bounds;
-	self.standbyImageView.frame = self.bounds;
+	CGRect bounds = self.bounds;
+	self.contentOverlayView.frame = bounds;
+	self.standbyLayer.frame = bounds;
+	self.standbyView.frame = bounds;
 }
 
 - (void)setShowBorders:(BOOL)showBorders {
@@ -325,8 +331,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	}
 
 	self.showBorders = YES;
-	self.standbyImageView.image = nil;
-	self.standbyImageView.hidden = YES;
+	[self hideStandbyView];
 
 	BOOL showPrevAndNextButtons = [player isKindOfClass:[AVQueuePlayer class]];
 	self.prevButton.hidden = self.nextButton.hidden = !showPrevAndNextButtons;
@@ -349,8 +354,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 					self.playing = YES;
 					self.shouldAutohideControls = YES;
 					self.controlsHidden = YES;
-					self.standbyImageView.image = nil;
-					self.standbyImageView.hidden = YES;
+					[self hideStandbyView];
 				}
 			}
 
@@ -588,22 +592,20 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
 	[super setBackgroundColor:backgroundColor];
-	self.standbyImageView.backgroundColor = backgroundColor;
+	self.standbyView.backgroundColor = backgroundColor;
 }
 
-- (UIImageView *)standbyImageView {
-	if (!_standbyImageView && self.contentOverlayView) {
-		_standbyImageView = [[UIImageView alloc] init];
-		if (self.playerLayer.videoGravity == AVLayerVideoGravityResizeAspect) {
-			_standbyImageView.contentMode = UIViewContentModeScaleAspectFit;
-		} else {
-			_standbyImageView.contentMode = UIViewContentModeScaleAspectFill;
-		}
-		_standbyImageView.backgroundColor = self.backgroundColor;
-		_standbyImageView.hidden = YES;
-		[self insertSubview:_standbyImageView belowSubview:self.contentOverlayView];
+- (UIView *)standbyView {
+	if (!_standbyView && self.contentOverlayView) {
+		_standbyView = [[UIView alloc] init];
+		_standbyView.backgroundColor = self.backgroundColor;
+		_standbyView.hidden = YES;
+		_standbyLayer = [[CALayer alloc] init];
+		_standbyLayer.contentsGravity = kCAGravityCenter;
+		[_standbyView.layer addSublayer:_standbyLayer];
+		[self insertSubview:_standbyView belowSubview:self.contentOverlayView];
 	}
-	return _standbyImageView;
+	return _standbyView;
 }
 
 - (void)setTitle:(NSString *)title {
@@ -630,6 +632,25 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	} else {
 		[[UIApplication sharedApplication] setStatusBarHidden:shouldShowStatusbar withAnimation:UIStatusBarAnimationNone];
 	}
+}
+
+- (CGFloat)standbyLayerContentScale {
+	CALayer *layer = ((AVPlayerLayer *)self.layer).sublayers.firstObject;
+	CGRect videoBounds = CGRectApplyAffineTransform(layer.bounds, CATransform3DGetAffineTransform(layer.sublayerTransform));
+	CGSize imageSize = _standbyImage.size;
+
+	CGFloat widthScale = imageSize.width / videoBounds.size.width;
+	CGFloat heightScale = imageSize.height / videoBounds.size.height;
+
+	CGFloat scale = [UIScreen mainScreen].scale;
+
+	if (self.playerLayer.videoGravity == AVLayerVideoGravityResizeAspect) {
+		scale *= MAX(widthScale, heightScale);
+	} else {
+		scale *= MIN(widthScale, heightScale);
+	}
+
+	return scale;
 }
 
 #pragma mark Actions
@@ -818,6 +839,12 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 
 #pragma mark Helper methods
 
+- (void)hideStandbyView {
+	self.standbyLayer.contents = nil;
+	_standbyImage = nil;
+	self.standbyView.hidden = YES;
+}
+
 - (void)clearControlsHiddenTimer {
 	if (_hideControlsTimer) {
 		[_hideControlsTimer invalidate];
@@ -843,11 +870,11 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	if (self.playerLayer.videoGravity == AVLayerVideoGravityResizeAspect) {
 		[self.contentModeButton setImage:[UIImage imageNamed:@"Fit"] forState:UIControlStateNormal];
 		self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-		_standbyImageView.contentMode = UIViewContentModeScaleAspectFill;
+		self.standbyLayer.contentsScale = [self standbyLayerContentScale];
 	} else {
 		[self.contentModeButton setImage:[UIImage imageNamed:@"Fill"] forState:UIControlStateNormal];
 		self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-		_standbyImageView.contentMode = UIViewContentModeScaleAspectFit;
+		self.standbyLayer.contentsScale = [self standbyLayerContentScale];
 	}
 }
 
@@ -943,7 +970,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 #pragma mark Notification handlers
 
 - (void)playerItemDidStalled:(NSNotification *)notification {
-	if (!self.standbyImageView.image) {
+	if (!self.standbyView.layer.contents) {
 		AVPlayerItem *playerItem = self.player.currentItem;
 		CMTime currentTime = playerItem.currentTime;
 		AVAsset *asset = playerItem.asset;
@@ -967,7 +994,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 				return;
 			}
 
-			UIImage *thumbnail = [UIImage imageWithCGImage:imageRef];
+			_standbyImage = [UIImage imageWithCGImage:imageRef];
 			CGImageRelease(imageRef);
 
 			if (!self.stalled) {
@@ -976,9 +1003,18 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 			}
 
 			dispatch_async(dispatch_get_main_queue(), ^{
-				self.standbyImageView.image = thumbnail;
-				self.standbyImageView.hidden = NO;
-				self.standbyImageView.frame = self.bounds;
+				self.standbyLayer.contents = (id)_standbyImage.CGImage;
+
+				[CATransaction begin];
+				[CATransaction setDisableActions:YES];
+				self.standbyLayer.contentsScale = [self standbyLayerContentScale];
+				[CATransaction commit];
+
+				CGRect bounds = self.bounds;
+				self.standbyLayer.frame = bounds;
+				self.standbyView.frame = bounds;
+
+				self.standbyView.hidden = NO;
 			});
 		});
 
@@ -1056,8 +1092,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 			self.scrubber.progress = 0;
 			self.playbackTimeLabel.text = @"-:--";
 			self.remainingPlaybackTimeLabel.text = @"-:--";
-			self.standbyImageView.image = nil;
-			self.standbyImageView.hidden = YES;
+			[self hideStandbyView];
 			self.shouldAutohideControls = NO;
 		}
 

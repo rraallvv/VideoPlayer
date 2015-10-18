@@ -108,6 +108,9 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (assign, nonatomic) BOOL shouldShowStatusbar;
 @property (assign, nonatomic) BOOL shouldAutohideControls;
+@property (nonatomic) BOOL titleHidden;
+
+- (BOOL)titleHidden UNAVAILABLE_ATTRIBUTE;
 
 @end
 
@@ -157,7 +160,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	self.showBorders = YES;
 	//self.layer.backgroundColor = self.backgroundColor.CGColor;
 
-	self.scrubber.hidden = YES;
+	self.titleHidden = NO;
 
 	/* Add a gesture recognizer to detect touches on the volume control */
 	UIPanGestureRecognizer *volumeGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(volumeAdjusted:)];
@@ -224,6 +227,15 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	CGRect contentModeButtonFrame = self.contentModeButton.frame;
 	self.contentModeButton.center = CGPointMake(CGRectGetWidth(topControlsBounds) - separation - CGRectGetWidth(contentModeButtonFrame)/2,
 										 CGRectGetHeight(topControlsBounds) - firstRowHeight/2);
+
+	/* Title label */
+	[self.titleLabel sizeToFit];
+	CGRect titleFrame = self.titleLabel.frame;
+	titleFrame = CGRectMake(CGRectGetMaxX(closeButtonFrame) + 2 * separation,
+							CGRectGetHeight(topControlsBounds) - firstRowHeight / 2 - CGRectGetHeight(titleFrame) / 2,
+							CGRectGetMinX(contentModeButtonFrame) - CGRectGetMaxX(closeButtonFrame) - 4 * separation,
+							CGRectGetHeight(titleFrame));
+	self.titleLabel.frame = titleFrame;
 
 	/* Time labels and the scrubber */
 	[self layoutTimeIndicatorsInRect:playerFrame];
@@ -341,6 +353,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 					self.playing = YES;
 					self.shouldAutohideControls = YES;
 					self.controlsHidden = YES;
+					self.titleHidden = YES;
 					[self hideStandbyView];
 				}
 			}
@@ -640,6 +653,14 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	return scale;
 }
 
+- (void)setTitleHidden:(BOOL)titleHidden {
+	self.titleLabel.hidden = titleHidden;
+
+	self.playbackTimeLabel.hidden = !titleHidden;
+	self.remainingPlaybackTimeLabel.hidden = !titleHidden;
+	self.scrubber.hidden = !titleHidden;
+}
+
 #pragma mark Actions
 
 - (IBAction)scrubberTouchDown:(id)sender {
@@ -687,13 +708,11 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 
 		if (CGRectContainsPoint([self convertRect:self.titleLabel.bounds fromView:self.titleLabel], location)
 			&& !self.titleLabel.hidden) {
-			self.titleLabel.hidden = YES;
-			self.scrubber.hidden = NO;
+			self.titleHidden = YES;
 
 		} else if (CGRectContainsPoint([self convertRect:self.scrubber.bounds fromView:self.scrubber], location)
 				   && !self.scrubber.hidden) {
-			self.scrubber.hidden = YES;
-			self.titleLabel.hidden = NO;
+			self.titleHidden = NO;
 
 		} else {
 			self.controlsHidden = !self.controlsHidden;
@@ -956,15 +975,6 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 							   scrubberMaxX - scrubberMinX,
 							   CGRectGetHeight(scrubberFrame));
 	self.scrubber.frame = scrubberFrame;
-
-	/* Title label */
-	[self.titleLabel sizeToFit];
-	CGRect titleFrame = self.titleLabel.frame;
-	titleFrame = CGRectMake(scrubberMinX,
-							CGRectGetMidY(scrubberFrame) - CGRectGetHeight(titleFrame) / 2,
-							scrubberMaxX - scrubberMinX,
-							CGRectGetHeight(titleFrame));
-	self.titleLabel.frame = titleFrame;
 
 	/* Time line progess indicator */
 	CGFloat borderWidth = self.layer.borderWidth;

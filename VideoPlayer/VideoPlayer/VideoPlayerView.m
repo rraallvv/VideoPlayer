@@ -178,7 +178,6 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 - (void)layoutSubviews {
 	//[super layoutSubviews];
 
-	[self.titleLabel sizeToFit];
 	[self.closeButton sizeToFit];
 
 	CGRect playerFrame = self.frame;
@@ -193,7 +192,6 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	}
 
 	CGFloat playerFrameWidth = CGRectGetWidth(playerFrame);
-	CGRect titleFrame = self.titleLabel.frame;
 	CGRect statusbarFrame = UIApplication.sharedApplication.statusBarFrame;
 
 	CGFloat firstRowY = MIN(CGRectGetWidth(statusbarFrame), CGRectGetHeight(statusbarFrame));
@@ -208,12 +206,6 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 		firstRowY = 0;
 	}
 
-	CGFloat titleOffset = CGRectGetHeight(titleFrame);
-	if (titleOffset > 0) {
-		titleOffset += 0.5 * separation;
-		topControlsHeight += titleOffset;
-	}
-
 	CGRect topControlsFrame = CGRectMake(0,
 										 firstRowY,
 										 playerFrameWidth,
@@ -224,12 +216,12 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	/* Close button */
 	CGRect closeButtonFrame = self.closeButton.frame;
 	self.closeButton.center = CGPointMake(separation + CGRectGetWidth(closeButtonFrame)/2,
-										  CGRectGetHeight(topControlsBounds) - firstRowHeight/2 - titleOffset);
+										  CGRectGetHeight(topControlsBounds) - firstRowHeight/2);
 
 	/* Content mode button */
 	CGRect contentModeButtonFrame = self.contentModeButton.frame;
 	self.contentModeButton.center = CGPointMake(CGRectGetWidth(topControlsBounds) - separation - CGRectGetWidth(contentModeButtonFrame)/2,
-										 CGRectGetHeight(topControlsBounds) - firstRowHeight/2 - titleOffset);
+										 CGRectGetHeight(topControlsBounds) - firstRowHeight/2);
 
 	/* Time labels and the scrubber */
 	[self layoutTimeIndicatorsInRect:playerFrame];
@@ -267,13 +259,6 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	/* Activity indicator */
 	self.activityIndicator.center = CGPointMake(CGRectGetMidX(playerFrame),
 												CGRectGetMidY(playerFrame));
-
-	/* Title label */
-	titleFrame = CGRectMake(CGRectGetMinX(topControlsFrame) + separation,
-							CGRectGetMaxY(topControlsFrame) - separation - CGRectGetHeight(titleFrame),
-							CGRectGetWidth(topControlsFrame) - 2.0 * separation,
-							CGRectGetHeight(titleFrame));
-	self.titleLabel.frame = titleFrame;
 
 	/* Content overlay and thumbnail views */
 	self.contentOverlayView.frame = playerBounds;
@@ -954,6 +939,15 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 							   scrubberMaxX - scrubberMinX,
 							   CGRectGetHeight(scrubberFrame));
 	self.scrubber.frame = scrubberFrame;
+
+	/* Title label */
+	[self.titleLabel sizeToFit];
+	CGRect titleFrame = self.titleLabel.frame;
+	titleFrame = CGRectMake(scrubberMinX,
+							CGRectGetMidY(scrubberFrame) - CGRectGetHeight(titleFrame) / 2,
+							scrubberMaxX - scrubberMinX,
+							CGRectGetHeight(titleFrame));
+	self.titleLabel.frame = titleFrame;
 
 	/* Time line progess indicator */
 	CGFloat borderWidth = self.layer.borderWidth;

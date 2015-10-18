@@ -157,6 +157,8 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	self.showBorders = YES;
 	//self.layer.backgroundColor = self.backgroundColor.CGColor;
 
+	self.scrubber.hidden = YES;
+
 	/* Add a gesture recognizer to detect touches on the volume control */
 	UIPanGestureRecognizer *volumeGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(volumeAdjusted:)];
 	volumeGestureRecognizer.cancelsTouchesInView = NO;
@@ -681,7 +683,22 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 
 - (IBAction)tapGestureRecognizer:(UITapGestureRecognizer *)sender {
 	if (self.fullscreen) {
-		self.controlsHidden = !self.controlsHidden;
+		CGPoint location = [sender locationInView:self];
+
+		if (CGRectContainsPoint([self convertRect:self.titleLabel.bounds fromView:self.titleLabel], location)
+			&& !self.titleLabel.hidden) {
+			self.titleLabel.hidden = YES;
+			self.scrubber.hidden = NO;
+
+		} else if (CGRectContainsPoint([self convertRect:self.scrubber.bounds fromView:self.scrubber], location)
+				   && !self.scrubber.hidden) {
+			self.scrubber.hidden = YES;
+			self.titleLabel.hidden = NO;
+
+		} else {
+			self.controlsHidden = !self.controlsHidden;
+		}
+
 	} else {
 		self.fullscreen = YES;
 	}

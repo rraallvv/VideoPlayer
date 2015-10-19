@@ -515,12 +515,14 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 			} completion:^(BOOL finished) {
 				self.topControlsToolbar.hidden = YES;
 				self.bottomControlsToolbar.hidden = YES;
+				[self setTitleHidden:YES animated:NO];
 			}];
 
 		} else {
 			self.topControlsToolbar.hidden = YES;
 			self.bottomControlsToolbar.hidden = YES;
 			self.shouldShowStatusbar = YES;
+			[self setTitleHidden:YES animated:NO];
 		}
 
 	} else {
@@ -529,7 +531,6 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 		self.shouldShowStatusbar = NO;
 		self.topControlsToolbar.alpha = 1.0;
 		self.bottomControlsToolbar.alpha = 1.0;
-
 		[self startControlsHiddednTimer];
 	}
 
@@ -665,33 +666,57 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 		self.scrubber.alpha = 0;
 		self.scrubber.hidden = NO;
 
-		[UIView animateWithDuration:TitleFadeDuration animations:^{
+		if (animated) {
+			[UIView animateWithDuration:TitleFadeDuration animations:^{
+				self.playbackTimeLabel.alpha = 1;
+				self.remainingPlaybackTimeLabel.alpha = 1;
+				self.scrubber.alpha = 1;
+
+				self.titleLabel.alpha = 0;
+
+			} completion:^(BOOL finished) {
+				self.titleLabel.hidden = YES;
+			}];
+
+		} else {
 			self.playbackTimeLabel.alpha = 1;
 			self.remainingPlaybackTimeLabel.alpha = 1;
 			self.scrubber.alpha = 1;
 
 			self.titleLabel.alpha = 0;
-
-		} completion:^(BOOL finished) {
 			self.titleLabel.hidden = YES;
-		}];
+		}
 
 	} else {
 		self.titleLabel.alpha = 0;
 		self.titleLabel.hidden = NO;
 
-		[UIView animateWithDuration:TitleFadeDuration animations:^{
+		if (animated) {
+			[UIView animateWithDuration:TitleFadeDuration animations:^{
+				self.playbackTimeLabel.alpha = 0;
+				self.remainingPlaybackTimeLabel.alpha = 0;
+				self.scrubber.alpha = 0;
+
+				self.titleLabel.alpha = 1;
+
+			} completion:^(BOOL finished) {
+				self.playbackTimeLabel.hidden = YES;
+				self.remainingPlaybackTimeLabel.hidden = YES;
+				self.scrubber.hidden = YES;
+			}];
+
+		} else {
 			self.playbackTimeLabel.alpha = 0;
+			self.playbackTimeLabel.hidden = YES;
+
 			self.remainingPlaybackTimeLabel.alpha = 0;
+			self.remainingPlaybackTimeLabel.hidden = YES;
+
 			self.scrubber.alpha = 0;
+			self.scrubber.hidden = YES;
 
 			self.titleLabel.alpha = 1;
-
-		} completion:^(BOOL finished) {
-			self.playbackTimeLabel.hidden = YES;
-			self.remainingPlaybackTimeLabel.hidden = YES;
-			self.scrubber.hidden = YES;
-		}];
+		}
 	}
 }
 

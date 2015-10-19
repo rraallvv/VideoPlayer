@@ -39,7 +39,8 @@ static const CGFloat BoundsElasticity = 0.625;//0.5;//0.75;
 static const CGFloat BoundsRestitutionDuration = 0.1;
 static const CGFloat SwipeFadeDuration = 0.2;//0.1;
 static const CGFloat ControlsFadeDuration = 0.5;
-static const CGFloat swipeVelocityThreshold = 1638.4;//819.2;//409.6;
+static const CGFloat SwipeVelocityThreshold = 1638.4;//819.2;//409.6;
+static const CGFloat TitleFadeDuration = 0.25;//0.5;//1.0;
 
 /* Layout parameters */
 static CGFloat const separation = 8.0;
@@ -501,8 +502,8 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	if (_canToggleFullscreen && !self.fullscreen)
 		return;
 
-	if (controlsHidden == self.controlsHidden)
-		return;
+	//if (controlsHidden == self.controlsHidden)
+	//	return;
 
 	if (controlsHidden) {
 		if (animated) {
@@ -529,11 +530,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 		self.topControlsToolbar.alpha = 1.0;
 		self.bottomControlsToolbar.alpha = 1.0;
 
-		_hideControlsTimer = [NSTimer scheduledTimerWithTimeInterval:5.0
-															  target:self
-															selector:@selector(hideControlsTimer)
-															userInfo:nil
-															 repeats:NO];
+		[self startControlsHiddednTimer];
 	}
 
 	if (!controlsHidden) {
@@ -654,11 +651,48 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 }
 
 - (void)setTitleHidden:(BOOL)titleHidden {
-	self.titleLabel.hidden = titleHidden;
+	[self setTitleHidden:titleHidden animated:YES];
+}
 
-	self.playbackTimeLabel.hidden = !titleHidden;
-	self.remainingPlaybackTimeLabel.hidden = !titleHidden;
-	self.scrubber.hidden = !titleHidden;
+- (void)setTitleHidden:(BOOL)titleHidden animated:(BOOL)animated {
+	if (titleHidden) {
+		self.playbackTimeLabel.alpha = 0;
+		self.playbackTimeLabel.hidden = NO;
+
+		self.remainingPlaybackTimeLabel.alpha = 0;
+		self.remainingPlaybackTimeLabel.hidden = NO;
+
+		self.scrubber.alpha = 0;
+		self.scrubber.hidden = NO;
+
+		[UIView animateWithDuration:TitleFadeDuration animations:^{
+			self.playbackTimeLabel.alpha = 1;
+			self.remainingPlaybackTimeLabel.alpha = 1;
+			self.scrubber.alpha = 1;
+
+			self.titleLabel.alpha = 0;
+
+		} completion:^(BOOL finished) {
+			self.titleLabel.hidden = YES;
+		}];
+
+	} else {
+		self.titleLabel.alpha = 0;
+		self.titleLabel.hidden = NO;
+
+		[UIView animateWithDuration:TitleFadeDuration animations:^{
+			self.playbackTimeLabel.alpha = 0;
+			self.remainingPlaybackTimeLabel.alpha = 0;
+			self.scrubber.alpha = 0;
+
+			self.titleLabel.alpha = 1;
+
+		} completion:^(BOOL finished) {
+			self.playbackTimeLabel.hidden = YES;
+			self.remainingPlaybackTimeLabel.hidden = YES;
+			self.scrubber.hidden = YES;
+		}];
+	}
 }
 
 #pragma mark Actions
@@ -704,18 +738,27 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 
 - (IBAction)tapGestureRecognizer:(UITapGestureRecognizer *)sender {
 	if (self.fullscreen) {
-		CGPoint location = [sender locationInView:self];
+		BOOL shouldToggleControlsHidden = YES;
 
-		if (CGRectContainsPoint([self convertRect:self.titleLabel.bounds fromView:self.titleLabel], location)
-			&& !self.titleLabel.hidden) {
-			self.titleHidden = YES;
+		if (!self.controlsHidden) {
+			CGPoint location = [sender locationInView:self];
 
-		} else if (CGRectContainsPoint([self convertRect:self.scrubber.bounds fromView:self.scrubber], location)
-				   && !self.scrubber.hidden) {
-			self.titleHidden = NO;
+			if (CGRectContainsPoint([self convertRect:self.titleLabel.bounds fromView:self.titleLabel], location)
+				&& !self.titleLabel.hidden) {
+				self.titleHidden = YES;
+				shouldToggleControlsHidden = NO;
 
-		} else {
+			} else if (CGRectContainsPoint([self convertRect:self.scrubber.bounds fromView:self.scrubber], location)
+					   && !self.scrubber.hidden) {
+				self.titleHidden = NO;
+				shouldToggleControlsHidden = NO;
+			}
+		}
+
+		if (shouldToggleControlsHidden) {
 			self.controlsHidden = !self.controlsHidden;
+		} else {
+			self.controlsHidden = NO;
 		}
 
 	} else {
@@ -766,7 +809,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 
 			CGFloat velocityMagnitud = sqrt(_swipeVelocity.x * _swipeVelocity.x + _swipeVelocity.x * _swipeVelocity.x);
 
-			if (velocityMagnitud > swipeVelocityThreshold) {
+			if (velocityMagnitud > SwipeVelocityThreshold) {
 				_swipeGestureRecognized = YES;
 
 				dispatch_async(dispatch_get_main_queue(), ^{
@@ -871,6 +914,14 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 		[_hideControlsTimer invalidate];
 		_hideControlsTimer = nil;
 	}
+}
+
+- (void)startControlsHiddednTimer {
+	_hideControlsTimer = [NSTimer scheduledTimerWithTimeInterval:5.0
+														  target:self
+														selector:@selector(hideControlsTimer)
+														userInfo:nil
+														 repeats:NO];
 }
 
 - (void)updateTimeIndicatorsWithTime:(CMTime)time {

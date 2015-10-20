@@ -25,7 +25,7 @@
                             <rect key="frame" x="7" y="7" width="50" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <animations/>
-                            <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="18.5"/>
                             <state key="normal" title="Done"/>
                             <connections>
                                 <action selector="closeButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="YDg-mW-zFj"/>
@@ -217,7 +217,7 @@
         </swipeGestureRecognizer>
     </objects>
     <resources>
-        <image name="Fill" width="32" height="32"/>
+        <image name="Fill" width="20" height="20"/>
         <image name="Next" width="32" height="32"/>
         <image name="Pause" width="32" height="32"/>
         <image name="Previous" width="32" height="32"/>

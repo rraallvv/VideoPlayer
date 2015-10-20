@@ -205,11 +205,10 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	CGFloat topButtonsMaxHeight = MAX(CGRectGetHeight(self.closeButton.frame), CGRectGetHeight(self.contentModeButton.frame));
 
 	/* Top view */
-	CGFloat firstRowHeight = topButtonsMaxHeight;
-	CGFloat topControlsHeight = firstRowHeight;
+	CGFloat topControlsHeight = topButtonsMaxHeight;
 
 	if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
-		topControlsHeight += statusBarHeight;
+		topControlsHeight += statusBarHeight - 4.0;
 		statusBarHeight = 0;
 	}
 
@@ -223,18 +222,18 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	/* Close button */
 	CGRect closeButtonFrame = self.closeButton.frame;
 	self.closeButton.center = CGPointMake(2 * separation + CGRectGetWidth(closeButtonFrame)/2,
-										  CGRectGetHeight(topControlsBounds) - firstRowHeight/2);
+										  CGRectGetHeight(topControlsBounds) - topButtonsMaxHeight/2);
 
 	/* Content mode button */
 	CGRect contentModeButtonFrame = self.contentModeButton.frame;
 	self.contentModeButton.center = CGPointMake(CGRectGetWidth(topControlsBounds) - 2 * separation - CGRectGetWidth(contentModeButtonFrame)/2,
-										 CGRectGetHeight(topControlsBounds) - firstRowHeight/2);
+										 CGRectGetHeight(topControlsBounds) - topButtonsMaxHeight/2);
 
 	/* Title label */
 	[self.titleLabel sizeToFit];
 	CGRect titleFrame = self.titleLabel.frame;
 	titleFrame = CGRectMake(CGRectGetMaxX(closeButtonFrame) + separation,
-							CGRectGetHeight(topControlsBounds) - firstRowHeight / 2 - CGRectGetHeight(titleFrame) / 2,
+							CGRectGetHeight(topControlsBounds) - topButtonsMaxHeight / 2 - CGRectGetHeight(titleFrame) / 2,
 							CGRectGetMinX(contentModeButtonFrame) - CGRectGetMaxX(closeButtonFrame) - 2 * separation,
 							CGRectGetHeight(titleFrame));
 	self.titleLabel.frame = titleFrame;
@@ -256,13 +255,13 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 
 	/* Volume view */
 	CGRect volumeFrame = self.volumeView.frame;
-	volumeFrame = CGRectMake(separation,
+	volumeFrame = CGRectMake(2 * separation,
 							 CGRectGetMidY(bottomControlsBounds) - CGRectGetHeight(volumeFrame)/2,
-							 CGRectGetWidth(bottomControlsBounds)/4,
+							 CGRectGetWidth(bottomControlsBounds)/4 - 4 * separation,
 							 CGRectGetHeight(volumeFrame));
 	self.volumeView.frame = volumeFrame;
 
-	CGFloat const prevNextSeparation = (CGRectGetMidX(bottomControlsBounds) - CGRectGetMaxX(self.volumeView.frame)) / 2;
+	CGFloat const prevNextSeparation = (CGRectGetMidX(bottomControlsBounds) - CGRectGetMaxX(self.volumeView.frame)) / 3 - separation;
 
 	/* Prev button*/
 	self.prevButton.center = CGPointMake(CGRectGetMidX(bottomControlsBounds) - prevNextSeparation,
@@ -1037,7 +1036,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	[self.playbackTimeLabel sizeToFit];
 	self.playbackTimeLabel.text = timeString;
 	CGRect playbackTimeFrame = self.playbackTimeLabel.frame;
-	self.playbackTimeLabel.center = CGPointMake(CGRectGetMaxX(self.closeButton.frame) + 3.0 * separation + CGRectGetWidth(playbackTimeFrame)/2,
+	self.playbackTimeLabel.center = CGPointMake(CGRectGetMaxX(self.closeButton.frame) + separation + CGRectGetWidth(playbackTimeFrame)/2,
 												midY);
 
 	/* Remaining playback time */
@@ -1046,7 +1045,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	[self.remainingPlaybackTimeLabel sizeToFit];
 	self.remainingPlaybackTimeLabel.text = timeString;
 	CGRect remainingPlaybackTimeFrame = self.remainingPlaybackTimeLabel.frame;
-	self.remainingPlaybackTimeLabel.center = CGPointMake(CGRectGetMinX(self.contentModeButton.frame) - 3.0 * separation - CGRectGetWidth(remainingPlaybackTimeFrame)/2,
+	self.remainingPlaybackTimeLabel.center = CGPointMake(CGRectGetMinX(self.contentModeButton.frame) - separation - CGRectGetWidth(remainingPlaybackTimeFrame)/2,
 														 midY);
 
 	/* Scrubber */

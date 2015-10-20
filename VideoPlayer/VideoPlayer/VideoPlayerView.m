@@ -185,6 +185,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	//[super layoutSubviews];
 
 	[self.closeButton sizeToFit];
+	[self.contentModeButton sizeToFit];
 
 	CGRect playerFrame = self.frame;
 	CGRect playerBounds = self.bounds;
@@ -200,20 +201,20 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	CGFloat playerFrameWidth = CGRectGetWidth(playerFrame);
 	CGRect statusbarFrame = UIApplication.sharedApplication.statusBarFrame;
 
-	CGFloat firstRowY = MIN(CGRectGetWidth(statusbarFrame), CGRectGetHeight(statusbarFrame));
-	CGFloat firstRowMaxHeight = MAX(CGRectGetHeight(self.closeButton.frame), CGRectGetHeight(self.contentModeButton.frame));
+	CGFloat statusBarHeight = MIN(CGRectGetWidth(statusbarFrame), CGRectGetHeight(statusbarFrame));
+	CGFloat topButtonsMaxHeight = MAX(CGRectGetHeight(self.closeButton.frame), CGRectGetHeight(self.contentModeButton.frame));
 
 	/* Top view */
-	CGFloat firstRowHeight = 2.0 * separation + firstRowMaxHeight;
+	CGFloat firstRowHeight = topButtonsMaxHeight;
 	CGFloat topControlsHeight = firstRowHeight;
 
 	if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
-		topControlsHeight += firstRowY;
-		firstRowY = 0;
+		topControlsHeight += statusBarHeight;
+		statusBarHeight = 0;
 	}
 
 	CGRect topControlsFrame = CGRectMake(0,
-										 firstRowY,
+										 statusBarHeight,
 										 playerFrameWidth,
 										 topControlsHeight);
 	self.topControlsToolbar.frame = topControlsFrame;
@@ -221,20 +222,20 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 
 	/* Close button */
 	CGRect closeButtonFrame = self.closeButton.frame;
-	self.closeButton.center = CGPointMake(separation + CGRectGetWidth(closeButtonFrame)/2,
+	self.closeButton.center = CGPointMake(2 * separation + CGRectGetWidth(closeButtonFrame)/2,
 										  CGRectGetHeight(topControlsBounds) - firstRowHeight/2);
 
 	/* Content mode button */
 	CGRect contentModeButtonFrame = self.contentModeButton.frame;
-	self.contentModeButton.center = CGPointMake(CGRectGetWidth(topControlsBounds) - separation - CGRectGetWidth(contentModeButtonFrame)/2,
+	self.contentModeButton.center = CGPointMake(CGRectGetWidth(topControlsBounds) - 2 * separation - CGRectGetWidth(contentModeButtonFrame)/2,
 										 CGRectGetHeight(topControlsBounds) - firstRowHeight/2);
 
 	/* Title label */
 	[self.titleLabel sizeToFit];
 	CGRect titleFrame = self.titleLabel.frame;
-	titleFrame = CGRectMake(CGRectGetMaxX(closeButtonFrame) + 2 * separation,
+	titleFrame = CGRectMake(CGRectGetMaxX(closeButtonFrame) + separation,
 							CGRectGetHeight(topControlsBounds) - firstRowHeight / 2 - CGRectGetHeight(titleFrame) / 2,
-							CGRectGetMinX(contentModeButtonFrame) - CGRectGetMaxX(closeButtonFrame) - 4 * separation,
+							CGRectGetMinX(contentModeButtonFrame) - CGRectGetMaxX(closeButtonFrame) - 2 * separation,
 							CGRectGetHeight(titleFrame));
 	self.titleLabel.frame = titleFrame;
 
@@ -1031,13 +1032,19 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	CGFloat midY = CGRectGetMidY(self.closeButton.frame);
 
 	/* Playback time */
+	NSString *timeString = self.playbackTimeLabel.text;
+	self.playbackTimeLabel.text = @"0:00:00";
 	[self.playbackTimeLabel sizeToFit];
+	self.playbackTimeLabel.text = timeString;
 	CGRect playbackTimeFrame = self.playbackTimeLabel.frame;
 	self.playbackTimeLabel.center = CGPointMake(CGRectGetMaxX(self.closeButton.frame) + 3.0 * separation + CGRectGetWidth(playbackTimeFrame)/2,
 												midY);
 
 	/* Remaining playback time */
+	timeString = self.remainingPlaybackTimeLabel.text;
+	self.remainingPlaybackTimeLabel.text = @"-0:00:00";
 	[self.remainingPlaybackTimeLabel sizeToFit];
+	self.remainingPlaybackTimeLabel.text = timeString;
 	CGRect remainingPlaybackTimeFrame = self.remainingPlaybackTimeLabel.frame;
 	self.remainingPlaybackTimeLabel.center = CGPointMake(CGRectGetMinX(self.contentModeButton.frame) - 3.0 * separation - CGRectGetWidth(remainingPlaybackTimeFrame)/2,
 														 midY);

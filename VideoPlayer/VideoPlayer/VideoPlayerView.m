@@ -89,6 +89,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet UIButton *contentModeButton;
+@property (weak, nonatomic) IBOutlet UIButton *zoomModeButton;
 @property (weak, nonatomic) IBOutlet MPVolumeView *volumeView;
 @property (weak, nonatomic) IBOutlet UIToolbar *topControlsToolbar;
 @property (weak, nonatomic) IBOutlet UIToolbar *bottomControlsToolbar;
@@ -141,7 +142,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 
 	self.topControlsToolbar.hidden = YES;
 	self.topControlsToolbar.clipsToBounds = YES;
-    self.bottomControlsToolbar.hidden = YES;
+	self.bottomControlsToolbar.hidden = YES;
 	self.bottomControlsToolbar.clipsToBounds = YES;
 	self.activityIndicator.hidden = YES;
 	self.shouldShowStatusbar = NO;
@@ -186,6 +187,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 
 	[self.closeButton sizeToFit];
 	[self.contentModeButton sizeToFit];
+	[self.zoomModeButton sizeToFit];
 
 	CGRect playerFrame = self.frame;
 	CGRect playerBounds = self.bounds;
@@ -227,7 +229,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	/* Content mode button */
 	CGRect contentModeButtonFrame = self.contentModeButton.frame;
 	self.contentModeButton.center = CGPointMake(CGRectGetWidth(topControlsBounds) - 2 * separation - CGRectGetWidth(contentModeButtonFrame)/2,
-										 CGRectGetHeight(topControlsBounds) - topButtonsMaxHeight/2);
+												CGRectGetHeight(topControlsBounds) - topButtonsMaxHeight/2);
 
 	/* Title label */
 	[self.titleLabel sizeToFit];
@@ -282,6 +284,11 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	/* Next button*/
 	self.nextButton.center = CGPointMake(CGRectGetMidX(bottomControlsBounds) + prevNextSeparation,
 										 CGRectGetMidY(bottomControlsBounds));
+
+	/* Zoom mode button */
+	CGRect zoomModeButtonFrame = self.zoomModeButton.frame;
+	self.zoomModeButton.center = CGPointMake(CGRectGetWidth(bottomControlsBounds) - 2 * separation - CGRectGetWidth(zoomModeButtonFrame)/2,
+											 CGRectGetMidY(bottomControlsBounds));
 
 	/* Activity indicator */
 	self.activityIndicator.center = CGPointMake(CGRectGetMidX(playerFrame),
@@ -439,9 +446,9 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 				self.showBorders = NO;
 
 				/*
-				if (self.stalled) {
+				 if (self.stalled) {
 					self.showsActivityIndicator = YES;
-				}
+				 }
 				 */
 
 				[self setNeedsLayout];
@@ -556,9 +563,9 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 }
 
 - (void)setWantsToPlay:(BOOL)wantsToPlay {
-//	if (!self.player.currentItem) {
-//		return;
-//	}
+	//	if (!self.player.currentItem) {
+	//		return;
+	//	}
 	self.playing = wantsToPlay;
 	if (wantsToPlay) {
 		[self.player play];
@@ -938,6 +945,12 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	[self toggleContentMode];
 }
 
+- (IBAction)zoomModeButtonTouchUpInside:(UIButton *)sender {
+	if (self.fullscreen) {
+		self.fullscreen = NO;
+	}
+}
+
 #pragma mark Helper methods
 
 - (void)hideStandbyView {
@@ -1225,10 +1238,10 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 			duration = MAX(duration, CMTimeGetSeconds(range.start) + CMTimeGetSeconds(range.duration));
 		}
 		duration = duration / CMTimeGetSeconds(_currentItem.duration);
-
+		
 		self.scrubber.progress = duration;
 		[self.scrubber setNeedsDisplay];
-
+		
 	} else {
 		[super observeValueForKeyPath:path ofObject:object change:change context:context];
 	}

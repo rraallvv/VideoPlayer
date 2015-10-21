@@ -129,6 +129,17 @@
                                 <action selector="nextButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="qCG-BN-EIV"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Arp-Fj-jcL" userLabel="Content Mode Button">
+                            <rect key="frame" x="406" y="7" width="32" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <animations/>
+                            <state key="normal" image="ZoomMode">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="zoomModeButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="wrM-Rg-H1m"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <animations/>
                     <userDefinedRuntimeAttributes>
@@ -170,6 +181,7 @@
                 <outlet property="titleLabel" destination="mu1-R9-gC6" id="4mh-4k-Qcj"/>
                 <outlet property="topControlsToolbar" destination="7Yz-C8-Te8" id="ko7-kQ-NcV"/>
                 <outlet property="volumeView" destination="7YS-3d-Zhi" id="sUm-OK-zb9"/>
+                <outlet property="zoomModeButton" destination="Arp-Fj-jcL" id="zDZ-td-p0e"/>
                 <outletCollection property="gestureRecognizers" destination="fan-uj-Zp0" appends="YES" id="iE1-t2-DzF"/>
                 <outletCollection property="gestureRecognizers" destination="RA6-hx-P5G" appends="YES" id="jh6-5u-fEX"/>
                 <outletCollection property="gestureRecognizers" destination="pcZ-5T-G41" appends="YES" id="aA5-7F-typ"/>
@@ -221,5 +233,6 @@
         <image name="Next" width="32" height="32"/>
         <image name="Pause" width="32" height="32"/>
         <image name="Previous" width="32" height="32"/>
+        <image name="ZoomMode" width="20" height="20"/>
     </resources>
 </document>

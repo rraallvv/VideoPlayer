@@ -296,7 +296,6 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 
 	/* Content overlay and thumbnail views */
 	self.contentOverlayView.frame = playerBounds;
-
 	self.standbyLayer.frame = playerBounds;
 	self.standbyView.frame = playerBounds;
 }
@@ -879,7 +878,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 }
 
 - (IBAction)pinchGestureRecognizer:(UIPinchGestureRecognizer *)sender {
-	if (self.fullscreen) {
+	if (self.fullscreen && sender.scale < 1) {
 #if 0 // TODO: This fails to continue the pinch gesture after dismissing the view controller
 		UIGestureRecognizerState state = sender.state;
 
@@ -917,6 +916,8 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 #else
 		self.fullscreen = NO;
 #endif
+	} else if (!self.fullscreen && sender.scale > 1) {
+		self.fullscreen = YES;
 	}
 }
 

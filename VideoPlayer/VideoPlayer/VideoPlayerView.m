@@ -254,14 +254,26 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 										 CGRectGetMidY(bottomControlsBounds));
 
 	/* Volume view */
-	CGRect volumeFrame = self.volumeView.frame;
-	volumeFrame = CGRectMake(2 * separation,
-							 CGRectGetMidY(bottomControlsBounds) - CGRectGetHeight(volumeFrame)/2,
-							 CGRectGetWidth(bottomControlsBounds)/4 - 4 * separation,
-							 CGRectGetHeight(volumeFrame));
-	self.volumeView.frame = volumeFrame;
+	CGFloat prevNextSeparation;
 
-	CGFloat const prevNextSeparation = (CGRectGetMidX(bottomControlsBounds) - CGRectGetMaxX(self.volumeView.frame)) / 3 - separation;
+	if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation)) {
+		CGRect volumeFrame = self.volumeView.frame;
+		volumeFrame = CGRectMake(2 * separation,
+								 CGRectGetMidY(bottomControlsBounds) - CGRectGetHeight(volumeFrame)/2,
+								 CGRectGetWidth(bottomControlsBounds)/4 - 4 * separation,
+								 CGRectGetHeight(volumeFrame));
+		self.volumeView.frame = volumeFrame;
+		prevNextSeparation = (CGRectGetMidX(bottomControlsBounds) - CGRectGetMaxX(self.volumeView.frame)) / 3 - separation;
+
+	} else {
+		CGRect volumeFrame = self.volumeView.frame;
+		volumeFrame = CGRectMake(separation,
+								 CGRectGetMidY(bottomControlsBounds) - CGRectGetHeight(volumeFrame)/2,
+								 CGRectGetWidth(bottomControlsBounds)/3 - 4 * separation,
+								 CGRectGetHeight(volumeFrame));
+		self.volumeView.frame = volumeFrame;
+		prevNextSeparation = 3 * (CGRectGetMidX(bottomControlsBounds) - CGRectGetMaxX(self.volumeView.frame)) / 5 - separation;
+	}
 
 	/* Prev button*/
 	self.prevButton.center = CGPointMake(CGRectGetMidX(bottomControlsBounds) - prevNextSeparation,

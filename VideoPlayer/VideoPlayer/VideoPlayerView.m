@@ -434,7 +434,12 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 		[self clearControlsHiddenTimer];
 
 		[UIView animateWithDuration:FullscreenTransitionDuration animations:^{
+			[CATransaction begin];
+			[CATransaction setAnimationDuration:FullscreenTransitionDuration];
+			[CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
 			self.frame = screenBounds;
+			self.standbyLayer.contentsScale = [self standbyLayerContentScaleWithVideoBounds:screenBounds];
+			[CATransaction commit];
 
 		} completion:^(BOOL finished) {
 			if (self.delegate.parentViewController) {
@@ -471,8 +476,15 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 			self.frame = initialFrame;
 			self.showBorders = YES;
 
+			CGRect containerViewFrame = [self containerViewFrame];
+
 			[UIView animateWithDuration:FullscreenTransitionDuration animations:^{
-				self.frame = [self containerViewFrame];
+				[CATransaction begin];
+				[CATransaction setAnimationDuration:FullscreenTransitionDuration];
+				[CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+				self.frame = containerViewFrame;
+				self.standbyLayer.contentsScale = [self standbyLayerContentScaleWithVideoBounds:containerViewFrame];
+				[CATransaction commit];
 
 			} completion:^(BOOL finished) {
 				[self.containerView addSubview:self];
@@ -650,9 +662,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	}
 }
 
-- (CGFloat)standbyLayerContentScale {
-	CALayer *layer = ((AVPlayerLayer *)self.layer).sublayers.firstObject;
-	CGRect videoBounds = CGRectApplyAffineTransform(layer.bounds, CATransform3DGetAffineTransform(layer.sublayerTransform));
+- (CGFloat)standbyLayerContentScaleWithVideoBounds:(CGRect)videoBounds {
 	CGSize imageSize = _standbyImage.size;
 
 	CGFloat widthScale = imageSize.width / videoBounds.size.width;
@@ -667,6 +677,10 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	}
 
 	return scale;
+}
+
+- (CGFloat)standbyLayerContentScale {
+	return [self standbyLayerContentScaleWithVideoBounds:self.bounds];
 }
 
 - (void)setTitleHidden:(BOOL)titleHidden {

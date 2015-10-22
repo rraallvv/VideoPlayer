@@ -369,7 +369,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 				CFTimeInterval delta = CMTimeGetSeconds(CMTimeSubtract(time, lastTime));
 				if (minInterval < delta && delta < maxInterval) {
 					self.stalled = NO;
-					self.playing = YES;
+					//self.playing = YES;
 					self.shouldAutohideControls = YES;
 					self.controlsHidden = YES;
 					self.titleHidden = YES;
@@ -763,7 +763,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	self.controlsHidden = NO;
 	if (self.wantsToPlay) {
 		self.stalled = YES;
-		self.playing = NO;
+		//self.playing = NO;
 		[self.player play];
 	}
 }
@@ -1025,6 +1025,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	[self setFullscreen:NO completion:^{
 		[weakRef removeFromSuperview];
 		weakRef.containerView = nil;
+		weakRef.wantsToPlay = YES;
 	}];
 }
 
@@ -1166,7 +1167,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	}
 
 	self.stalled = YES;
-	self.playing = NO;
+	//self.playing = NO;
 
 	self.shouldAutohideControls = NO;
 	self.controlsHidden = NO;

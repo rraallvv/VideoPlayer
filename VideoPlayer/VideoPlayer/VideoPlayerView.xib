@@ -26,7 +26,12 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="18.5"/>
-                            <state key="normal" title="Done"/>
+                            <state key="normal" title="Done">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="highlighted">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
                             <connections>
                                 <action selector="closeButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="YDg-mW-zFj"/>
                             </connections>
@@ -36,7 +41,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" id="JLw-Lg-xH0" customClass="Scrubber">
@@ -55,7 +60,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mu1-R9-gC6" userLabel="Title">
@@ -63,16 +68,15 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="lbb-om-cIP" userLabel="Content Mode Button">
                             <rect key="frame" x="406" y="8" width="32" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <animations/>
-                            <state key="normal" image="Fill">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
+                            <state key="normal" image="Fill-Highlighted"/>
+                            <state key="highlighted" image="Fill-Highlighted"/>
                             <connections>
                                 <action selector="contentModeButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="G4k-eH-f3T"/>
                             </connections>
@@ -100,9 +104,8 @@
                             <rect key="frame" x="147" y="7" width="32" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <animations/>
-                            <state key="normal" image="Previous">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
+                            <state key="normal" image="Previous-Highlighted"/>
+                            <state key="highlighted" image="Previous-Highlighted"/>
                             <connections>
                                 <action selector="prevButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="xVm-RF-FsR"/>
                             </connections>
@@ -111,9 +114,8 @@
                             <rect key="frame" x="207" y="7" width="32" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <animations/>
-                            <state key="normal" image="Pause">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
+                            <state key="normal" image="Pause-Highlighted"/>
+                            <state key="highlighted" image="Pause-Highlighted"/>
                             <connections>
                                 <action selector="playButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="cfb-PS-LcZ"/>
                             </connections>
@@ -122,9 +124,8 @@
                             <rect key="frame" x="267" y="7" width="32" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <animations/>
-                            <state key="normal" image="Next">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
+                            <state key="normal" image="Next-Highlighted"/>
+                            <state key="highlighted" image="Next-Highlighted"/>
                             <connections>
                                 <action selector="nextButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="qCG-BN-EIV"/>
                             </connections>
@@ -133,9 +134,8 @@
                             <rect key="frame" x="406" y="7" width="32" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <animations/>
-                            <state key="normal" image="ZoomMode">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
+                            <state key="normal" image="ZoomMode-Highlighted"/>
+                            <state key="highlighted" image="ZoomMode-Highlighted"/>
                             <connections>
                                 <action selector="zoomModeButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="wrM-Rg-H1m"/>
                             </connections>
@@ -229,10 +229,10 @@
         </swipeGestureRecognizer>
     </objects>
     <resources>
-        <image name="Fill" width="20" height="20"/>
-        <image name="Next" width="32" height="32"/>
-        <image name="Pause" width="32" height="32"/>
-        <image name="Previous" width="32" height="32"/>
-        <image name="ZoomMode" width="20" height="20"/>
+        <image name="Fill-Highlighted" width="20" height="20"/>
+        <image name="Next-Highlighted" width="32" height="32"/>
+        <image name="Pause-Highlighted" width="32" height="32"/>
+        <image name="Previous-Highlighted" width="32" height="32"/>
+        <image name="ZoomMode-Highlighted" width="20" height="20"/>
     </resources>
 </document>

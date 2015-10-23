@@ -588,9 +588,11 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 
 - (void)setPlaying:(BOOL)playing {
 	if (playing) {
-		[self.playButton setImage:[UIImage imageNamed:@"Pause"] forState:UIControlStateNormal];
+		[self.playButton setImage:[UIImage imageNamed:@"Pause-Highlighted"] forState:UIControlStateNormal];
+		[self.playButton setImage:[UIImage imageNamed:@"Pause-Highlighted"] forState:UIControlStateHighlighted];
 	} else {
-		[self.playButton setImage:[UIImage imageNamed:@"Play"] forState:UIControlStateNormal];
+		[self.playButton setImage:[UIImage imageNamed:@"Play-Highlighted"] forState:UIControlStateNormal];
+		[self.playButton setImage:[UIImage imageNamed:@"Play-Highlighted"] forState:UIControlStateHighlighted];
 	}
 	_playing = playing;
 }
@@ -1005,11 +1007,13 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 
 - (void)toggleContentMode {
 	if (self.playerLayer.videoGravity == AVLayerVideoGravityResizeAspect) {
-		[self.contentModeButton setImage:[UIImage imageNamed:@"Fit"] forState:UIControlStateNormal];
+		[self.contentModeButton setImage:[UIImage imageNamed:@"Fit-Highlighted"] forState:UIControlStateNormal];
+		[self.contentModeButton setImage:[UIImage imageNamed:@"Fit-Highlighted"] forState:UIControlStateHighlighted];
 		self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
 		self.standbyLayer.contentsScale = [self standbyLayerContentScale];
 	} else {
-		[self.contentModeButton setImage:[UIImage imageNamed:@"Fill"] forState:UIControlStateNormal];
+		[self.contentModeButton setImage:[UIImage imageNamed:@"Fill-Highlighted"] forState:UIControlStateNormal];
+		[self.contentModeButton setImage:[UIImage imageNamed:@"Fill-Highlighted"] forState:UIControlStateHighlighted];
 		self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
 		self.standbyLayer.contentsScale = [self standbyLayerContentScale];
 	}

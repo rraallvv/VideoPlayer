@@ -436,7 +436,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 		[UIView animateWithDuration:FullscreenTransitionDuration animations:^{
 			[CATransaction begin];
 			[CATransaction setAnimationDuration:FullscreenTransitionDuration];
-			[CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+			[CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
 			self.frame = screenBounds;
 			self.standbyLayer.contentsScale = [self standbyLayerContentScaleWithVideoBounds:screenBounds];
 			[CATransaction commit];
@@ -481,7 +481,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 			[UIView animateWithDuration:FullscreenTransitionDuration animations:^{
 				[CATransaction begin];
 				[CATransaction setAnimationDuration:FullscreenTransitionDuration];
-				[CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+				[CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
 				self.frame = containerViewFrame;
 				self.standbyLayer.contentsScale = [self standbyLayerContentScaleWithVideoBounds:containerViewFrame];
 				[CATransaction commit];

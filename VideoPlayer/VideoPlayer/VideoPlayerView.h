@@ -57,5 +57,7 @@ extern NSString * const VideoPlayerCloseNotification;
 
 - (void)setFullscreen:(BOOL)fullscreen completion:(void (^)(void))completion;
 - (void)closePlayer;
+- (void)setTitleHidden:(BOOL)titleHidden;
+- (void)setTitleHidden:(BOOL)titleHidden animated:(BOOL)animated;
 
 @end

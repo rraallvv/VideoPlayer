@@ -1184,6 +1184,13 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	}
 }
 
+- (void)playerItemNewAccessLogEntry:(NSNotification *)notification {
+	AVPlayerItem *playerItem = notification.object;
+	NSArray *logEvents=playerItem.accessLog.events;
+	AVPlayerItemAccessLogEvent *event = (AVPlayerItemAccessLogEvent *)[logEvents lastObject];
+	float observedBitrate = event.observedBitrate / 8;
+	NSLog(@">>>ObservedBitrate %f", observedBitrate);
+}
 
 #pragma mark Key-Value Observance
 
@@ -1207,6 +1214,10 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 			[_currentItem removeObserver:self
 							  forKeyPath:PlayerItemLoadedTimeRangesKeyPath
 								 context:PlayerItemLoadedTimeRangesContext];
+
+			[defaultCenter removeObserver:self
+									 name:AVPlayerItemNewAccessLogEntryNotification
+								   object:_currentItem];
 		}
 
 		_currentItem = self.player.currentItem;
@@ -1226,6 +1237,11 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 						   forKeyPath:PlayerItemLoadedTimeRangesKeyPath
 							  options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
 							  context:PlayerItemLoadedTimeRangesContext];
+
+			[defaultCenter addObserver:self
+							  selector:@selector(playerItemNewAccessLogEntry:)
+								  name:AVPlayerItemNewAccessLogEntryNotification
+								object:_currentItem];
 
 			//self.scrubber.hidden = NO;
 			if (self.player.rate != 0) {

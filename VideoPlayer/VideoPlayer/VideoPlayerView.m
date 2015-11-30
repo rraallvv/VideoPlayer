@@ -1020,6 +1020,10 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 }
 
 - (void)closePlayer {
+	[self closePlayerWithCompletition:nil];
+}
+
+- (void)closePlayerWithCompletition:(void (^)(void))completion {
 	if ([self.player isKindOfClass:[AVQueuePlayer class]]) {
 		[(AVQueuePlayer *)self.player removeAllItems];
 	} else {
@@ -1030,6 +1034,10 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 		[weakRef removeFromSuperview];
 		weakRef.containerView = nil;
 		weakRef.wantsToPlay = YES;
+
+		if (completion) {
+			completion();
+		}
 	}];
 }
 

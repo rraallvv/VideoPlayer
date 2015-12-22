@@ -433,6 +433,8 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 
 		[self clearControlsHiddenTimer];
 
+		[[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
+
 		[UIView animateWithDuration:FullscreenTransitionDuration animations:^{
 			[CATransaction begin];
 			[CATransaction setAnimationDuration:FullscreenTransitionDuration];

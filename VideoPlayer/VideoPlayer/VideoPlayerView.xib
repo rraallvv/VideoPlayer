@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VideoPlayerView"/>
@@ -14,7 +14,6 @@
                 <view opaque="NO" contentMode="scaleToFill" id="Jy3-JM-ZsZ">
                     <rect key="frame" x="0.0" y="0.0" width="447" height="307"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <animations/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
                 <view opaque="NO" contentMode="scaleToFill" id="7Yz-C8-Te8" customClass="UIToolbar">
@@ -24,7 +23,6 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="GfK-3D-nHX">
                             <rect key="frame" x="7" y="7" width="50" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="18.5"/>
                             <state key="normal" title="Done">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -39,7 +37,6 @@
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0:00:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="b1f-b3-4J6">
                             <rect key="frame" x="66" y="14" width="52" height="18"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
@@ -47,7 +44,6 @@
                         <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" id="JLw-Lg-xH0" customClass="Scrubber">
                             <rect key="frame" x="124" y="8" width="204" height="31"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <animations/>
                             <connections>
                                 <action selector="scrubberTouchDown:" destination="7EQ-Zj-Nco" eventType="touchDown" id="h5X-n7-XCw"/>
                                 <action selector="scrubberTouchUp:" destination="7EQ-Zj-Nco" eventType="touchUpOutside" id="NCy-fc-3ek"/>
@@ -58,7 +54,6 @@
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-0:00:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rPe-pk-lb5">
                             <rect key="frame" x="340" y="14" width="58" height="18"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
@@ -66,7 +61,6 @@
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mu1-R9-gC6" userLabel="Title">
                             <rect key="frame" x="0.0" y="45" width="447" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
@@ -74,7 +68,6 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="lbb-om-cIP" userLabel="Content Mode Button">
                             <rect key="frame" x="406" y="8" width="32" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <animations/>
                             <state key="normal" image="Fill-Highlighted"/>
                             <state key="highlighted" image="Fill-Highlighted"/>
                             <connections>
@@ -82,7 +75,6 @@
                             </connections>
                         </button>
                     </subviews>
-                    <animations/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="translucent" value="YES"/>
                         <userDefinedRuntimeAttribute type="number" keyPath="barStyle">
@@ -97,13 +89,20 @@
                         <view opaque="NO" contentMode="scaleToFill" id="7YS-3d-Zhi" customClass="VolumeView">
                             <rect key="frame" x="8" y="16" width="112" height="15"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <animations/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="cOy-Np-lDh">
+                            <rect key="frame" x="85" y="7" width="32" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" image="JumpBack-Highlighted"/>
+                            <state key="highlighted" image="JumpBack-Default"/>
+                            <connections>
+                                <action selector="jumpBackTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="g7O-tf-BIB"/>
+                            </connections>
+                        </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="gv8-08-ytS">
                             <rect key="frame" x="147" y="7" width="32" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <animations/>
                             <state key="normal" image="Previous-Highlighted"/>
                             <state key="highlighted" image="Previous-Highlighted"/>
                             <connections>
@@ -113,7 +112,6 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="WwZ-yN-RKN">
                             <rect key="frame" x="207" y="7" width="32" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <animations/>
                             <state key="normal" image="Pause-Highlighted"/>
                             <state key="highlighted" image="Pause-Highlighted"/>
                             <connections>
@@ -123,17 +121,24 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="EJN-Iw-Eag">
                             <rect key="frame" x="267" y="7" width="32" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <animations/>
                             <state key="normal" image="Next-Highlighted"/>
                             <state key="highlighted" image="Next-Highlighted"/>
                             <connections>
                                 <action selector="nextButtonTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="qCG-BN-EIV"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="jPh-mk-DN4">
+                            <rect key="frame" x="330" y="7" width="32" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" image="JumpAhead-Highlighted"/>
+                            <state key="highlighted" image="JumpAhead-Default"/>
+                            <connections>
+                                <action selector="jumpAheadTouchUpInside:" destination="7EQ-Zj-Nco" eventType="touchUpInside" id="90w-3I-TyL"/>
+                            </connections>
+                        </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Arp-Fj-jcL" userLabel="Content Mode Button">
                             <rect key="frame" x="406" y="7" width="32" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <animations/>
                             <state key="normal" image="ZoomMode-Highlighted"/>
                             <state key="highlighted" image="ZoomMode-Highlighted"/>
                             <connections>
@@ -141,7 +146,6 @@
                             </connections>
                         </button>
                     </subviews>
-                    <animations/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="translucent" value="YES"/>
                         <userDefinedRuntimeAttribute type="number" keyPath="barStyle">
@@ -152,10 +156,8 @@
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" id="wnt-gD-qVl">
                     <rect key="frame" x="213" y="144" width="20" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <animations/>
                 </activityIndicatorView>
             </subviews>
-            <animations/>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <gestureRecognizers/>
             <nil key="simulatedStatusBarMetrics"/>
@@ -167,6 +169,8 @@
                 <outlet property="contentModeButton" destination="lbb-om-cIP" id="a83-hR-2a4"/>
                 <outlet property="contentOverlayView" destination="Jy3-JM-ZsZ" id="B8d-F4-0ha"/>
                 <outlet property="doubleTapGestureRecognizer" destination="7WO-Df-y2G" id="Hce-pM-wjS"/>
+                <outlet property="jumpAheadButton" destination="jPh-mk-DN4" id="RaK-Sm-GHD"/>
+                <outlet property="jumpBackButton" destination="cOy-Np-lDh" id="Bhn-Ty-Eb0"/>
                 <outlet property="nextButton" destination="EJN-Iw-Eag" id="epq-D8-pP1"/>
                 <outlet property="nextSwipeGestureRecognizer" destination="GTV-LF-rm0" id="lV4-4v-hra"/>
                 <outlet property="panGestureRecognizer" destination="RA6-hx-P5G" id="dhy-nE-vBz"/>
@@ -230,6 +234,10 @@
     </objects>
     <resources>
         <image name="Fill-Highlighted" width="20" height="20"/>
+        <image name="JumpAhead-Default" width="32" height="32"/>
+        <image name="JumpAhead-Highlighted" width="32" height="32"/>
+        <image name="JumpBack-Default" width="32" height="32"/>
+        <image name="JumpBack-Highlighted" width="32" height="32"/>
         <image name="Next-Highlighted" width="32" height="32"/>
         <image name="Pause-Highlighted" width="32" height="32"/>
         <image name="Previous-Highlighted" width="32" height="32"/>

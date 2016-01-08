@@ -87,6 +87,8 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (weak, nonatomic) IBOutlet UIButton *prevButton;
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
+@property (weak, nonatomic) IBOutlet UIButton *jumpBackButton;
+@property (weak, nonatomic) IBOutlet UIButton *jumpAheadButton;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet UIButton *contentModeButton;
 @property (weak, nonatomic) IBOutlet UIButton *zoomModeButton;
@@ -284,6 +286,14 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	/* Next button*/
 	self.nextButton.center = CGPointMake(CGRectGetMidX(bottomControlsBounds) + prevNextSeparation,
 										 CGRectGetMidY(bottomControlsBounds));
+
+	/* Jump Back button*/
+	self.jumpBackButton.center = CGPointMake(CGRectGetMidX(bottomControlsBounds) - 2 * prevNextSeparation,
+											 CGRectGetMidY(bottomControlsBounds));
+
+	/* Jump Ahead button*/
+	self.jumpAheadButton.center = CGPointMake(CGRectGetMidX(bottomControlsBounds) + 2 * prevNextSeparation,
+											  CGRectGetMidY(bottomControlsBounds));
 
 	/* Zoom mode button */
 	CGRect zoomModeButtonFrame = self.zoomModeButton.frame;
@@ -795,6 +805,25 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 		[(AVQueuePlayer *)self.player advanceToNextItem];
 	}
 	[[NSNotificationCenter defaultCenter] postNotificationName:VideoPlayerNextItemNotification object:self];
+}
+
+- (IBAction)jumpBackTouchUpInside:(id)sender {
+	NSTimeInterval jumpTime = CMTimeGetSeconds(self.player.currentTime) - 15.0;
+	if (jumpTime < 0) {
+		jumpTime = 0;
+	}
+	CMTime newTime = CMTimeMakeWithSeconds(jumpTime, self.player.currentTime.timescale);
+	[self.player seekToTime:newTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+}
+
+- (IBAction)jumpAheadTouchUpInside:(id)sender {
+	NSTimeInterval duration = CMTimeGetSeconds(self.player.currentItem.asset.duration);
+	NSTimeInterval jumpTime = CMTimeGetSeconds(self.player.currentTime) + 15.0;
+	if (jumpTime > duration) {
+		jumpTime = duration;
+	}
+	CMTime newTime = CMTimeMakeWithSeconds(jumpTime, self.player.currentTime.timescale);
+	[self.player seekToTime:newTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
 }
 
 - (IBAction)tapGestureRecognizer:(UITapGestureRecognizer *)sender {

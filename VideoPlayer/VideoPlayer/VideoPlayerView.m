@@ -808,6 +808,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 }
 
 - (IBAction)jumpBackTouchUpInside:(id)sender {
+	self.controlsHidden = NO;
 	NSTimeInterval jumpTime = CMTimeGetSeconds(self.player.currentTime) - 15.0;
 	if (jumpTime < 0) {
 		jumpTime = 0;
@@ -817,6 +818,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 }
 
 - (IBAction)jumpAheadTouchUpInside:(id)sender {
+	self.controlsHidden = NO;
 	NSTimeInterval duration = CMTimeGetSeconds(self.player.currentItem.asset.duration);
 	NSTimeInterval jumpTime = CMTimeGetSeconds(self.player.currentTime) + 15.0;
 	if (jumpTime > duration) {

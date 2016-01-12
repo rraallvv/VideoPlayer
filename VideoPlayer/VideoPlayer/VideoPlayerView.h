@@ -37,6 +37,7 @@ extern NSString * const VideoPlayerCloseNotification;
 @property (strong, nonatomic, readonly) AVPlayerLayer *playerLayer;
 @property (weak, nonatomic) UIViewController *delegate;
 @property (weak, nonatomic) IBOutlet UIView *contentOverlayView;
+@property (weak, nonatomic) IBOutlet UIToolbar *topControlsToolbar;
 
 @property (nonatomic) BOOL fullscreen;
 @property (weak, nonatomic) UIView *containerView;

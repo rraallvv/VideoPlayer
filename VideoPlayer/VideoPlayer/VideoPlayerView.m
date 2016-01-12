@@ -93,7 +93,6 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 @property (weak, nonatomic) IBOutlet UIButton *contentModeButton;
 @property (weak, nonatomic) IBOutlet UIButton *zoomModeButton;
 @property (weak, nonatomic) IBOutlet MPVolumeView *volumeView;
-@property (weak, nonatomic) IBOutlet UIToolbar *topControlsToolbar;
 @property (weak, nonatomic) IBOutlet UIToolbar *bottomControlsToolbar;
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *tapGestureRcognizer;
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *doubleTapGestureRecognizer;

@@ -733,6 +733,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 		}
 
 	} else {
+		self.controlsHidden = NO;
 		self.titleLabel.alpha = 0;
 		self.titleLabel.hidden = NO;
 

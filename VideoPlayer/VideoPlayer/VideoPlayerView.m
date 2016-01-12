@@ -537,6 +537,10 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 }
 
 - (void)setControlsHidden:(BOOL)controlsHidden animated:(BOOL)animated {
+	[self setControlsHidden:controlsHidden animated:animated shouldAutohide:YES];
+}
+
+- (void)setControlsHidden:(BOOL)controlsHidden animated:(BOOL)animated shouldAutohide:(BOOL)shouldAutohide {
 	[self clearControlsHiddenTimer];
 
 	if (_canToggleFullscreen && !self.fullscreen)
@@ -571,7 +575,9 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 		self.shouldShowStatusbar = NO;
 		self.topControlsToolbar.alpha = 1.0;
 		self.bottomControlsToolbar.alpha = 1.0;
-		[self startControlsHiddednTimer];
+		if (shouldAutohide) {
+			[self startControlsHiddednTimer];
+		}
 	}
 
 	if (!controlsHidden) {
@@ -732,7 +738,6 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 		}
 
 	} else {
-		self.controlsHidden = NO;
 		self.titleLabel.alpha = 0;
 		self.titleLabel.hidden = NO;
 

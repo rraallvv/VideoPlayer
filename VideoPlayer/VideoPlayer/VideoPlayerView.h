@@ -56,6 +56,8 @@ extern NSString * const VideoPlayerCloseNotification;
 
 @property (assign, nonatomic, readonly) BOOL shouldShowStatusbar;
 @property (nonatomic) BOOL controlsHidden;
+- (void)setControlsHidden:(BOOL)controlsHidden animated:(BOOL)animated;
+- (void)setControlsHidden:(BOOL)controlsHidden animated:(BOOL)animated shouldAutohide:(BOOL)shouldAutohide;
 
 - (void)setFullscreen:(BOOL)fullscreen completion:(void (^)(void))completion;
 - (void)closePlayer;

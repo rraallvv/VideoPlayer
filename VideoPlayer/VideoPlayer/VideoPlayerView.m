@@ -100,7 +100,6 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 @property (strong, nonatomic) IBOutlet UIPinchGestureRecognizer *pinchGestureRecognizer;
 @property (strong, nonatomic) IBOutlet UISwipeGestureRecognizer *prevSwipeGestureRecognizer;
 @property (strong, nonatomic) IBOutlet UISwipeGestureRecognizer *nextSwipeGestureRecognizer;
-@property (nonatomic) BOOL controlsHidden;
 @property (nonatomic) BOOL showBorders;
 @property (nonatomic) BOOL wantsToPlay;
 @property (nonatomic, getter=isPlaying) BOOL playing;

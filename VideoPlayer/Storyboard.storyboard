@@ -8,7 +8,7 @@
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--My Video Player-->
+        <!--My Video Player Demo View Controller-->
         <scene sceneID="IOd-wP-n3m">
             <objects>
                 <viewController id="A2f-PB-0gz" customClass="MyVideoPlayerDemoViewController" sceneMemberID="viewController">
@@ -87,7 +87,7 @@
                             <constraint firstItem="744-6I-2wG" firstAttribute="centerX" secondItem="zc8-Au-8rR" secondAttribute="centerX" id="vDb-1Y-7tb"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="My Video Player" image="Tab Icon" id="md5-9S-aOu"/>
+                    <tabBarItem key="tabBarItem" systemItem="favorites" id="md5-9S-aOu"/>
                     <connections>
                         <outlet property="videoView" destination="744-6I-2wG" id="whL-Tz-2DW"/>
                     </connections>
@@ -96,7 +96,7 @@
             </objects>
             <point key="canvasLocation" x="1645" y="157"/>
         </scene>
-        <!--AVPlayerViewController-->
+        <!--Player Demo View Controller-->
         <scene sceneID="8UV-VY-aSk">
             <objects>
                 <viewController id="J4x-V0-DOO" customClass="AVPlayerDemoViewController" sceneMemberID="viewController">
@@ -175,7 +175,7 @@
                             <constraint firstItem="zKw-Qu-093" firstAttribute="centerX" secondItem="1BC-gW-8fK" secondAttribute="centerX" id="ksg-ae-Z6r"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="AVPlayerViewController" image="Tab Icon" id="ei4-Cf-dzN"/>
+                    <tabBarItem key="tabBarItem" systemItem="favorites" id="ei4-Cf-dzN"/>
                     <connections>
                         <outlet property="playerView" destination="zKw-Qu-093" id="NmL-0Y-dJR"/>
                     </connections>
@@ -184,7 +184,7 @@
             </objects>
             <point key="canvasLocation" x="1645" y="813"/>
         </scene>
-        <!--MPMoviePlayerViewController-->
+        <!--Movie Player Demo View Controller-->
         <scene sceneID="CWb-QN-OTR">
             <objects>
                 <viewController id="Yea-0W-hlJ" customClass="MPMoviePlayerDemoViewController" sceneMemberID="viewController">
@@ -263,7 +263,7 @@
                             <constraint firstItem="JSz-iZ-qE9" firstAttribute="top" secondItem="GZJ-iY-1D1" secondAttribute="bottom" constant="8" symbolic="YES" id="v6e-aq-1NW"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="MPMoviePlayerViewController" image="Tab Icon" id="W09-sN-d3Q"/>
+                    <tabBarItem key="tabBarItem" systemItem="favorites" id="W09-sN-d3Q"/>
                     <connections>
                         <outlet property="playerView" destination="GLp-3q-NzA" id="HPl-sg-Pgj"/>
                     </connections>
@@ -293,7 +293,4 @@
             <point key="canvasLocation" x="929" y="870"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="Tab Icon" width="32" height="32"/>
-    </resources>
 </document>

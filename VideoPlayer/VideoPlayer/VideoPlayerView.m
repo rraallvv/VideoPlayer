@@ -1238,7 +1238,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	NSArray *logEvents=playerItem.accessLog.events;
 	AVPlayerItemAccessLogEvent *event = (AVPlayerItemAccessLogEvent *)[logEvents lastObject];
 	float observedBitrate = event.observedBitrate / 8;
-	NSLog(@">>>ObservedBitrate %f", observedBitrate);
+	NSLog(@">>>Download rate (kB/s): %.1f", observedBitrate);
 }
 
 #pragma mark Key-Value Observance

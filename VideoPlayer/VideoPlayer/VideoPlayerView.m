@@ -128,6 +128,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	BOOL _shouldChangeContainerView;
 	AVPlayerItem *_currentItem;
 	UIImage *_standbyImage;
+	float _loadedTime;
 }
 
 
@@ -634,6 +635,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 		self.showsActivityIndicator = stalled;
 	}
 	_stalled = stalled;
+	_loadedTime = 0;
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
@@ -1323,16 +1325,15 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 
 		float duration = CMTimeGetSeconds(_currentItem.duration);
 
-		static float lastTime = 0;
-		static float lastDuration = 0;
-		static float loadingRate = 0;
-
 		if (self.stalled) {
-			float time = CACurrentMediaTime();
+			static float lastDuration = 0;
+			static float loadingRate = 0;
 
-			if (lastTime != 0) {
-				float currentTime = CMTimeGetSeconds(_currentItem.currentTime);
-				loadingRate = (loadedDuration - lastDuration)/(time - lastTime) * 0.1 + loadingRate * 0.9;
+			float time = CACurrentMediaTime();
+			float currentTime = CMTimeGetSeconds(_currentItem.currentTime);
+
+			if (_loadedTime != 0) {
+				loadingRate = (loadedDuration - lastDuration)/(time - _loadedTime) * 0.1 + loadingRate * 0.9;
 
 				float remainingToLoad = (duration - currentTime) * (1.0 / loadingRate -  1.0);
 
@@ -1341,7 +1342,6 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 				if (remainingToLoad < 0) {
 					self.wantsToPlay = YES;
 					self.stalled = NO;
-					lastTime = 0;
 					lastDuration = 0;
 					loadingRate = 0;
 
@@ -1355,7 +1355,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 				self.player.rate = 0;
 			}
 
-			lastTime = time;
+			_loadedTime = time;
 			lastDuration = loadedDuration;
 		}
 

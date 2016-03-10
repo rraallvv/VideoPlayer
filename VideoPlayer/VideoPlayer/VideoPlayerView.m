@@ -798,6 +798,9 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 
 - (IBAction)playButtonTouchUpInside:(UIButton *)sender {
 	self.controlsHidden = NO;
+	if (CMTimeCompare(_currentItem.currentTime, _currentItem.duration) == 0) {
+		[self.player seekToTime:kCMTimeZero];
+	}
 	[self toggleWantsToPlay];
 }
 
@@ -1228,6 +1231,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 
 - (void)playerItemDidPlayToEndTime:(NSNotification *)notification {
 	self.stalled = NO;
+	//[self updateTimeIndicatorsWithTime:_currentItem.currentTime];
 	if (![self.player isKindOfClass:[AVQueuePlayer class]] || [(AVQueuePlayer *)self.player items].count <= 1) {
 		self.wantsToPlay = NO;
 	}

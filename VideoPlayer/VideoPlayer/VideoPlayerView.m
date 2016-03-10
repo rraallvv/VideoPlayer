@@ -1290,7 +1290,8 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 
 			//self.scrubber.hidden = NO;
 			if (self.player.rate != 0) {
-				self.wantsToPlay = YES;
+				//self.wantsToPlay = YES;
+				self.player.rate = 0;
 			}
 
 			//self.nextButton.enabled = [self.player isKindOfClass:[AVQueuePlayer class]] && [(AVQueuePlayer *)self.player items].count > 1;
@@ -1309,18 +1310,56 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 
 	} else if (context == PlayerRateObservationContext) {
 		if (!self.isPlaying && self.player.rate != 0) {
-			self.wantsToPlay = YES;
+			//self.wantsToPlay = YES;
 		}
 
 	} else if (context == PlayerItemLoadedTimeRangesContext) {
-		double duration = 0.0;
+		float loadedDuration = 0.0;
+
 		for (NSValue *time in _currentItem.loadedTimeRanges) {
 			CMTimeRange range = [time CMTimeRangeValue];
-			duration = MAX(duration, CMTimeGetSeconds(range.start) + CMTimeGetSeconds(range.duration));
+			loadedDuration = MAX(loadedDuration, CMTimeGetSeconds(range.start) + CMTimeGetSeconds(range.duration));
 		}
-		duration = duration / CMTimeGetSeconds(_currentItem.duration);
-		
-		self.scrubber.progress = duration;
+
+		float duration = CMTimeGetSeconds(_currentItem.duration);
+
+		static float lastTime = 0;
+		static float lastDuration = 0;
+		static float loadingRate = 0;
+
+		if (self.stalled) {
+			float time = CACurrentMediaTime();
+
+			if (lastTime != 0) {
+				float currentTime = CMTimeGetSeconds(_currentItem.currentTime);
+				loadingRate = (loadedDuration - lastDuration)/(time - lastTime) * 0.1 + loadingRate * 0.9;
+
+				float remainingToLoad = (duration - currentTime) * (1.0 / loadingRate -  1.0);
+
+				NSLog(@">>>remainingToLoad: %f", remainingToLoad);
+
+				if (remainingToLoad < 0) {
+					self.wantsToPlay = YES;
+					self.stalled = NO;
+					lastTime = 0;
+					lastDuration = 0;
+					loadingRate = 0;
+
+				} else {
+					self.player.rate = 0;
+				}
+
+			} else {
+				[self updateTimeIndicatorsWithTime:_currentItem.currentTime];
+				[self setTitleHidden:YES animated:NO];
+				self.player.rate = 0;
+			}
+
+			lastTime = time;
+			lastDuration = loadedDuration;
+		}
+
+		self.scrubber.progress = loadedDuration / duration;
 		[self.scrubber setNeedsDisplay];
 		
 	} else {

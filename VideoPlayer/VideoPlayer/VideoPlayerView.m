@@ -635,7 +635,9 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 		self.showsActivityIndicator = stalled;
 	}
 	_stalled = stalled;
-	_loadedTime = 0;
+	if (stalled) {
+		_loadedTime = 0;
+	}
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor {

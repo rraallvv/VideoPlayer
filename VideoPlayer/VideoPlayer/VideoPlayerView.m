@@ -129,6 +129,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	AVPlayerItem *_currentItem;
 	UIImage *_standbyImage;
 	float _loadedTime;
+	float _remainingToLoad;
 }
 
 
@@ -376,7 +377,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 		if (weakPlayerRef.currentItem) {
 			if (self.stalled && CMTIME_IS_VALID(lastTime) && weakPlayerRef.rate != 0) {
 				CFTimeInterval delta = CMTimeGetSeconds(CMTimeSubtract(time, lastTime));
-				if (minInterval < delta && delta < maxInterval) {
+				if (minInterval < delta && delta < maxInterval && _remainingToLoad < 0) {
 					self.stalled = NO;
 					//self.playing = YES;
 					self.shouldAutohideControls = YES;
@@ -637,6 +638,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 	_stalled = stalled;
 	if (stalled) {
 		_loadedTime = 0;
+		_remainingToLoad = INFINITY;
 	}
 }
 
@@ -1341,11 +1343,11 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 			if (_loadedTime != 0) {
 				loadingRate = (loadedDuration - lastDuration)/(time - _loadedTime) * 0.1 + loadingRate * 0.9;
 
-				float remainingToLoad = (duration - currentTime) * (1.0 / loadingRate -  1.0);
+				_remainingToLoad = (duration - currentTime) * (1.0 / loadingRate -  1.0);
 
-				NSLog(@">>>remainingToLoad: %f", remainingToLoad);
+				NSLog(@">>>Remaining to load: %.1f", _remainingToLoad);
 
-				if (remainingToLoad < 0) {
+				if (_remainingToLoad < 0) {
 					self.wantsToPlay = YES;
 					self.stalled = NO;
 					lastDuration = 0;

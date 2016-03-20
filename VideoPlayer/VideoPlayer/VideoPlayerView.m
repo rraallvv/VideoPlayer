@@ -1347,7 +1347,7 @@ static inline NSString *UIKitLocalizedString(NSString *key) {
 
 				NSLog(@">>>Remaining to load: %.1f", _remainingToLoad);
 
-				if (_remainingToLoad < 0) {
+				if (_remainingToLoad < 0 || loadedDuration >= duration) {
 					self.wantsToPlay = YES;
 					self.stalled = NO;
 					lastDuration = 0;
